@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>GBoS GEOAI | The Gambia 3D GIS Viewer</title>
 
 <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet">
@@ -17,7 +17,7 @@
  --green:#15966c;--orange:#e99a32;--red:#d94c54;
 }
 *{box-sizing:border-box}
-html,body{height:100%;margin:0;font-family:Inter,Arial,sans-serif;color:var(--text);overflow:hidden}
+html,body{height:100%;margin:0;font-family:Arial,sans-serif;color:var(--text);overflow:hidden}
 body{background:var(--bg)}
 header{
  height:62px;background:linear-gradient(110deg,#06172a,#12395d);
@@ -30,7 +30,7 @@ header{
 .brand small{display:block;color:#b9d4e9;font-size:10px;margin-top:3px}
 .header-right{display:flex;align-items:center;gap:12px;font-size:11px;color:#d8e9f7}
 .pill{padding:6px 10px;border:1px solid #ffffff35;border-radius:20px}
-#app{height:calc(100% - 62px);display:grid;grid-template-columns:310px minmax(0,1fr) 300px;gap:0}
+#app{height:calc(100% - 62px);display:grid;grid-template-columns:310px minmax(0,1fr) 300px}
 .panel{background:#fff;min-height:0;overflow-y:auto;border-right:1px solid var(--line)}
 .right{border-right:0;border-left:1px solid var(--line)}
 .panel-head{padding:15px 16px;background:#f8fafc;border-bottom:1px solid var(--line)}
@@ -52,7 +52,6 @@ button{
 }
 button.secondary{background:#e8eef5;color:#27435e}
 button.dark{background:var(--navy2)}
-button.danger{background:#fff0f0;color:#b53c45}
 button:disabled{opacity:.5;cursor:wait}
 .full{width:100%}
 .layer-group{margin-bottom:12px}
@@ -73,7 +72,7 @@ button:disabled{opacity:.5;cursor:wait}
 #map{height:100%;width:100%}
 .map-title{
  position:absolute;z-index:4;top:12px;left:12px;padding:10px 13px;
- border-radius:8px;background:#fffF;box-shadow:0 2px 12px #142d4520;
+ border-radius:8px;background:#ffffffee;box-shadow:0 2px 12px #142d4520;
  pointer-events:none
 }
 .map-title strong{font-size:12px;color:#102d49}
@@ -118,7 +117,6 @@ footer{font-size:9px;color:#8a9bad;padding:12px 15px;line-height:1.6}
  .header-right{display:none}
  #app{height:calc(100% - 54px);grid-template-columns:1fr}
  .left{display:none}
- #map-wrap{grid-column:1}
  .map-title{top:8px;left:8px}
 }
 </style>
@@ -135,31 +133,30 @@ footer{font-size:9px;color:#8a9bad;padding:12px 15px;line-height:1.6}
  </div>
  <div class="header-right">
   <span class="pill">GIS / CARTOGRAPHY UNIT</span>
-  <span class="pill" id="connection-status">Connecting to map…</span>
+  <span class="pill" id="connection-status">Connecting…</span>
  </div>
 </header>
 
 <div id="app">
 
-<!-- LEFT PANEL -->
 <aside class="panel left">
  <div class="panel-head">
   <h2>LAYERS & CONTROLS</h2>
-  <p>Browse the Gambia geospatial catalogue. Select a layer to request and display its data.</p>
+  <p>Explore the Gambia geospatial catalogue and load mapped datasets.</p>
  </div>
 
  <div class="section">
   <h3>Administrative selection</h3>
   <div class="control">
-   <label for="lgaSelect">Local Government Area</label>
+   <label>Local Government Area</label>
    <select id="lgaSelect"><option value="">All LGAs</option></select>
   </div>
   <div class="control">
-   <label for="districtSelect">District</label>
+   <label>District</label>
    <select id="districtSelect"><option value="">All districts</option></select>
   </div>
   <div class="control">
-   <label for="wardSelect">Ward</label>
+   <label>Ward</label>
    <select id="wardSelect"><option value="">All wards</option></select>
   </div>
   <div class="btnrow">
@@ -171,21 +168,23 @@ footer{font-size:9px;color:#8a9bad;padding:12px 15px;line-height:1.6}
  <div class="section">
   <h3>Map configuration</h3>
   <div class="control">
-   <label for="basemap">Basemap</label>
+   <label>Basemap</label>
    <select id="basemap">
-    <option value="streets">Streets</option>
-    <option value="satellite">Satellite</option>
-    <option value="hybrid">Hybrid</option>
-    <option value="terrain">Terrain</option>
-    <option value="dark">Dark</option>
+    <option value="streets">CARTO Voyager Streets</option>
+    <option value="osm">OpenStreetMap</option>
+    <option value="light">CARTO Light / Positron</option>
+    <option value="satellite">Esri Satellite</option>
+    <option value="hybrid">Satellite + Labels</option>
+    <option value="dark">CARTO Dark Matter</option>
+    <option value="terrain">Terrain / Elevation</option>
    </select>
   </div>
   <div class="control">
-   <label for="opacity">Layer opacity <span id="opacityValue">100%</span></label>
+   <label>Layer opacity <span id="opacityValue">100%</span></label>
    <input id="opacity" type="range" min="10" max="100" value="100">
   </div>
   <div class="control">
-   <label for="drawOrder">Draw order</label>
+   <label>Draw order</label>
    <select id="drawOrder">
     <option value="top">Selected layer on top</option>
     <option value="bottom">Selected layer below</option>
@@ -196,7 +195,7 @@ footer{font-size:9px;color:#8a9bad;padding:12px 15px;line-height:1.6}
  <div class="section">
   <h3>Layer catalogue</h3>
   <div class="btnrow">
-   <button class="secondary" id="selectAll">SELECT ALL VISIBLE</button>
+   <button class="secondary" id="selectAll">SELECT ALL</button>
    <button class="secondary" id="closeAll">CLOSE ALL</button>
   </div>
   <div id="catalogue" style="margin-top:12px"></div>
@@ -204,7 +203,7 @@ footer{font-size:9px;color:#8a9bad;padding:12px 15px;line-height:1.6}
 
  <div class="section">
   <h3>Measure</h3>
-  <p class="note">Click the map to add measurement points. Double-click to finish.</p>
+  <p class="note">Click the map to add measurement points.</p>
   <div class="btnrow">
    <button id="measureBtn" class="dark">START MEASURE</button>
    <button id="clearMeasure" class="secondary">CLEAR</button>
@@ -222,6 +221,7 @@ footer{font-size:9px;color:#8a9bad;padding:12px 15px;line-height:1.6}
    <button class="secondary full" id="exportView">EXPORT VIEW</button>
   </div>
  </div>
+
  <footer>
   GBoS GEOAI • Research and educational use<br>
   Produced by Ansu Singhateh<br>
@@ -229,7 +229,6 @@ footer{font-size:9px;color:#8a9bad;padding:12px 15px;line-height:1.6}
  </footer>
 </aside>
 
-<!-- MAP -->
 <main id="map-wrap">
  <div id="map"></div>
  <div class="map-title">
@@ -250,17 +249,16 @@ footer{font-size:9px;color:#8a9bad;padding:12px 15px;line-height:1.6}
  <div id="map-message">Initialising map…</div>
 </main>
 
-<!-- RIGHT PANEL -->
 <aside class="panel right">
  <div class="panel-head">
   <h2>SPATIAL ANALYTICS</h2>
-  <p>Live summary of successfully loaded data.</p>
+  <p>Live summary of loaded data.</p>
  </div>
  <div class="section">
   <h3>National overview</h3>
   <div class="kpis">
-   <div class="kpi"><span>Loaded layers</span><strong id="kpiLayers">0</strong><small>Active datasets</small></div>
-   <div class="kpi"><span>Visible features</span><strong id="kpiFeatures">0</strong><small>Loaded records</small></div>
+   <div class="kpi"><span>Loaded layers</span><strong id="kpiLayers">0</strong><small>Datasets</small></div>
+   <div class="kpi"><span>Visible features</span><strong id="kpiFeatures">0</strong><small>Records</small></div>
    <div class="kpi"><span>Census EAs</span><strong id="kpiEAs">—</strong><small>GitHub source</small></div>
    <div class="kpi"><span>Selected layers</span><strong id="kpiSelected">0</strong><small>On map</small></div>
   </div>
@@ -272,7 +270,7 @@ footer{font-size:9px;color:#8a9bad;padding:12px 15px;line-height:1.6}
   <div class="metric"><span>Ward</span><b id="statWard">All</b></div>
  </div>
  <div class="section">
-  <h3>Selected layer details</h3>
+  <h3>Feature inspection</h3>
   <div id="feature-info" class="note">Click a mapped feature to inspect its attributes.</div>
  </div>
  <div class="section">
@@ -280,234 +278,296 @@ footer{font-size:9px;color:#8a9bad;padding:12px 15px;line-height:1.6}
   <div id="log"></div>
  </div>
  <div class="section">
-  <h3>Methodology & data notes</h3>
+  <h3>Methodology and data notes</h3>
   <p class="note">
-   Data are requested from the configured public services when a layer is selected.
+   Data are requested from the configured public services when selected.
    OSM-derived features represent mapped OpenStreetMap content and may be incomplete.
    Administrative boundary availability depends on the ArcGIS service.
    Census EA data are loaded from the configured GitHub repository.
   </p>
   <p class="note">
-   The 3D building display uses mapped building footprints and estimated OSM height
-   attributes where available. Missing building heights are assigned a visual default;
-   this is not a surveyed building-height product.
+   3D building display uses mapped building footprints and height attributes where
+   available. Missing heights receive a visual default and are not surveyed heights.
   </p>
  </div>
  <footer>
   Sources: OpenStreetMap contributors; ArcGIS Feature Service;
-  Urban-Planning-Intelligence GitHub repository.<br>
-  Respect the source data licences and attribution requirements.
+  Urban-Planning-Intelligence GitHub repository.
  </footer>
 </aside>
 </div>
 
 <script>
-/* ==========================================================
-   GBoS GEOAI – THE GAMBIA 3D GIS VIEWER
-   ==========================================================
-   Data sources:
-   - Census EAs: GitHub repository tree discovery
-   - Admin boundaries: ArcGIS FeatureServer
-   - Thematic layers: OpenStreetMap Overpass API
-   - Basemaps: CARTO / Esri public tiles
-   ========================================================== */
+/* =========================================================
+   GBoS GEOAI | THE GAMBIA 3D GIS VIEWER
+   API-KEY-FREE PUBLIC BASEMAP CONFIGURATION
+   ========================================================= */
 
-const GAMBIA_BOUNDS = [[-16.90,13.00],[-13.75,13.90]];
-const GAMBIA_CENTER = [-15.45,13.45];
+const GAMBIA_BOUNDS=[[-16.90,13.00],[-13.75,13.90]];
+const GAMBIA_CENTER=[-15.45,13.45];
 
-const REPO_OWNER = "silkysingz94-oss";
-const REPO_NAME = "Urban-Planning-Intelligence";
-const EA_FILENAME = "Census_EAs_Geo.json";
+const REPO_OWNER="silkysingz94-oss";
+const REPO_NAME="Urban-Planning-Intelligence";
+const EA_FILENAME="Census_EAs_Geo.json";
 
-const ARCGIS_BASE =
- "https://services1.arcgis.com/YmCK8KfESHdxUQgm/ArcGIS/rest/services/Gambia_Boundaries/FeatureServer";
+const ARCGIS_BASE=
+"https://services1.arcgis.com/YmCK8KfESHdxUQgm/ArcGIS/rest/services/Gambia_Boundaries/FeatureServer";
 
-const OVERPASS_ENDPOINTS = [
+const OVERPASS_ENDPOINTS=[
  "https://overpass-api.de/api/interpreter",
  "https://overpass.kumi.systems/api/interpreter"
 ];
 
-const mapMessage = document.getElementById("map-message");
-const logBox = document.getElementById("log");
-
 let map;
-let loaded = {};
-let loading = {};
-let selectedLayer = null;
-let allEA = null;
-let measureMode = false;
-let measurePoints = [];
-let measureLine = null;
-let adminData = {lga:null,district:null};
-let selectedAdmin = {lga:"",district:"",ward:""};
-let currentBasemap = "streets";
+let loaded={};
+let loading={};
+let allEA=null;
+let adminData={lga:null,district:null};
+let selectedLayer=null;
+let measureMode=false;
+let measurePoints=[];
+let measureLine=null;
+let currentBasemap="streets";
 
-const catalogueGroups = [
- {
-  title:"Terrain",
-  items:[
-   ["terrain","3D terrain","terrain"],
-   ["hillshade","Shaded relief","terrain"]
-  ]
- },
- {
-  title:"Administrative Boundaries",
-  items:[
-   ["lga","Local Government Areas","arcgis"],
-   ["districts","District boundaries","arcgis"],
-   ["eas","Census Enumeration Areas","github"],
-   ["wards","Ward boundaries (OSM mapped)","osm"]
-  ]
- },
- {
-  title:"Energy",
-  items:[
-   ["power","Power infrastructure","osm"],
-   ["powerlines","Power lines","osm"],
-   ["powerplants","Power plants","osm"],
-   ["substations","Substations","osm"]
-  ]
- },
- {
-  title:"Environment",
-  items:[
-   ["waterways","Rivers and waterways","osm"],
-   ["water","Water bodies","osm"],
-   ["landuse","Land use and land cover (OSM)","osm"],
-   ["forest","Forests and woodland","osm"],
-   ["wetlands","Wetlands","osm"],
-   ["parks","Parks and green spaces","osm"],
-   ["protected","Protected areas (OSM mapped)","osm"],
-   ["coastline","Coastline (OSM mapped)","osm"]
-  ]
- },
- {
-  title:"Natural Hazards",
-  items:[
-   ["flood","Flood-related mapped features","osm"],
-   ["coastal","Coastal protection features","osm"],
-   ["fire","Fire stations and mapped fire features","osm"]
-  ]
- },
- {
-  title:"Points of Interest",
-  items:[
-   ["schools","Schools and education","osm"],
-   ["health","Health facilities","osm"],
-   ["markets","Markets and shops","osm"],
-   ["government","Government facilities","osm"],
-   ["religion","Places of worship","osm"],
-   ["tourism","Tourism and accommodation","osm"],
-   ["airports","Airports and aerodromes","osm"],
-   ["transport","Transport facilities","osm"]
-  ]
- },
- {
-  title:"Population and social conditions",
-  items:[
-   ["settlements","Settlements and populated places","osm"],
-   ["residential","Residential areas","osm"],
-   ["community","Community facilities","osm"],
-   ["social","Social amenities","osm"]
-  ]
- },
- {
-  title:"Urban Planning and Land Cover",
-  items:[
-   ["buildings","3D buildings","osm"],
-   ["commercial","Commercial areas","osm"],
-   ["industrial","Industrial areas","osm"],
-   ["construction","Construction sites","osm"],
-   ["recreation","Recreation and sports","osm"],
-   ["parking","Parking areas","osm"],
-   ["cemeteries","Cemeteries","osm"]
-  ]
- },
- {
-  title:"Transportation Systems",
-  items:[
-   ["roads","All roads","osm"],
-   ["majorroads","Primary and secondary roads","osm"],
-   ["localroads","Local roads and streets","osm"],
-   ["tracks","Tracks and paths","osm"],
-   ["bridges","Bridges","osm"],
-   ["railways","Railways","osm"],
-   ["busstops","Bus stops","osm"],
-   ["ferries","Ferry routes and terminals","osm"]
-  ]
- }
-];
+/* =========================================================
+   BASEMAPS — NO COMMERCIAL API KEYS
+   ========================================================= */
 
-/* ----------------------- MAP STYLES ----------------------- */
+function rasterStyle(tiles,attribution){
+ return {
+  version:8,
+  sources:{
+   base:{
+    type:"raster",
+    tiles:tiles,
+    tileSize:256,
+    attribution:attribution
+   }
+  },
+  layers:[
+   {id:"base",type:"raster",source:"base"}
+  ]
+ };
+}
 
 function baseStyle(kind){
- const raster = (tiles,attribution) => ({
-  version:8,
-  sources:{base:{type:"raster",tiles,tileSize:256,attribution}},
-  layers:[{id:"base",type:"raster",source:"base"}]
- });
 
- if(kind==="satellite" || kind==="hybrid"){
-  const s = raster([
-   "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
-  ],"Tiles © Esri");
-  if(kind==="hybrid"){
-   s.sources.labels={
-    type:"raster",
-    tiles:["https://basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}.png"],
-    tileSize:256,
-    attribution:"© CARTO"
-   };
-   s.layers.push({id:"labels",type:"raster",source:"labels"});
-  }
-  return s;
+ const osmAttribution="© OpenStreetMap contributors";
+ const cartoAttribution="© OpenStreetMap contributors © CARTO";
+ const esriAttribution="Tiles © Esri";
+
+ // OpenStreetMap
+ if(kind==="osm"){
+  return rasterStyle(
+   ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
+   osmAttribution
+  );
  }
+
+ // CARTO Voyager
+ if(kind==="streets"){
+  return rasterStyle(
+   ["https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png"],
+   cartoAttribution
+  );
+ }
+
+ // CARTO Positron
+ if(kind==="light"){
+  return rasterStyle(
+   ["https://basemaps.cartocdn.com/rastertiles/positron/{z}/{x}/{y}.png"],
+   cartoAttribution
+  );
+ }
+
+ // Esri satellite
+ if(kind==="satellite"){
+  return rasterStyle(
+   ["https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"],
+   esriAttribution
+  );
+ }
+
+ // Satellite + CARTO labels
+ if(kind==="hybrid"){
+  return {
+   version:8,
+   sources:{
+    imagery:{
+     type:"raster",
+     tiles:[
+      "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+     ],
+     tileSize:256,
+     attribution:esriAttribution
+    },
+    labels:{
+     type:"raster",
+     tiles:[
+      "https://basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}.png"
+     ],
+     tileSize:256,
+     attribution:cartoAttribution
+    }
+   },
+   layers:[
+    {id:"imagery",type:"raster",source:"imagery"},
+    {id:"labels",type:"raster",source:"labels"}
+   ]
+  };
+ }
+
+ // CARTO Dark Matter
+ if(kind==="dark"){
+  return rasterStyle(
+   ["https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png"],
+   cartoAttribution
+  );
+ }
+
+ // Terrain-style map with a public DEM source
  if(kind==="terrain"){
   return {
    version:8,
    sources:{
-    base:{type:"raster",tiles:["https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png"],tileSize:256,attribution:"© CARTO"},
-    dem:{type:"raster-dem",tiles:["https://demotiles.maplibre.org/terrain-tiles/{z}/{x}/{y}.png"],tileSize:256,encoding:"terrarium"}
+    base:{
+     type:"raster",
+     tiles:["https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png"],
+     tileSize:256,
+     attribution:cartoAttribution
+    },
+    dem:{
+     type:"raster-dem",
+     tiles:["https://demotiles.maplibre.org/terrain-tiles/{z}/{x}/{y}.png"],
+     tileSize:256,
+     encoding:"terrarium",
+     attribution:"MapLibre demonstration terrain tiles"
+    }
    },
-   layers:[{id:"base",type:"raster",source:"base"}],
-   terrain:{source:"dem",exaggeration:1.35}
+   layers:[
+    {id:"base",type:"raster",source:"base"}
+   ],
+   terrain:{
+    source:"dem",
+    exaggeration:1.35
+   }
   };
  }
- if(kind==="dark"){
-  return raster(["https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png"],"© CARTO");
- }
- return raster(["https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png"],"© CARTO");
+
+ return rasterStyle(
+  ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
+  osmAttribution
+ );
 }
 
+/* =========================================================
+   CATALOGUE
+   ========================================================= */
+
+const catalogueGroups=[
+ {title:"Terrain",items:[
+  ["terrain","3D terrain","terrain"],
+  ["hillshade","Shaded relief","terrain"]
+ ]},
+ {title:"Administrative Boundaries",items:[
+  ["lga","Local Government Areas","arcgis"],
+  ["districts","District boundaries","arcgis"],
+  ["eas","Census Enumeration Areas","github"],
+  ["wards","Ward boundaries (OSM mapped)","osm"]
+ ]},
+ {title:"Energy",items:[
+  ["power","Power infrastructure","osm"],
+  ["powerlines","Power lines","osm"],
+  ["powerplants","Power plants","osm"],
+  ["substations","Substations","osm"]
+ ]},
+ {title:"Environment",items:[
+  ["waterways","Rivers and waterways","osm"],
+  ["water","Water bodies","osm"],
+  ["landuse","Land use and land cover (OSM)","osm"],
+  ["forest","Forests and woodland","osm"],
+  ["wetlands","Wetlands","osm"],
+  ["parks","Parks and green spaces","osm"],
+  ["protected","Protected areas (OSM mapped)","osm"],
+  ["coastline","Coastline (OSM mapped)","osm"]
+ ]},
+ {title:"Natural Hazards",items:[
+  ["flood","Flood-related mapped features","osm"],
+  ["coastal","Coastal protection features","osm"],
+  ["fire","Fire stations and mapped fire features","osm"]
+ ]},
+ {title:"Points of Interest",items:[
+  ["schools","Schools and education","osm"],
+  ["health","Health facilities","osm"],
+  ["markets","Markets and shops","osm"],
+  ["government","Government facilities","osm"],
+  ["religion","Places of worship","osm"],
+  ["tourism","Tourism and accommodation","osm"],
+  ["airports","Airports and aerodromes","osm"],
+  ["transport","Transport facilities","osm"]
+ ]},
+ {title:"Population and social conditions",items:[
+  ["settlements","Settlements and populated places","osm"],
+  ["residential","Residential areas","osm"],
+  ["community","Community facilities","osm"],
+  ["social","Social amenities","osm"]
+ ]},
+ {title:"Urban Planning and Land Cover",items:[
+  ["buildings","3D buildings","osm"],
+  ["commercial","Commercial areas","osm"],
+  ["industrial","Industrial areas","osm"],
+  ["construction","Construction sites","osm"],
+  ["recreation","Recreation and sports","osm"],
+  ["parking","Parking areas","osm"],
+  ["cemeteries","Cemeteries","osm"]
+ ]},
+ {title:"Transportation Systems",items:[
+  ["roads","All roads","osm"],
+  ["majorroads","Primary and secondary roads","osm"],
+  ["localroads","Local roads and streets","osm"],
+  ["tracks","Tracks and paths","osm"],
+  ["bridges","Bridges","osm"],
+  ["railways","Railways","osm"],
+  ["busstops","Bus stops","osm"],
+  ["ferries","Ferry routes and terminals","osm"]
+ ]}
+];
+
+/* =========================================================
+   MAP INITIALISATION
+   ========================================================= */
+
 function initialiseMap(){
- map = new maplibregl.Map({
+ map=new maplibregl.Map({
   container:"map",
   style:baseStyle("streets"),
   center:GAMBIA_CENTER,
   zoom:7.1,
-  pitch:48,
+  pitch:45,
   bearing:0,
   maxPitch:75,
   attributionControl:true
  });
+
  map.addControl(new maplibregl.NavigationControl({visualizePitch:true}),"bottom-right");
  map.addControl(new maplibregl.ScaleControl({maxWidth:120,unit:"metric"}),"bottom-left");
 
  map.on("load",async()=>{
-  document.body.classList.add("map-ready");
   document.getElementById("connection-status").textContent="Map ready";
-  mapMessage.textContent="Map ready. Select a catalogue layer to load data.";
+  setMessage("Map ready. Select a catalogue layer.");
   addSelectionLayers();
-  await loadCensusEAs(false);
+  loadCensusEAs(false);
   loadAdminBoundaries();
  });
- map.on("error",e=>{
-  if(e && e.error) log("Map message: "+e.error.message,"warn");
- });
+
  map.on("click",handleMapClick);
+ map.on("error",e=>{
+  if(e?.error)log("Map error: "+e.error.message,"warn");
+ });
 }
 
 function addSelectionLayers(){
+ if(map.getSource("selection-highlight"))return;
  map.addSource("selection-highlight",{type:"geojson",data:emptyFC()});
  map.addLayer({
   id:"selection-fill",type:"fill",source:"selection-highlight",
@@ -521,72 +581,171 @@ function addSelectionLayers(){
 
 function changeBasemap(kind){
  if(kind===currentBasemap)return;
+
  currentBasemap=kind;
- const center=map.getCenter(),zoom=map.getZoom(),pitch=map.getPitch(),bearing=map.getBearing();
+ const center=map.getCenter();
+ const zoom=map.getZoom();
+ const pitch=map.getPitch();
+ const bearing=map.getBearing();
+
  map.setStyle(baseStyle(kind));
+
  map.once("style.load",()=>{
-  map.setCenter(center);map.setZoom(zoom);map.setPitch(pitch);map.setBearing(bearing);
+  map.setCenter(center);
+  map.setZoom(zoom);
+  map.setPitch(pitch);
+  map.setBearing(bearing);
+
   addSelectionLayers();
-  Object.keys(loaded).forEach(id=>addGeoJSONLayer(id,loaded[id],false));
-  if(measureLine)addMeasureLayer();
+
+  Object.keys(loaded).forEach(id=>{
+   addGeoJSONLayer(id,loaded[id],false);
+  });
+
+  if(measurePoints.length)addMeasureLayer();
   updateOpacity();
+
+  setMessage("Basemap changed to "+kind.toUpperCase());
  });
 }
 
-/* ----------------------- UTILITIES ----------------------- */
+/* =========================================================
+   GENERAL UTILITIES
+   ========================================================= */
 
-function emptyFC(){return {type:"FeatureCollection",features:[]};}
+function emptyFC(){
+ return {type:"FeatureCollection",features:[]};
+}
+
+function setMessage(s){
+ document.getElementById("map-message").textContent=s;
+}
+
 function log(message,type="info"){
  const d=document.createElement("div");
  d.textContent=new Date().toLocaleTimeString()+" — "+message;
  d.style.color=type==="error"?"#c03945":type==="warn"?"#b47a21":"#52677c";
- logBox.prepend(d);
+ document.getElementById("log").prepend(d);
 }
-function setMessage(s){mapMessage.textContent=s;}
+
 function escapeHTML(s){
- return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+ return String(s??"").replace(/[&<>"']/g,c=>({
+  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+ }[c]));
 }
+
 function updateKPIs(){
  const ids=Object.keys(loaded);
  let n=0;
  ids.forEach(id=>n+=loaded[id]?.features?.length||0);
+
  document.getElementById("kpiLayers").textContent=ids.length;
  document.getElementById("kpiFeatures").textContent=n.toLocaleString();
- document.getElementById("kpiEAs").textContent=allEA?allEA.features.length.toLocaleString():"—";
- document.getElementById("kpiSelected").textContent=ids.filter(id=>isLayerVisible(id)).length;
+ document.getElementById("kpiEAs").textContent=
+  allEA?allEA.features.length.toLocaleString():"—";
+ document.getElementById("kpiSelected").textContent=
+  ids.filter(isLayerVisible).length;
 }
+
 function isLayerVisible(id){
  const l=map.getLayer("ly-"+id);
- return !!l && map.getLayoutProperty("ly-"+id,"visibility")!=="none";
+ return !!l&&map.getLayoutProperty("ly-"+id,"visibility")!=="none";
 }
+
 function layerStatus(id,state,message){
  const el=document.querySelector('[data-status="'+id+'"]');
- if(el){el.textContent=message||state;el.className="status "+state;}
+ if(el){
+  el.textContent=message||state;
+  el.className="status "+state;
+ }
 }
+
+function layerColor(id){
+ const colors={
+  eas:"#15966c",lga:"#1685d4",districts:"#7656b5",
+  roads:"#e0a03b",majorroads:"#db553e",localroads:"#e4a13c",
+  waterways:"#279dd0",water:"#168ac1",buildings:"#8da4bb",
+  schools:"#d79b26",health:"#d84f64",settlements:"#7955ad",
+  landuse:"#72a66c",power:"#e7a32d",parks:"#42a17b",markets:"#b77932"
+ };
+ return colors[id]||"#3187b8";
+}
+
+function fitData(data){
+ try{
+  const b=turf.bbox(data);
+  if(b.every(Number.isFinite)){
+   map.fitBounds([[b[0],b[1]],[b[2],b[3]]],{
+    padding:65,maxZoom:14,duration:900
+   });
+  }
+ }catch(e){log("Could not calculate layer extent.","warn");}
+}
+
+function removeLayer(id){
+ ["ly-"+id,"ly-"+id+"-line"].forEach(l=>{
+  if(map.getLayer(l))map.removeLayer(l);
+ });
+ const s="src-"+id;
+ if(map.getSource(s))map.removeSource(s);
+}
+
+function updateOpacity(){
+ const value=Number(document.getElementById("opacity").value)/100;
+ document.getElementById("opacityValue").textContent=Math.round(value*100)+"%";
+
+ Object.keys(loaded).forEach(id=>{
+  const l="ly-"+id;
+  if(!map.getLayer(l))return;
+  const type=map.getLayer(l).type;
+  const prop=type==="fill"?"fill-opacity":
+   type==="circle"?"circle-opacity":
+   type==="line"?"line-opacity":"fill-extrusion-opacity";
+  map.setPaintProperty(l,prop,value);
+ });
+}
+
+/* =========================================================
+   GEOJSON DISPLAY
+   ========================================================= */
+
 function addGeoJSONSource(id,data){
  const sourceId="src-"+id;
  if(map.getSource(sourceId)){
   map.getSource(sourceId).setData(data);
  }else{
-  map.addSource(sourceId,{type:"geojson",data});
+  map.addSource(sourceId,{type:"geojson",data:data});
  }
 }
+
 function addGeoJSONLayer(id,data,fit=false){
- if(!map || !map.isStyleLoaded())return;
- const sourceId="src-"+id;
+ if(!map||!map.isStyleLoaded())return;
+
  addGeoJSONSource(id,data);
 
- const isPoint=data.features.some(f=>f.geometry?.type==="Point"||f.geometry?.type==="MultiPoint");
- const isPolygon=data.features.some(f=>/Polygon/.test(f.geometry?.type||""));
+ const features=data.features||[];
+ const isPoint=features.some(f=>
+  f.geometry?.type==="Point"||f.geometry?.type==="MultiPoint"
+ );
+ const isPolygon=features.some(f=>
+  /Polygon/.test(f.geometry?.type||"")
+ );
  const color=layerColor(id);
 
  if(id==="buildings"){
   if(!map.getLayer("ly-"+id)){
    map.addLayer({
-    id:"ly-"+id,type:"fill-extrusion",source:sourceId,
+    id:"ly-"+id,
+    type:"fill-extrusion",
+    source:"src-"+id,
     paint:{
      "fill-extrusion-color":"#b8c8d8",
-     "fill-extrusion-height":["coalesce",["to-number",["get","height"]],["to-number",["get","building:levels"]],6],
+     "fill-extrusion-height":[
+      "coalesce",
+      ["to-number",["get","height"]],
+      ["*",["to-number",["get","building:levels"]],3],
+      6
+     ],
      "fill-extrusion-base":0,
      "fill-extrusion-opacity":.82
     }
@@ -595,7 +754,7 @@ function addGeoJSONLayer(id,data,fit=false){
  }else if(isPoint){
   if(!map.getLayer("ly-"+id)){
    map.addLayer({
-    id:"ly-"+id,type:"circle",source:sourceId,
+    id:"ly-"+id,type:"circle",source:"src-"+id,
     paint:{
      "circle-radius":["interpolate",["linear"],["zoom"],5,2,12,5,16,7],
      "circle-color":color,
@@ -608,110 +767,123 @@ function addGeoJSONLayer(id,data,fit=false){
  }else if(isPolygon){
   if(!map.getLayer("ly-"+id)){
    map.addLayer({
-    id:"ly-"+id,type:"fill",source:sourceId,
+    id:"ly-"+id,type:"fill",source:"src-"+id,
     paint:{"fill-color":color,"fill-opacity":.28,"fill-outline-color":color}
    });
   }
   if(!map.getLayer("ly-"+id+"-line")){
    map.addLayer({
-    id:"ly-"+id+"-line",type:"line",source:sourceId,
+    id:"ly-"+id+"-line",type:"line",source:"src-"+id,
     paint:{"line-color":color,"line-width":1.2}
    });
   }
  }else{
   if(!map.getLayer("ly-"+id)){
    map.addLayer({
-    id:"ly-"+id,type:"line",source:sourceId,
-    paint:{"line-color":color,"line-width":["interpolate",["linear"],["zoom"],5,1,12,3]}
+    id:"ly-"+id,type:"line",source:"src-"+id,
+    paint:{
+     "line-color":color,
+     "line-width":["interpolate",["linear"],["zoom"],5,1,12,3]
+    }
    });
   }
  }
- if(fit && data.features.length)fitData(data);
- updateOpacity();updateKPIs();
-}
-function layerColor(id){
- const colors={
-  eas:"#15966c",lga:"#1685d4",districts:"#7656b5",roads:"#e0a03b",
-  majorroads:"#db553e",localroads:"#e4a13c",waterways:"#279dd0",
-  water:"#168ac1",buildings:"#8da4bb",schools:"#d79b26",
-  health:"#d84f64",settlements:"#7955ad",landuse:"#72a66c",
-  power:"#e7a32d",parks:"#42a17b",markets:"#b77932"
- };
- return colors[id]||"#3187b8";
-}
-function fitData(data){
- try{
-  const b=turf.bbox(data);
-  if(b.every(Number.isFinite))map.fitBounds([[b[0],b[1]],[b[2],b[3]]],{padding:65,maxZoom:14,duration:900});
- }catch(e){log("Could not calculate layer extent.","warn");}
-}
-function removeLayer(id){
- ["ly-"+id,"ly-"+id+"-line"].forEach(l=>{if(map.getLayer(l))map.removeLayer(l);});
- const s="src-"+id;if(map.getSource(s))map.removeSource(s);
-}
-function updateOpacity(){
- const value=Number(document.getElementById("opacity").value)/100;
- document.getElementById("opacityValue").textContent=Math.round(value*100)+"%";
- Object.keys(loaded).forEach(id=>{
-  const l="ly-"+id;if(!map.getLayer(l))return;
-  const type=map.getLayer(l).type;
-  const prop=type==="fill"?"fill-opacity":type==="circle"?"circle-opacity":type==="line"?"line-opacity":"fill-extrusion-opacity";
-  map.setPaintProperty(l,prop,value);
- });
+
+ if(fit&&features.length)fitData(data);
+ updateOpacity();
+ updateKPIs();
 }
 
-/* ----------------------- GITHUB CENSUS EA ----------------------- */
+/* =========================================================
+   CENSUS EA GITHUB LOADER
+   ========================================================= */
 
 async function discoverEAUrl(){
- const api=`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/git/trees/HEAD?recursive=1`;
- const r=await fetch(api,{headers:{"Accept":"application/vnd.github+json"}});
+ const api=
+ `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/git/trees/HEAD?recursive=1`;
+
+ const r=await fetch(api,{
+  headers:{"Accept":"application/vnd.github+json"}
+ });
  if(!r.ok)throw new Error("GitHub repository tree request failed: "+r.status);
+
  const j=await r.json();
  const files=(j.tree||[]).filter(x=>x.type==="blob");
- let match=files.find(x=>x.path.toLowerCase().endsWith("/"+EA_FILENAME.toLowerCase()));
- if(!match)match=files.find(x=>x.path.toLowerCase()===EA_FILENAME.toLowerCase());
+
+ let match=files.find(x=>
+  x.path.toLowerCase().endsWith("/"+EA_FILENAME.toLowerCase())
+ );
+
+ if(!match){
+  match=files.find(x=>x.path.toLowerCase()===EA_FILENAME.toLowerCase());
+ }
  if(!match)throw new Error(EA_FILENAME+" was not found in the repository.");
+
  return `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/HEAD/${match.path}`;
 }
+
 async function loadCensusEAs(show=true){
  if(allEA){
-  if(show){loaded.eas=allEA;addGeoJSONLayer("eas",allEA,true);layerStatus("eas","loaded","Loaded");}
+  if(show){
+   loaded.eas=allEA;
+   addGeoJSONLayer("eas",allEA,true);
+   layerStatus("eas","loaded","Loaded");
+  }
   return allEA;
  }
+
  layerStatus("eas","loading","Loading…");
+
  try{
   const url=await discoverEAUrl();
   const r=await fetch(url);
   if(!r.ok)throw new Error("GitHub raw file returned "+r.status);
+
   const data=await r.json();
+
   if(data.type==="FeatureCollection")allEA=data;
   else if(data.features)allEA={type:"FeatureCollection",features:data.features};
   else throw new Error("The EA file is not a GeoJSON FeatureCollection.");
-  if(show){loaded.eas=allEA;addGeoJSONLayer("eas",allEA,true);}
+
+  if(show){
+   loaded.eas=allEA;
+   addGeoJSONLayer("eas",allEA,true);
+  }
+
   layerStatus("eas","loaded",allEA.features.length.toLocaleString()+" features");
-  log("Census EA layer loaded: "+allEA.features.length.toLocaleString()+" features.");
-  updateAdminSelectors();updateKPIs();
+  log("Census EAs loaded: "+allEA.features.length.toLocaleString());
+
+  updateAdminSelectors();
+  updateKPIs();
   return allEA;
+
  }catch(e){
   layerStatus("eas","error","Unavailable");
-  log("Census EA loading failed: "+e.message,"error");
-  if(show)setMessage("Census EA data could not be loaded: "+e.message);
+  log("Census EA error: "+e.message,"error");
   throw e;
  }
 }
 
-/* ----------------------- ARCGIS ADMIN BOUNDARIES ----------------------- */
+/* =========================================================
+   ARCGIS ADMINISTRATIVE BOUNDARIES
+   ========================================================= */
 
 async function loadArcGISLayer(layerId,localId){
- const url=ARCGIS_BASE+"/"+layerId+"/query?where=1%3D1&outFields=*&returnGeometry=true&outSR=4326&f=geojson";
+ const url=
+ ARCGIS_BASE+"/"+layerId+
+ "/query?where=1%3D1&outFields=*&returnGeometry=true&outSR=4326&f=geojson";
+
  const r=await fetch(url);
  if(!r.ok)throw new Error("ArcGIS service returned "+r.status);
+
  const data=await r.json();
  if(!data.features)throw new Error("ArcGIS did not return GeoJSON features.");
+
  loaded[localId]=data;
  addGeoJSONLayer(localId,data,true);
  return data;
 }
+
 async function loadAdminBoundaries(){
  for(const [id,layer] of [["lga",0],["districts",1]]){
   layerStatus(id,"loading","Loading…");
@@ -723,12 +895,14 @@ async function loadAdminBoundaries(){
    updateAdminSelectors();
   }catch(e){
    layerStatus(id,"error","Unavailable");
-   log(id.toUpperCase()+" boundary error: "+e.message,"error");
+   log(id.toUpperCase()+" error: "+e.message,"error");
   }
  }
 }
 
-/* ----------------------- OVERPASS THEMATIC LAYERS ----------------------- */
+/* =========================================================
+   OPENSTREETMAP QUERY DEFINITIONS
+   ========================================================= */
 
 const osmDefinitions={
  roads:{filter:'way["highway"~"motorway|trunk|primary|secondary|tertiary|unclassified|residential|service|living_street"]'},
@@ -737,10 +911,10 @@ const osmDefinitions={
  tracks:{filter:'way["highway"~"track|path|footway|cycleway|bridleway"]'},
  buildings:{filter:'way["building"]'},
  waterways:{filter:'way["waterway"]'},
- water:{filter:'way["natural"="water"];way["waterway"="riverbank"];relation["natural"="water"]'},
+ water:{filter:'way["natural"="water"];way["waterway"="riverbank"]'},
  schools:{filter:'nwr["amenity"~"school|college|university|kindergarten"]'},
  health:{filter:'nwr["amenity"~"hospital|clinic|doctors|pharmacy|dentist"]'},
- markets:{filter:'nwr["amenity"~"marketplace"];nwr["shop"]'},
+ markets:{filter:'nwr["amenity"="marketplace"];nwr["shop"]'},
  government:{filter:'nwr["office"="government"];nwr["amenity"="townhall"]'},
  religion:{filter:'nwr["amenity"="place_of_worship"]'},
  tourism:{filter:'nwr["tourism"~"hotel|guest_house|attraction|museum|viewpoint"]'},
@@ -778,366 +952,609 @@ const osmDefinitions={
 
 function overpassQuery(id){
  const def=osmDefinitions[id];
- if(!def)throw new Error("No OpenStreetMap query is configured for this layer.");
- const clauses=def.filter.split(";").map(x=>x.trim()).filter(Boolean)
-  .map(x=>x+"(13.00,-16.90,13.90,-13.75);").join("\n");
+ if(!def)throw new Error("No OpenStreetMap query configured.");
+
+ const clauses=def.filter.split(";")
+  .map(x=>x.trim())
+  .filter(Boolean)
+  .map(x=>x+"(13.00,-16.90,13.90,-13.75);")
+  .join("\n");
+
  return `[out:json][timeout:90];(${clauses});out center tags geom;`;
 }
 
 function osmElementToFeature(el){
  const tags=el.tags||{};
  const props={...tags,_osm_type:el.type,_osm_id:el.id};
- if(el.type==="node" && Number.isFinite(el.lat) && Number.isFinite(el.lon)){
-  return {type:"Feature",id:el.id,properties:props,geometry:{type:"Point",coordinates:[el.lon,el.lat]}};
- }
- if(el.type==="way" && Array.isArray(el.geometry) && el.geometry.length>1){
-  const coords=el.geometry.map(p=>[p.lon,p.lat]).filter(p=>p.every(Number.isFinite));
-  if(coords.length<2)return null;
-  const closed=coords.length>3&&coords[0][0]===coords[coords.length-1][0]&&coords[0][1]===coords[coords.length-1][1];
-  const areaTags=!!(tags.building||tags.landuse||tags.leisure||tags.natural==="water"||tags.amenity==="parking"||tags.boundary);
+
+ if(el.type==="node"&&Number.isFinite(el.lat)&&Number.isFinite(el.lon)){
   return {
    type:"Feature",id:el.id,properties:props,
-   geometry:closed&&areaTags?{type:"Polygon",coordinates:[coords]}:{type:"LineString",coordinates:coords}
+   geometry:{type:"Point",coordinates:[el.lon,el.lat]}
   };
  }
- if(el.center && Number.isFinite(el.center.lat) && Number.isFinite(el.center.lon)){
-  return {type:"Feature",id:el.id,properties:props,geometry:{type:"Point",coordinates:[el.center.lon,el.center.lat]}};
+
+ if(el.type==="way"&&Array.isArray(el.geometry)&&el.geometry.length>1){
+  const coords=el.geometry
+   .map(p=>[p.lon,p.lat])
+   .filter(p=>p.every(Number.isFinite));
+
+  if(coords.length<2)return null;
+
+  const closed=coords.length>3&&
+   coords[0][0]===coords[coords.length-1][0]&&
+   coords[0][1]===coords[coords.length-1][1];
+
+  const areaTags=!!(
+   tags.building||tags.landuse||tags.leisure||
+   tags.natural==="water"||tags.amenity==="parking"||
+   tags.boundary
+  );
+
+  return {
+   type:"Feature",id:el.id,properties:props,
+   geometry:closed&&areaTags?
+    {type:"Polygon",coordinates:[coords]}:
+    {type:"LineString",coordinates:coords}
+  };
  }
+
+ if(el.center&&Number.isFinite(el.center.lat)&&Number.isFinite(el.center.lon)){
+  return {
+   type:"Feature",id:el.id,properties:props,
+   geometry:{type:"Point",coordinates:[el.center.lon,el.center.lat]}
+  };
+ }
+
  return null;
 }
 
 async function fetchOverpass(id){
  const query=overpassQuery(id);
  let lastError;
+
  for(const endpoint of OVERPASS_ENDPOINTS){
   try{
    const controller=new AbortController();
-   const timeout=setTimeout(()=>controller.abort(),105000);
+   const timer=setTimeout(()=>controller.abort(),105000);
+
    const r=await fetch(endpoint,{
     method:"POST",
     headers:{"Content-Type":"application/x-www-form-urlencoded;charset=UTF-8"},
     body:"data="+encodeURIComponent(query),
     signal:controller.signal
    });
-   clearTimeout(timeout);
+
+   clearTimeout(timer);
+
    if(!r.ok)throw new Error("Overpass HTTP "+r.status);
+
    const j=await r.json();
    const features=(j.elements||[]).map(osmElementToFeature).filter(Boolean);
-   if(!features.length)throw new Error("No mapped features returned for this layer.");
+
+   if(!features.length)throw new Error("No mapped features returned.");
+
    return {type:"FeatureCollection",features};
-  }catch(e){lastError=e;log(endpoint+" failed: "+e.message,"warn");}
+
+  }catch(e){
+   lastError=e;
+   log("Overpass endpoint unavailable: "+e.message,"warn");
+  }
  }
+
  throw lastError||new Error("All Overpass endpoints failed.");
 }
 
-/* ----------------------- LAYER LOADING ----------------------- */
+/* =========================================================
+   LOAD AND DISPLAY SELECTED LAYERS
+   ========================================================= */
 
 async function loadLayer(id){
  if(loading[id])return;
+
  if(loaded[id]){
   addGeoJSONLayer(id,loaded[id],true);
   layerStatus(id,"loaded",loaded[id].features.length+" features");
   return;
  }
+
  loading[id]=true;
  layerStatus(id,"loading","Loading…");
  setMessage("Loading "+id+"…");
  log("Requesting "+id+" layer.");
+
  try{
   let data;
-  if(id==="eas")data=await loadCensusEAs(true);
-  else if(id==="lga")data=await loadArcGISLayer(0,id);
-  else if(id==="districts")data=await loadArcGISLayer(1,id);
-  else if(osmDefinitions[id])data=await fetchOverpass(id);
-  else if(id==="terrain"||id==="hillshade"){
+
+  if(id==="eas"){
+   data=await loadCensusEAs(true);
+  }else if(id==="lga"){
+   data=await loadArcGISLayer(0,id);
+  }else if(id==="districts"){
+   data=await loadArcGISLayer(1,id);
+  }else if(osmDefinitions[id]){
+   data=await fetchOverpass(id);
+  }else if(id==="terrain"||id==="hillshade"){
    layerStatus(id,"loaded","Basemap option");
-   log(id+" is controlled through the basemap selector.");
+   document.getElementById("basemap").value="terrain";
+   changeBasemap("terrain");
    return;
-  }else throw new Error("This catalogue item has no connected data source.");
+  }else{
+   throw new Error("No connected source for this layer.");
+  }
+
   loaded[id]=data;
   addGeoJSONLayer(id,data,true);
   layerStatus(id,"loaded",data.features.length.toLocaleString()+" features");
-  log(id+" loaded successfully: "+data.features.length.toLocaleString()+" features.");
-  setMessage(id+" loaded: "+data.features.length.toLocaleString()+" features.");
+  log(id+" loaded: "+data.features.length.toLocaleString()+" features.");
+  setMessage(id+" loaded successfully.");
+
  }catch(e){
   layerStatus(id,"error","Load failed");
   log(id+" failed: "+e.message,"error");
   setMessage("Could not load "+id+": "+e.message);
+
   const cb=document.querySelector('[data-layer="'+id+'"]');
   if(cb)cb.checked=false;
+
  }finally{
-  delete loading[id];updateKPIs();
+  delete loading[id];
+  updateKPIs();
  }
 }
 
 function toggleLayer(id,checked){
- if(checked){loadLayer(id);return;}
- removeLayer(id);
- layerStatus(id,"","Not loaded");
- updateKPIs();
+ if(checked){
+  loadLayer(id);
+ }else{
+  removeLayer(id);
+  layerStatus(id,"","Not loaded");
+  updateKPIs();
+ }
 }
 
-/* ----------------------- CATALOGUE UI ----------------------- */
+/* =========================================================
+   CATALOGUE INTERFACE
+   ========================================================= */
 
 function renderCatalogue(){
  const root=document.getElementById("catalogue");
  root.innerHTML="";
- catalogueGroups.forEach((group,index)=>{
+
+ catalogueGroups.forEach(group=>{
   const wrapper=document.createElement("div");
   wrapper.className="layer-group";
+
   const title=document.createElement("div");
   title.className="group-title";
   title.innerHTML="<span>"+escapeHTML(group.title)+"</span><span>⌄</span>";
+
   const list=document.createElement("div");
   list.className="layer-list";
+
   group.items.forEach(([id,name,source])=>{
    const row=document.createElement("label");
    row.className="layer-row";
+
    const cb=document.createElement("input");
-   cb.type="checkbox";cb.dataset.layer=id;
+   cb.type="checkbox";
+   cb.dataset.layer=id;
    cb.addEventListener("change",()=>toggleLayer(id,cb.checked));
+
    const text=document.createElement("span");
-   text.className="layer-name";text.textContent=name;
+   text.className="layer-name";
+   text.textContent=name;
+
    const status=document.createElement("span");
-   status.className="status";status.dataset.status=id;status.textContent=source.toUpperCase();
+   status.className="status";
+   status.dataset.status=id;
+   status.textContent=source.toUpperCase();
+
    row.append(cb,text,status);
    list.append(row);
   });
+
   title.addEventListener("click",()=>{list.hidden=!list.hidden;});
-  wrapper.append(title,list);root.append(wrapper);
+  wrapper.append(title,list);
+  root.append(wrapper);
  });
 }
-function setCheckbox(id,value){
- const cb=document.querySelector('[data-layer="'+id+'"]');
- if(cb){cb.checked=value;toggleLayer(id,value);}
-}
 
-/* ----------------------- ADMIN FILTERS ----------------------- */
+/* =========================================================
+   ADMINISTRATIVE SELECTORS
+   ========================================================= */
 
 function propValue(feature,keys){
  const p=feature.properties||{};
  for(const key of keys){
   const found=Object.keys(p).find(k=>k.toLowerCase()===key.toLowerCase());
-  if(found && p[found]!==null && p[found]!==undefined)return String(p[found]);
+  if(found&&p[found]!==null&&p[found]!==undefined)return String(p[found]);
  }
  return "";
 }
+
 function uniqueSorted(values){
  return [...new Set(values.filter(Boolean))].sort((a,b)=>a.localeCompare(b));
 }
+
+function fillSelect(id,placeholder,values){
+ const el=document.getElementById(id);
+ const old=el.value;
+
+ el.innerHTML="";
+ const first=document.createElement("option");
+ first.value="";
+ first.textContent=placeholder;
+ el.append(first);
+
+ values.forEach(v=>{
+  const o=document.createElement("option");
+  o.value=v;o.textContent=v;el.append(o);
+ });
+
+ if(values.includes(old))el.value=old;
+}
+
 function updateAdminSelectors(){
  const lgaFeatures=adminData.lga?.features||[];
  const eaFeatures=allEA?.features||[];
- const lgaValues=uniqueSorted([
+
+ const values=uniqueSorted([
   ...lgaFeatures.map(f=>propValue(f,["lganame","lga_name","name","LGA"])),
   ...eaFeatures.map(f=>propValue(f,["lganame","lga","region"]))
  ]);
- fillSelect("lgaSelect","All LGAs",lgaValues);
+
+ fillSelect("lgaSelect","All LGAs",values);
  updateDistrictOptions();
  updateWardOptions();
 }
-function fillSelect(id,placeholder,values){
- const el=document.getElementById(id),old=el.value;
- el.innerHTML="";
- const first=document.createElement("option");first.value="";first.textContent=placeholder;el.append(first);
- values.forEach(v=>{const o=document.createElement("option");o.value=v;o.textContent=v;el.append(o);});
- if(values.includes(old))el.value=old;
-}
+
 function updateDistrictOptions(){
  const lga=document.getElementById("lgaSelect").value;
  const features=[...(adminData.district?.features||[]),...(allEA?.features||[])];
+
  const values=uniqueSorted(features.filter(f=>{
   if(!lga)return true;
   return propValue(f,["lganame","lga_name","lga","region"])===lga;
  }).map(f=>propValue(f,["distname","district","district_name","dist_name"])));
+
  fillSelect("districtSelect","All districts",values);
 }
+
 function updateWardOptions(){
  const lga=document.getElementById("lgaSelect").value;
  const district=document.getElementById("districtSelect").value;
  const features=allEA?.features||[];
+
  const values=uniqueSorted(features.filter(f=>{
   const pLga=propValue(f,["lganame","lga_name","lga","region"]);
   const pDist=propValue(f,["distname","district","district_name","dist_name"]);
   return (!lga||pLga===lga)&&(!district||pDist===district);
  }).map(f=>propValue(f,["wardname","ward","ward_name"])));
+
  fillSelect("wardSelect","All wards",values);
 }
+
 function getSelectedEAs(){
  if(!allEA)return null;
+
  const lga=document.getElementById("lgaSelect").value;
  const district=document.getElementById("districtSelect").value;
  const ward=document.getElementById("wardSelect").value;
+
  return {
   type:"FeatureCollection",
   features:allEA.features.filter(f=>{
    const pLga=propValue(f,["lganame","lga_name","lga","region"]);
    const pDist=propValue(f,["distname","district","district_name","dist_name"]);
    const pWard=propValue(f,["wardname","ward","ward_name"]);
-   return (!lga||pLga===lga)&&(!district||pDist===district)&&(!ward||pWard===ward);
+
+   return (!lga||pLga===lga)&&
+    (!district||pDist===district)&&
+    (!ward||pWard===ward);
   })
  };
 }
+
 function applyAdminSelection(){
  const lga=document.getElementById("lgaSelect").value;
  const district=document.getElementById("districtSelect").value;
  const ward=document.getElementById("wardSelect").value;
- selectedAdmin={lga,district,ward};
+
  document.getElementById("statLga").textContent=lga||"All";
  document.getElementById("statDistrict").textContent=district||"All";
  document.getElementById("statWard").textContent=ward||"All";
 
- let fc=getSelectedEAs();
- if(fc && fc.features.length){
+ const fc=getSelectedEAs();
+
+ if(fc&&fc.features.length){
   map.getSource("selection-highlight").setData(fc);
   fitData(fc);
-  setMessage("Selected area: "+fc.features.length.toLocaleString()+" census EAs.");
+  setMessage("Selected geography: "+fc.features.length.toLocaleString()+" EAs.");
  }else{
   map.getSource("selection-highlight").setData(emptyFC());
-  if(!lga&&!district&&!ward)map.fitBounds(GAMBIA_BOUNDS,{padding:45,duration:800});
+  if(!lga&&!district&&!ward){
+   map.fitBounds(GAMBIA_BOUNDS,{padding:45,duration:800});
+  }
  }
 }
+
 document.getElementById("lgaSelect").addEventListener("change",()=>{
- updateDistrictOptions();updateWardOptions();applyAdminSelection();
+ updateDistrictOptions();
+ updateWardOptions();
+ applyAdminSelection();
 });
+
 document.getElementById("districtSelect").addEventListener("change",()=>{
- updateWardOptions();applyAdminSelection();
+ updateWardOptions();
+ applyAdminSelection();
 });
+
 document.getElementById("wardSelect").addEventListener("change",applyAdminSelection);
 
 document.getElementById("zoomSelection").addEventListener("click",()=>{
- if(!allEA){setMessage("Load Census EAs first.");return;}
+ if(!allEA){setMessage("Census EA data are not loaded yet.");return;}
  applyAdminSelection();
 });
+
 document.getElementById("clearSelection").addEventListener("click",()=>{
- ["lgaSelect","districtSelect","wardSelect"].forEach(id=>document.getElementById(id).value="");
- updateDistrictOptions();updateWardOptions();applyAdminSelection();
+ ["lgaSelect","districtSelect","wardSelect"].forEach(id=>{
+  document.getElementById(id).value="";
+ });
+ updateDistrictOptions();
+ updateWardOptions();
+ applyAdminSelection();
 });
 
-/* ----------------------- FEATURE INSPECTION ----------------------- */
+/* =========================================================
+   FEATURE INSPECTION
+   ========================================================= */
 
 function handleMapClick(e){
- if(measureMode){addMeasurePoint([e.lngLat.lng,e.lngLat.lat]);return;}
- const layerIds=Object.keys(loaded).map(id=>"ly-"+id).filter(id=>map.getLayer(id));
+ if(measureMode){
+  addMeasurePoint([e.lngLat.lng,e.lngLat.lat]);
+  return;
+ }
+
+ const layerIds=Object.keys(loaded)
+  .map(id=>"ly-"+id)
+  .filter(id=>map.getLayer(id));
+
  if(!layerIds.length)return;
+
  const features=map.queryRenderedFeatures(e.point,{layers:layerIds});
  if(!features.length)return;
+
  const f=features[0];
  selectedLayer=f.layer.id.replace("ly-","");
  const p=f.properties||{};
+
  const rows=Object.entries(p).slice(0,35).map(([k,v])=>
   "<tr><td>"+escapeHTML(k)+"</td><td>"+escapeHTML(v)+"</td></tr>"
  ).join("");
+
  document.getElementById("feature-info").innerHTML=
   "<b>"+escapeHTML(selectedLayer)+"</b><table>"+rows+"</table>";
 }
-document.getElementById("drawOrder").addEventListener("change",e=>{
- const id=selectedLayer;
- if(!id||!map.getLayer("ly-"+id))return;
- if(e.target.value==="top")map.moveLayer("ly-"+id);
- else map.moveLayer("ly-"+id,"selection-fill");
-});
 
-/* ----------------------- MEASUREMENT ----------------------- */
+/* =========================================================
+   MEASUREMENT
+   ========================================================= */
 
 function addMeasurePoint(point){
  measurePoints.push(point);
+
  const features=measurePoints.map((p,i)=>({
-  type:"Feature",properties:{index:i+1},geometry:{type:"Point",coordinates:p}
+  type:"Feature",
+  properties:{index:i+1},
+  geometry:{type:"Point",coordinates:p}
  }));
+
  if(measurePoints.length>=2){
-  measureLine={type:"Feature",properties:{},geometry:{type:"LineString",coordinates:measurePoints}};
+  measureLine={
+   type:"Feature",
+   properties:{},
+   geometry:{type:"LineString",coordinates:measurePoints}
+  };
   features.push(measureLine);
+
   const km=turf.length(measureLine,{units:"kilometers"});
-  document.getElementById("measureResult").textContent="Distance: "+km.toFixed(3)+" km";
+  document.getElementById("measureResult").textContent=
+   "Distance: "+km.toFixed(3)+" km";
  }
+
  const fc={type:"FeatureCollection",features};
+
  if(!map.getSource("measure-source")){
   map.addSource("measure-source",{type:"geojson",data:fc});
-  map.addLayer({id:"measure-line",type:"line",source:"measure-source",filter:["==",["geometry-type"],"LineString"],paint:{"line-color":"#e74c3c","line-width":3,"line-dasharray":[2,1]}});
-  map.addLayer({id:"measure-points",type:"circle",source:"measure-source",filter:["==",["geometry-type"],"Point"],paint:{"circle-radius":5,"circle-color":"#e74c3c","circle-stroke-color":"white","circle-stroke-width":2}});
- }else map.getSource("measure-source").setData(fc);
+
+  map.addLayer({
+   id:"measure-line",type:"line",source:"measure-source",
+   filter:["==",["geometry-type"],"LineString"],
+   paint:{"line-color":"#e74c3c","line-width":3,"line-dasharray":[2,1]}
+  });
+
+  map.addLayer({
+   id:"measure-points",type:"circle",source:"measure-source",
+   filter:["==",["geometry-type"],"Point"],
+   paint:{
+    "circle-radius":5,"circle-color":"#e74c3c",
+    "circle-stroke-color":"white","circle-stroke-width":2
+   }
+  });
+
+ }else{
+  map.getSource("measure-source").setData(fc);
+ }
 }
+
 function addMeasureLayer(){
  if(!measurePoints.length)return;
- const features=measurePoints.map(p=>({type:"Feature",properties:{},geometry:{type:"Point",coordinates:p}}));
- if(measurePoints.length>1)features.push({type:"Feature",properties:{},geometry:{type:"LineString",coordinates:measurePoints}});
+
+ const features=measurePoints.map(p=>({
+  type:"Feature",properties:{},
+  geometry:{type:"Point",coordinates:p}
+ }));
+
+ if(measurePoints.length>1){
+  features.push({
+   type:"Feature",properties:{},
+   geometry:{type:"LineString",coordinates:measurePoints}
+  });
+ }
+
  const fc={type:"FeatureCollection",features};
- if(!map.getSource("measure-source"))map.addSource("measure-source",{type:"geojson",data:fc});
- if(!map.getLayer("measure-line"))map.addLayer({id:"measure-line",type:"line",source:"measure-source",filter:["==",["geometry-type"],"LineString"],paint:{"line-color":"#e74c3c","line-width":3}});
- if(!map.getLayer("measure-points"))map.addLayer({id:"measure-points",type:"circle",source:"measure-source",filter:["==",["geometry-type"],"Point"],paint:{"circle-radius":5,"circle-color":"#e74c3c","circle-stroke-color":"white","circle-stroke-width":2}});
+
+ if(!map.getSource("measure-source")){
+  map.addSource("measure-source",{type:"geojson",data:fc});
+ }
+
+ if(!map.getLayer("measure-line")){
+  map.addLayer({
+   id:"measure-line",type:"line",source:"measure-source",
+   filter:["==",["geometry-type"],"LineString"],
+   paint:{"line-color":"#e74c3c","line-width":3}
+  });
+ }
+
+ if(!map.getLayer("measure-points")){
+  map.addLayer({
+   id:"measure-points",type:"circle",source:"measure-source",
+   filter:["==",["geometry-type"],"Point"],
+   paint:{"circle-radius":5,"circle-color":"#e74c3c"}
+  });
+ }
 }
+
 document.getElementById("measureBtn").addEventListener("click",()=>{
  measureMode=!measureMode;
- document.getElementById("measureBtn").textContent=measureMode?"FINISH MEASURE":"START MEASURE";
+ document.getElementById("measureBtn").textContent=
+  measureMode?"FINISH MEASURE":"START MEASURE";
  map.getCanvas().style.cursor=measureMode?"crosshair":"";
- setMessage(measureMode?"Click the map to add measurement points.":"Measurement mode stopped.");
+ setMessage(measureMode?"Click the map to add measurement points.":"Measurement stopped.");
 });
+
 document.getElementById("clearMeasure").addEventListener("click",()=>{
- measurePoints=[];measureLine=null;
+ measurePoints=[];
+ measureLine=null;
+
  if(map.getLayer("measure-line"))map.removeLayer("measure-line");
  if(map.getLayer("measure-points"))map.removeLayer("measure-points");
  if(map.getSource("measure-source"))map.removeSource("measure-source");
+
  document.getElementById("measureResult").textContent="No measurement.";
 });
 
-/* ----------------------- EXPORTS ----------------------- */
+/* =========================================================
+   EXPORTS
+   ========================================================= */
 
 function downloadJSON(data,name){
- const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/geo+json"});
+ const blob=new Blob([JSON.stringify(data,null,2)],{
+  type:"application/geo+json"
+ });
  const url=URL.createObjectURL(blob);
- const a=document.createElement("a");a.href=url;a.download=name;a.click();
+ const a=document.createElement("a");
+ a.href=url;a.download=name;a.click();
  URL.revokeObjectURL(url);
 }
+
 document.getElementById("exportVisible").addEventListener("click",()=>{
  const visible=Object.keys(loaded).filter(isLayerVisible);
- if(!visible.length){setMessage("No loaded visible layers to export.");return;}
- visible.forEach(id=>downloadJSON(loaded[id],"GBoS_GEOAI_"+id+".geojson"));
+
+ if(!visible.length){
+  setMessage("No loaded visible layers to export.");
+  return;
+ }
+
+ visible.forEach(id=>{
+  downloadJSON(loaded[id],"GBoS_GEOAI_"+id+".geojson");
+ });
 });
+
 document.getElementById("exportEAs").addEventListener("click",()=>{
- if(!allEA){setMessage("Census EAs have not loaded.");return;}
+ if(!allEA){
+  setMessage("Census EAs have not loaded.");
+  return;
+ }
  downloadJSON(allEA,"Gambia_Census_EAs.geojson");
 });
+
 document.getElementById("exportView").addEventListener("click",()=>{
  const canvas=map.getCanvas();
- const a=document.createElement("a");
- a.href=canvas.toDataURL("image/png");
- a.download="GBoS_GEOAI_Map_View.png";
- a.click();
+ try{
+  const a=document.createElement("a");
+  a.href=canvas.toDataURL("image/png");
+  a.download="GBoS_GEOAI_Map_View.png";
+  a.click();
+ }catch(e){
+  setMessage("Map image export blocked by browser canvas restrictions.");
+ }
 });
 
-/* ----------------------- MAP ACTIONS ----------------------- */
+/* =========================================================
+   MAP ACTIONS
+   ========================================================= */
 
-document.getElementById("basemap").addEventListener("change",e=>changeBasemap(e.target.value));
+document.getElementById("basemap").addEventListener("change",e=>{
+ changeBasemap(e.target.value);
+});
+
 document.getElementById("opacity").addEventListener("input",updateOpacity);
+
 document.getElementById("tiltBtn").addEventListener("click",()=>{
- map.easeTo({pitch:map.getPitch()>10?0:55,duration:700});
+ map.easeTo({
+  pitch:map.getPitch()>10?0:55,
+  duration:700
+ });
 });
+
 document.getElementById("northBtn").addEventListener("click",()=>{
- map.easeTo({bearing:0,pitch:map.getPitch(),duration:600});
+ map.easeTo({bearing:0,duration:600});
 });
+
 document.getElementById("locateBtn").addEventListener("click",()=>{
- if(!navigator.geolocation){setMessage("Geolocation is not supported by this browser.");return;}
+ if(!navigator.geolocation){
+  setMessage("Geolocation is not supported by this browser.");
+  return;
+ }
+
  navigator.geolocation.getCurrentPosition(pos=>{
-  map.flyTo({center:[pos.coords.longitude,pos.coords.latitude],zoom:15});
+  map.flyTo({
+   center:[pos.coords.longitude,pos.coords.latitude],
+   zoom:15
+  });
   setMessage("Map centred on your device location.");
- },err=>setMessage("Location unavailable: "+err.message),{enableHighAccuracy:true,timeout:12000});
+ },err=>{
+  setMessage("Location unavailable: "+err.message);
+ },{enableHighAccuracy:true,timeout:12000});
 });
+
 document.getElementById("selectAll").addEventListener("click",()=>{
  document.querySelectorAll("[data-layer]").forEach(cb=>{
-  if(!cb.checked){cb.checked=true;toggleLayer(cb.dataset.layer,true);}
- });
-});
-document.getElementById("closeAll").addEventListener("click",()=>{
- document.querySelectorAll("[data-layer]").forEach(cb=>{
-  if(cb.checked){cb.checked=false;toggleLayer(cb.dataset.layer,false);}
+  if(!cb.checked){
+   cb.checked=true;
+   toggleLayer(cb.dataset.layer,true);
+  }
  });
 });
 
-/* ----------------------- STARTUP ----------------------- */
+document.getElementById("closeAll").addEventListener("click",()=>{
+ document.querySelectorAll("[data-layer]").forEach(cb=>{
+  if(cb.checked){
+   cb.checked=false;
+   toggleLayer(cb.dataset.layer,false);
+  }
+ });
+});
+
+/* =========================================================
+   STARTUP
+   ========================================================= */
 
 renderCatalogue();
 initialiseMap();
+
 </script>
 </body>
 </html>
