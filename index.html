@@ -612,46 +612,5 @@ async function loadData(source="url") {
   if(!allEA.length) throw new Error("No valid polygon features were found.");
 
   detectFields(allEA);
-  populateAdminSelectors();
-  displayedEA=[...allEA];
-
-  initialiseMap();
-  if(mapReady){
-   updateMapData();
-   updateAnalytics();
-   fitFeatures(displayedEA);
-  }else{
-   map.once("load",()=>{
-    mapReady=true;
-    updateMapData();
-    updateAnalytics();
-    fitFeatures(displayedEA);
-   });
-  }
-
-  $("mapTitle").textContent="The Gambia • Enumeration Areas";
-  $("mapSubtitle").textContent=`${allEA.length.toLocaleString()} EA features loaded`;
-  setStatus(`${allEA.length.toLocaleString()} EAs loaded`);
-  hideLoading();
-
- }catch(error){
-  console.error("EA data loading error:",error);
-  setStatus("Load failed",true);
-  showLoading("EA data could not be loaded",
-   `${error.message}. Check your internet connection or upload the GeoJSON file manually.`,
-   true,true);
- }finally{
-  $("loadBtn").disabled=false;
-  $("reloadBtn").disabled=false;
- }
-}
-
-/* ---------------- MAP INITIALISATION ---------------- */
-
-function rasterStyle(type) {
- let tiles,attribution;
- if(type==="satellite"){
-  tiles=["https://server.arc
-</html>
-
+  populateAdminSelectors();GEOAI_3D_Viewer 
 
