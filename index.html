@@ -4,613 +4,1508 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SILKYSINGZ GEOAI | GAMBIA 3D ENUMERATION AREA SPATIAL INTELLIGENCE</title>
+<title>GBoS GEOAI | Gambia 3D EA Spatial Intelligence</title>
 
+<!-- External libraries: internet connection required -->
 <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet">
 <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 
 <style>
-:root {
+:root{
   --navy:#10243a;
-  --navy2:#183650;
-  --blue:#1677c8;
-  --cyan:#00a6b2;
-  --bg:#edf2f7;
-  --panel:#ffffff;
-  --text:#203247;
+  --navy2:#173653;
+  --blue:#2476b9;
+  --cyan:#20a5bd;
+  --green:#299b73;
+  --orange:#e99a32;
+  --red:#d65d5d;
+  --ink:#243447;
   --muted:#718096;
-  --border:#dce4ed;
-  --green:#15966a;
-  --orange:#e68a22;
-  --red:#d94b4b;
+  --line:#e1e8ef;
+  --panel:#ffffff;
+  --bg:#edf2f7;
+  --soft:#f5f8fb;
 }
 *{box-sizing:border-box}
-html,body{margin:0;width:100%;height:100%;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);overflow:hidden}
+html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--ink);background:var(--bg)}
+body{overflow:hidden}
 button,select,input{font:inherit}
+button{cursor:pointer}
 .topbar{
- height:62px;background:var(--navy);color:white;display:flex;
- align-items:center;justify-content:space-between;padding:0 20px;
- border-bottom:3px solid var(--cyan);gap:15px
+  height:62px;background:linear-gradient(110deg,var(--navy),#1d4867);
+  color:white;display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px;gap:15px;box-shadow:0 2px 9px #10243a30;position:relative;z-index:5
 }
 .brand{display:flex;align-items:center;gap:12px;min-width:0}
-.brand-icon{width:38px;height:38px;border-radius:9px;background:linear-gradient(135deg,#00a6b2,#1677c8);display:grid;place-items:center;font-size:20px;font-weight:bold}
-.brand h1{font-size:16px;margin:0;letter-spacing:.4px}
-.brand small{display:block;font-size:10px;color:#b9cbdc;margin-top:4px}
+.brand-mark{
+  width:38px;height:38px;border-radius:10px;background:#ffffff18;
+  display:grid;place-items:center;font-size:21px;border:1px solid #ffffff30
+}
+.brand-title{font-size:15px;font-weight:800;letter-spacing:.35px}
+.brand-sub{font-size:10px;color:#c5d7e6;margin-top:3px;letter-spacing:.5px}
 .top-actions{display:flex;align-items:center;gap:8px}
-.top-actions button{background:#254762;color:#fff;border:1px solid #46627a;padding:8px 12px;border-radius:6px;cursor:pointer}
-.status-pill{font-size:11px;padding:7px 10px;border-radius:20px;background:#254762;color:#d8e8f5}
-.layout{
- height:calc(100vh - 62px);display:grid;
- grid-template-columns:minmax(255px,285px) minmax(400px,1fr) minmax(290px,325px);
- gap:9px;padding:9px;min-height:0
+.top-pill{font-size:10px;padding:6px 10px;border-radius:20px;background:#ffffff18;border:1px solid #ffffff25;color:#eaf5fc}
+.top-button{border:1px solid #ffffff45;background:#ffffff12;color:white;padding:8px 11px;border-radius:7px;font-size:11px}
+.top-button:hover{background:#ffffff25}
+.dashboard{
+  height:calc(100vh - 62px);padding:10px;display:grid;
+  grid-template-columns:minmax(255px, .88fr) minmax(420px, 1.65fr) minmax(270px, .95fr);
+  gap:10px;min-height:0
 }
-.panel{background:var(--panel);border:1px solid var(--border);border-radius:9px;min-height:0;overflow:hidden;display:flex;flex-direction:column}
-.panel-head{padding:12px 14px;background:#f8fafc;border-bottom:1px solid var(--border);font-weight:bold;font-size:12px;letter-spacing:.5px;color:var(--navy);display:flex;justify-content:space-between;align-items:center}
-.panel-body{padding:12px;overflow-y:auto;min-height:0;flex:1}
-.section{margin-bottom:15px}
-.section-title{font-size:11px;text-transform:uppercase;font-weight:bold;color:#52657a;margin:0 0 8px;letter-spacing:.6px}
-label{display:block;font-size:11px;font-weight:bold;color:#536579;margin:8px 0 5px}
-select,input[type=file]{width:100%;padding:9px;border:1px solid #ccd7e2;border-radius:6px;background:white;color:#25384c;font-size:12px}
-input[type=file]{padding:7px}
-.btn-row{display:flex;gap:7px;margin-top:10px}
-.btn{border:0;border-radius:6px;padding:9px 11px;font-size:11px;font-weight:bold;cursor:pointer}
-.btn-primary{background:var(--blue);color:white;flex:1}
-.btn-secondary{background:#e9eff5;color:#294158;flex:1}
-.btn-success{background:var(--green);color:white}
-.btn-warning{background:var(--orange);color:white}
-.btn:disabled{opacity:.5;cursor:not-allowed}
-.check-row{display:flex;align-items:center;gap:7px;font-size:11px;margin:7px 0;color:#41566b}
+.panel{
+  min-width:0;min-height:0;background:var(--panel);border:1px solid var(--line);
+  border-radius:10px;box-shadow:0 2px 8px #14283b0a;display:flex;flex-direction:column;overflow:hidden
+}
+.panel-head{
+  padding:13px 14px;border-bottom:1px solid var(--line);display:flex;
+  align-items:center;justify-content:space-between;gap:8px;background:#fff;flex-shrink:0
+}
+.panel-head h2{font-size:12px;margin:0;color:var(--navy);letter-spacing:.65px;text-transform:uppercase}
+.panel-head small{font-size:10px;color:var(--muted)}
+.panel-body{padding:13px;overflow-y:auto;min-height:0;flex:1}
+.section-label{
+  font-size:10px;font-weight:800;color:#60758a;text-transform:uppercase;
+  letter-spacing:.65px;margin:3px 0 9px
+}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:11px;font-weight:700;margin-bottom:5px;color:#43566a}
+.field select,.field input[type="file"],.field input[type="number"]{
+  width:100%;border:1px solid #d7e0e8;border-radius:6px;padding:9px 9px;
+  font-size:11px;color:#26394c;background:#fff;outline:none
+}
+.field select:focus,.field input:focus{border-color:#55a1d2;box-shadow:0 0 0 2px #55a1d21c}
+.help{font-size:10px;color:#8795a4;line-height:1.5;margin-top:5px}
+.button-row{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:12px 0}
+.btn{border:0;border-radius:6px;padding:10px 9px;font-size:11px;font-weight:700}
+.btn-primary{background:var(--blue);color:#fff}
+.btn-primary:hover{background:#185e98}
+.btn-light{background:#edf3f8;color:#29445e;border:1px solid #dce5ed}
+.btn-light:hover{background:#e1ebf4}
+.btn-green{background:#238a68;color:#fff}
+.btn-small{padding:7px 9px;font-size:10px;border-radius:5px}
+.divider{height:1px;background:var(--line);margin:13px 0}
+.check-row{display:flex;align-items:center;gap:8px;margin:8px 0;font-size:11px;color:#42566a}
 .check-row input{accent-color:var(--blue)}
-.note{font-size:10px;color:var(--muted);line-height:1.5}
-.map-panel{position:relative;min-width:0}
-.map-toolbar{height:43px;padding:6px 10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:7px;background:white;flex-wrap:wrap}
-.map-toolbar select,.map-toolbar button{width:auto;padding:6px 9px;font-size:10px;border:1px solid var(--border);border-radius:5px;background:white;color:#31465c}
-.map-wrap{position:relative;flex:1;min-height:0}
-#map{position:absolute;inset:0;width:100%;height:100%}
-.map-overlay{position:absolute;z-index:5;top:12px;left:12px;background:rgba(255,255,255,.95);padding:9px 11px;border:1px solid #d7e0e9;border-radius:7px;box-shadow:0 2px 8px #0002;max-width:230px}
-.map-overlay strong{font-size:11px;display:block}
-.map-overlay span{font-size:10px;color:#64748b}
-.loading{position:absolute;z-index:20;inset:0;background:rgba(245,249,252,.93);display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:20px}
-.spinner{width:35px;height:35px;border:4px solid #d7e4ef;border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite;margin-bottom:13px}
-@keyframes spin{to{transform:rotate(360deg)}}
-.loading strong{font-size:13px;color:var(--navy)}
-.loading p{font-size:11px;color:var(--muted);max-width:340px;line-height:1.5}
-.loading button{margin-top:8px}
-.error-text{color:var(--red)!important}
-.legend{position:absolute;z-index:6;right:12px;bottom:20px;background:rgba(255,255,255,.96);border:1px solid var(--border);border-radius:7px;padding:10px 12px;width:190px;box-shadow:0 2px 8px #0002}
-.legend strong{font-size:11px;display:block;margin-bottom:7px}
-.gradient{height:11px;border-radius:3px;background:linear-gradient(90deg,#fff7bc,#fec44f,#fe9929,#ec7014,#cc4c02,#7f2704)}
-.legend-labels{display:flex;justify-content:space-between;font-size:9px;color:#52657a;margin-top:5px}
-.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.kpi{border:1px solid var(--border);border-radius:7px;padding:10px;background:#fbfdff;min-width:0}
-.kpi .k-label{font-size:9px;color:#687b8e;text-transform:uppercase;font-weight:bold}
-.kpi .k-value{font-size:19px;font-weight:bold;color:var(--navy);margin-top:5px;overflow-wrap:anywhere}
-.kpi .k-unit{font-size:9px;color:#8090a0}
-.chart-box{border:1px solid var(--border);border-radius:7px;padding:9px;margin-top:10px}
-.chart-title{font-size:11px;font-weight:bold;margin-bottom:8px;color:#334b62}
-.chart-container{height:180px;position:relative}
-.chart-container.tall{height:220px}
-.field-table{width:100%;border-collapse:collapse;font-size:10px}
-.field-table td{padding:6px 4px;border-bottom:1px solid #edf1f5}
-.field-table td:first-child{color:#64748b}
-.field-table td:last-child{text-align:right;font-weight:bold;color:#263d53;overflow-wrap:anywhere}
-.footer{padding:10px 12px;border-top:1px solid var(--border);font-size:9px;color:#718096;line-height:1.5;background:#fafcfe}
-.badge{display:inline-block;border-radius:12px;background:#e5f4f5;color:#087e88;padding:4px 7px;font-size:9px;font-weight:bold}
-.admin-summary{font-size:10px;background:#f3f7fb;padding:8px;border-radius:6px;line-height:1.6;color:#536579}
-.popup-table{font-size:11px;line-height:1.7}
-.popup-table b{color:#213d56}
-@media(max-width:1050px){
- .layout{grid-template-columns:245px minmax(350px,1fr);grid-template-rows:1fr 300px}
- .right-panel{grid-column:1/3;grid-row:2}
- .map-panel{grid-column:2;grid-row:1}
- .left-panel{grid-column:1;grid-row:1}
+.status{
+  padding:9px 10px;border-radius:6px;background:#f1f6fa;color:#53697d;
+  font-size:10px;line-height:1.5;border:1px solid #e1eaf1;overflow-wrap:anywhere
 }
-@media(max-width:700px){
- html,body{overflow:auto}
- .topbar{height:auto;min-height:62px;flex-wrap:wrap;padding:10px}
- .layout{height:auto;min-height:calc(100vh - 62px);display:flex;flex-direction:column}
- .left-panel,.right-panel{height:auto;max-height:450px}
- .map-panel{height:65vh;min-height:430px}
+.status.good{background:#edf8f3;color:#287553;border-color:#d5eee1}
+.status.warn{background:#fff8ec;color:#916321;border-color:#f3e3c5}
+.status.error{background:#fff1f0;color:#a3433d;border-color:#f2d6d3}
+.map-panel{position:relative}
+.map-toolbar{
+  display:flex;align-items:center;gap:7px;flex-wrap:wrap;padding:9px 11px;
+  border-bottom:1px solid var(--line);background:#fff;z-index:2
+}
+.map-toolbar label{font-size:10px;color:#66798c;font-weight:700}
+.map-toolbar select{
+  border:1px solid #dbe3ea;border-radius:5px;padding:6px 7px;
+  font-size:10px;background:#fff;color:#33495d
+}
+.map-toolbar button{
+  border:1px solid #dbe3ea;background:#f7fafc;color:#40566a;
+  padding:6px 8px;border-radius:5px;font-size:10px
+}
+.map-toolbar button:hover{background:#eaf2f8}
+#map{width:100%;height:100%;min-height:0;flex:1;background:#dce6ec}
+.map-wrap{position:relative;flex:1;min-height:0;display:flex}
+.map-overlay{
+  position:absolute;z-index:3;left:11px;top:11px;background:#ffffffed;
+  border:1px solid #dce5ed;border-radius:7px;padding:9px 11px;
+  box-shadow:0 2px 9px #152b3e20;max-width:230px;pointer-events:none
+}
+.map-overlay strong{display:block;font-size:11px;color:var(--navy);margin-bottom:3px}
+.map-overlay span{font-size:10px;color:#60758a;line-height:1.4}
+.map-legend{
+  position:absolute;right:12px;bottom:14px;z-index:3;background:#ffffffed;
+  border:1px solid #dce5ed;border-radius:7px;padding:10px 11px;
+  width:190px;box-shadow:0 2px 9px #152b3e20
+}
+.legend-title{font-size:10px;font-weight:800;color:#263e55;margin-bottom:8px}
+.legend-gradient{height:10px;border-radius:3px;background:linear-gradient(90deg,#fff2a8,#f5a64b,#e35d42,#922b58);border:1px solid #ddd}
+.legend-labels{display:flex;justify-content:space-between;font-size:9px;color:#63778a;margin-top:5px}
+.map-foot{
+  background:#fff;border-top:1px solid var(--line);padding:6px 10px;
+  font-size:9px;color:#8090a0;display:flex;justify-content:space-between;gap:10px
+}
+.analytics-body{padding:11px;overflow-y:auto;flex:1;min-height:0}
+.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.kpi{
+  border:1px solid var(--line);border-radius:8px;padding:10px 10px 9px;
+  background:linear-gradient(145deg,#fff,#f9fbfd);min-width:0
+}
+.kpi-label{font-size:9px;color:#75879a;font-weight:800;text-transform:uppercase;letter-spacing:.45px}
+.kpi-value{font-size:19px;font-weight:800;color:#193b58;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kpi-unit{font-size:9px;color:#8291a0;margin-top:3px}
+.chart-card{border:1px solid var(--line);border-radius:8px;padding:10px;margin-top:10px;background:#fff}
+.chart-title{font-size:10px;font-weight:800;color:#354c62;margin-bottom:8px}
+.chart-holder{height:175px;position:relative}
+.chart-holder.tall{height:205px}
+.no-chart{font-size:10px;color:#8a98a7;padding:20px 5px;text-align:center}
+.data-table{width:100%;border-collapse:collapse;font-size:10px}
+.data-table th,.data-table td{padding:7px 5px;border-bottom:1px solid #edf1f4;text-align:left}
+.data-table th{color:#728397;font-size:9px;text-transform:uppercase}
+.data-table td:last-child,.data-table th:last-child{text-align:right}
+.detected{font-size:10px;line-height:1.65;color:#5e7184;overflow-wrap:anywhere}
+.detected b{color:#344c63}
+.footer{
+  padding:10px 12px;background:#f8fafc;border-top:1px solid var(--line);
+  font-size:9px;color:#8290a0;line-height:1.6;flex-shrink:0
+}
+.footer strong{color:#52677c}
+.loading-screen{
+  position:absolute;inset:0;background:#f6f9fc;z-index:10;
+  display:flex;align-items:center;justify-content:center;text-align:center;padding:25px
+}
+.loading-box{max-width:310px}
+.spinner{width:29px;height:29px;border:3px solid #dce8f0;border-top-color:#267bb6;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-box strong{font-size:13px;color:#24445e}
+.loading-box p{font-size:10px;color:#75889a;line-height:1.5}
+.popup-title{font-size:12px;font-weight:800;color:#193b58;margin-bottom:6px}
+.popup-line{font-size:10px;line-height:1.6;color:#52677a}
+@media(max-width:1050px){
+  body{overflow:auto}
+  .dashboard{height:auto;min-height:calc(100vh - 62px);grid-template-columns:1fr 1fr;grid-template-rows:minmax(520px,65vh) auto}
+  .map-panel{grid-column:1/-1;grid-row:1}
+  .panel{min-height:400px}
+}
+@media(max-width:650px){
+  .topbar{height:auto;min-height:60px;padding:9px 11px}
+  .top-pill{display:none}
+  .dashboard{display:flex;flex-direction:column;height:auto;padding:7px}
+  .map-panel{height:65vh;min-height:430px;order:1}
+  .controls-panel{order:2;min-height:400px}
+  .analytics-panel{order:3;min-height:500px}
+  .top-actions{gap:4px}
+  .top-button{font-size:9px;padding:7px}
 }
 </style>
 </head>
 
 <body>
 <header class="topbar">
- <div class="brand">
-  <div class="brand-icon">G</div>
-  <div>
-   <h1>GBoS GEOAI | GAMBIA 3D EA INTELLIGENCE</h1>
-   <small>GIS / Cartography Unit • Enumeration Area Spatial Analytics</small>
+  <div class="brand">
+    <div class="brand-mark">🌍</div>
+    <div>
+      <div class="brand-title">GBoS GEOAI | 3D EA SPATIAL INTELLIGENCE</div>
+      <div class="brand-sub">THE GAMBIA • ENUMERATION AREA STATISTICS • GIS / CARTOGRAPHY</div>
+    </div>
   </div>
- </div>
- <div class="top-actions">
-  <span class="status-pill" id="dataStatus">Data: Not loaded</span>
-  <button id="reloadBtn">Reload data</button>
- </div>
+  <div class="top-actions">
+    <span class="top-pill" id="connectionPill">DATA NOT LOADED</span>
+    <button class="top-button" id="downloadCsvTop">Export CSV</button>
+    <button class="top-button" id="downloadGeoTop">Export GeoJSON</button>
+  </div>
 </header>
 
-<main class="layout">
+<main class="dashboard">
 
-<!-- LEFT: CONTROLS -->
-<aside class="panel left-panel">
- <div class="panel-head"><span>CONTROL CENTRE</span><span class="badge">EA ANALYSIS</span></div>
- <div class="panel-body">
+  <!-- LEFT: CONTROLS -->
+  <section class="panel controls-panel">
+    <div class="panel-head">
+      <h2>Controls & Data</h2>
+      <small id="recordCount">0 EAs</small>
+    </div>
+    <div class="panel-body">
 
-  <div class="section">
-   <div class="section-title">Data source</div>
-   <label>GitHub GeoJSON URL</label>
-   <input id="geoUrl" type="text" value="https://raw.githubusercontent.com/silkysingz94-oss/GEOAI_3D_Viewer/main/Census_EAs_Geo.json">
-   <div class="btn-row">
-    <button class="btn btn-primary" id="loadBtn">Load EA data</button>
-    <button class="btn btn-secondary" id="retryBtn">Retry</button>
-   </div>
-   <label>Or upload GeoJSON / JSON</label>
-   <input id="fileInput" type="file" accept=".geojson,.json,application/geo+json,application/json">
-   <p class="note">The dashboard loads the EA dataset first. OSM services are optional and are not required for the map or statistics.</p>
-  </div>
+      <div class="section-label">01 / Data source</div>
+      <div class="field">
+        <label for="geoFile">Upload EA GeoJSON (fallback)</label>
+        <input type="file" id="geoFile" accept=".json,.geojson,application/geo+json,application/json">
+        <div class="help">Upload Census_EAs_Geo.json if the GitHub source cannot be reached.</div>
+      </div>
+      <div class="button-row">
+        <button class="btn btn-primary" id="loadGitHub">Load GitHub Data</button>
+        <button class="btn btn-light" id="retryLoad">Retry Loading</button>
+      </div>
+      <div id="dataStatus" class="status">Waiting for EA GeoJSON data.</div>
 
-  <div class="section">
-   <div class="section-title">Administrative selection</div>
-   <label>Local Government Area</label>
-   <select id="lgaSelect"><option value="">All LGAs</option></select>
-   <label>District</label>
-   <select id="districtSelect"><option value="">All districts</option></select>
-   <label>Ward</label>
-   <select id="wardSelect"><option value="">All wards</option></select>
-   <div class="btn-row">
-    <button class="btn btn-primary" id="applyBtn">Apply selection</button>
-    <button class="btn btn-secondary" id="resetBtn">Reset</button>
-   </div>
-   <div class="admin-summary" id="selectionSummary">National view • All enumeration areas</div>
-  </div>
+      <div class="divider"></div>
+      <div class="section-label">02 / Administrative selection</div>
+      <div class="field">
+        <label for="lgaSelect">Local Government Area</label>
+        <select id="lgaSelect"><option value="">All LGAs</option></select>
+      </div>
+      <div class="field">
+        <label for="districtSelect">District</label>
+        <select id="districtSelect"><option value="">All districts</option></select>
+      </div>
+      <div class="field">
+        <label for="wardSelect">Ward</label>
+        <select id="wardSelect"><option value="">All wards</option></select>
+      </div>
+      <div class="button-row">
+        <button class="btn btn-primary" id="applySelection">Apply & Zoom</button>
+        <button class="btn btn-light" id="resetSelection">Reset National View</button>
+      </div>
+      <div id="selectionStatus" class="status">National view selected.</div>
 
-  <div class="section">
-   <div class="section-title">Thematic visualisation</div>
-   <label>Colour thematic variable</label>
-   <select id="themeSelect">
-    <option value="population">Enumerated population</option>
-    <option value="households">Enumerated households</option>
-    <option value="buildings">Listed buildings</option>
-    <option value="compounds">Listed compounds</option>
-    <option value="area">EA area (km²)</option>
-    <option value="popDensity">Population density (persons/km²)</option>
-    <option value="hhDensity">Household density (HH/km²)</option>
-   </select>
-   <label>3D extrusion scale</label>
-   <select id="heightScale">
-    <option value="1">Low</option>
-    <option value="2" selected>Medium</option>
-    <option value="4">High</option>
-   </select>
-   <div class="check-row"><input type="checkbox" id="show3d" checked><span>Enable 3D EA extrusion</span></div>
-   <div class="check-row"><input type="checkbox" id="showBorders" checked><span>Show EA boundaries</span></div>
-   <div class="check-row"><input type="checkbox" id="showLabels"><span>Show EA labels</span></div>
-  </div>
+      <div class="divider"></div>
+      <div class="section-label">03 / 3D thematic display</div>
+      <div class="field">
+        <label for="metricSelect">3D extrusion metric</label>
+        <select id="metricSelect">
+          <option value="population">Enumerated population</option>
+          <option value="households">Enumerated households</option>
+          <option value="buildings">Listed buildings</option>
+          <option value="compounds">Listed compounds</option>
+          <option value="density">Population density (people/km²)</option>
+          <option value="area">EA area (km²)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="heightScale">3D height exaggeration</label>
+        <select id="heightScale">
+          <option value="0.15">Low</option>
+          <option value="0.30" selected>Medium</option>
+          <option value="0.55">High</option>
+          <option value="0.85">Very high</option>
+        </select>
+      </div>
+      <div class="check-row">
+        <input type="checkbox" id="showLabels" checked>
+        <label for="showLabels">Show EA labels</label>
+      </div>
+      <div class="check-row">
+        <input type="checkbox" id="showExtrusion" checked>
+        <label for="showExtrusion">Enable 3D extrusion</label>
+      </div>
+      <div class="check-row">
+        <input type="checkbox" id="showBoundaries" checked>
+        <label for="showBoundaries">Show EA boundaries</label>
+      </div>
 
-  <div class="section">
-   <div class="section-title">Reference layers</div>
-   <div class="check-row"><input type="checkbox" id="osmRoads"><span>OSM roads (optional)</span></div>
-   <div class="check-row"><input type="checkbox" id="osmBuildings"><span>OSM buildings (optional)</span></div>
-   <button class="btn btn-secondary" id="loadOsmBtn" style="width:100%">Load optional OSM layers</button>
-   <p class="note">OSM requests can fail due to network restrictions, rate limits or endpoint availability. Such failures will not affect EA data.</p>
-  </div>
+      <div class="divider"></div>
+      <div class="section-label">04 / Map and exports</div>
+      <div class="field">
+        <label for="baseSelect">Basemap</label>
+        <select id="baseSelect">
+          <option value="light">Light</option>
+          <option value="streets">Streets</option>
+          <option value="satellite">Satellite</option>
+          <option value="hybrid">Hybrid imagery</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div class="button-row">
+        <button class="btn btn-light" id="exportCsv">Download CSV</button>
+        <button class="btn btn-light" id="exportGeo">Download GeoJSON</button>
+      </div>
+      <div class="help">The dashboard uses the EA GeoJSON as its core data source. Optional external map tiles require an internet connection. No Overpass or OSM query is required for EA statistics.</div>
 
-  <div class="section">
-   <div class="section-title">Data exports</div>
-   <div class="btn-row">
-    <button class="btn btn-success" id="csvBtn">Export CSV</button>
-    <button class="btn btn-secondary" id="geoBtn">Export EA GeoJSON</button>
-   </div>
-   <div class="btn-row">
-    <button class="btn btn-secondary" id="allGeoBtn">Export national GeoJSON</button>
-   </div>
-  </div>
+      <div class="divider"></div>
+      <div class="section-label">05 / Data field diagnostics</div>
+      <div id="fieldDiagnostics" class="status">Detected field names will appear here after loading.</div>
+    </div>
+    <div class="footer">
+      <strong>Data interpretation:</strong> 3D extrusion represents thematic EA-level values. It does not represent measured building heights or terrain elevation.
+    </div>
+  </section>
 
- </div>
- <div class="footer">GBoS GEOAI • Research and educational use</div>
-</aside>
+  <!-- CENTRE: MAP -->
+  <section class="panel map-panel">
+    <div class="panel-head">
+      <h2>Interactive 3D EA Map</h2>
+      <small id="mapCount">0 displayed EAs</small>
+    </div>
+    <div class="map-toolbar">
+      <label for="mapView">View</label>
+      <select id="mapView">
+        <option value="3d">3D perspective</option>
+        <option value="2d">2D top-down</option>
+      </select>
+      <button id="zoomGambia">Zoom to The Gambia</button>
+      <button id="mapReset">Reset bearing</button>
+    </div>
+    <div class="map-wrap">
+      <div id="map"></div>
+      <div class="map-overlay">
+        <strong id="mapTitle">The Gambia | National EA Coverage</strong>
+        <span id="mapSubtitle">Load the Enumeration Area GeoJSON to begin.</span>
+      </div>
+      <div class="map-legend">
+        <div class="legend-title" id="legendTitle">Population distribution</div>
+        <div class="legend-gradient"></div>
+        <div class="legend-labels"><span id="legendMin">Low</span><span id="legendMax">High</span></div>
+      </div>
+      <div class="loading-screen" id="mapLoading">
+        <div class="loading-box">
+          <div class="spinner"></div>
+          <strong>Preparing the 3D EA map</strong>
+          <p>Loading the mapping engine. EA data will load automatically from the configured GitHub GeoJSON source.</p>
+        </div>
+      </div>
+    </div>
+    <div class="map-foot">
+      <span id="mapAttribution">Map tiles © CARTO / Esri / OpenStreetMap contributors, as applicable</span>
+      <span id="coordinateText">WGS 84 | EPSG:4326</span>
+    </div>
+  </section>
 
-<!-- CENTRE: MAP -->
-<section class="panel map-panel">
- <div class="map-toolbar">
-  <strong style="font-size:11px;color:#30475d">INTERACTIVE 3D MAP</strong>
-  <select id="basemapSelect" aria-label="Basemap">
-   <option value="street">Street</option>
-   <option value="satellite">Satellite</option>
-   <option value="hybrid" selected>Hybrid</option>
-   <option value="terrain">Terrain</option>
-  </select>
-  <button id="nationalBtn">National extent</button>
-  <button id="zoomBtn">Zoom to selection</button>
- </div>
- <div class="map-wrap">
-  <div id="map"></div>
-  <div class="map-overlay">
-   <strong id="mapTitle">The Gambia • Enumeration Areas</strong>
-   <span id="mapSubtitle">Loading national EA boundaries...</span>
-  </div>
-  <div class="legend">
-   <strong id="legendTitle">Enumerated population</strong>
-   <div class="gradient"></div>
-   <div class="legend-labels"><span id="legendMin">0</span><span id="legendMid">—</span><span id="legendMax">—</span></div>
-   <div class="note" style="margin-top:7px">EA thematic intensity • 3D height represents relative values, not measured building height.</div>
-  </div>
-  <div class="loading" id="loading">
-   <div class="spinner" id="spinner"></div>
-   <strong id="loadingTitle">Loading Gambia EA data</strong>
-   <p id="loadingMessage">Connecting to the GeoJSON source. This may take a few seconds.</p>
-   <button class="btn btn-primary" id="loadingRetry" style="display:none">Try again</button>
-  </div>
- </div>
-</section>
+  <!-- RIGHT: ANALYTICS -->
+  <section class="panel analytics-panel">
+    <div class="panel-head">
+      <h2>Spatial Analytics</h2>
+      <small id="analyticsScope">National</small>
+    </div>
+    <div class="analytics-body">
+      <div class="kpi-grid">
+        <div class="kpi">
+          <div class="kpi-label">Enumeration Areas</div>
+          <div class="kpi-value" id="kpiEAs">—</div>
+          <div class="kpi-unit">Displayed EA features</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Population</div>
+          <div class="kpi-value" id="kpiPopulation">—</div>
+          <div class="kpi-unit">Enumerated population</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Households</div>
+          <div class="kpi-value" id="kpiHouseholds">—</div>
+          <div class="kpi-unit">Enumerated households</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Buildings</div>
+          <div class="kpi-value" id="kpiBuildings">—</div>
+          <div class="kpi-unit">Listed buildings</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Compounds</div>
+          <div class="kpi-value" id="kpiCompounds">—</div>
+          <div class="kpi-unit">Listed compounds</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">EA Area</div>
+          <div class="kpi-value" id="kpiArea">—</div>
+          <div class="kpi-unit">Square kilometres</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Population Density</div>
+          <div class="kpi-value" id="kpiDensity">—</div>
+          <div class="kpi-unit">People per km²</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Household Size</div>
+          <div class="kpi-value" id="kpiHHSize">—</div>
+          <div class="kpi-unit">People per household</div>
+        </div>
+      </div>
 
-<!-- RIGHT: ANALYTICS -->
-<aside class="panel right-panel">
- <div class="panel-head"><span>SPATIAL ANALYTICS</span><span class="badge" id="eaCountBadge">0 EAs</span></div>
- <div class="panel-body">
-  <div class="section">
-   <div class="section-title">Selected area indicators</div>
-   <div class="kpi-grid">
-    <div class="kpi"><div class="k-label">Enumeration areas</div><div class="k-value" id="kpiEAs">—</div><div class="k-unit">EA features</div></div>
-    <div class="kpi"><div class="k-label">Population</div><div class="k-value" id="kpiPop">—</div><div class="k-unit">Persons</div></div>
-    <div class="kpi"><div class="k-label">Households</div><div class="k-value" id="kpiHH">—</div><div class="k-unit">Households</div></div>
-    <div class="kpi"><div class="k-label">Buildings</div><div class="k-value" id="kpiBuildings">—</div><div class="k-unit">Listed buildings</div></div>
-    <div class="kpi"><div class="k-label">Compounds</div><div class="k-value" id="kpiCompounds">—</div><div class="k-unit">Listed compounds</div></div>
-    <div class="kpi"><div class="k-label">Area</div><div class="k-value" id="kpiArea">—</div><div class="k-unit">Square kilometres</div></div>
-    <div class="kpi"><div class="k-label">Population density</div><div class="k-value" id="kpiPopDensity">—</div><div class="k-unit">Persons / km²</div></div>
-    <div class="kpi"><div class="k-label">Household density</div><div class="k-value" id="kpiHHDensity">—</div><div class="k-unit">HH / km²</div></div>
-   </div>
-  </div>
+      <div class="chart-card">
+        <div class="chart-title">Population, households, buildings and compounds</div>
+        <div class="chart-holder tall"><canvas id="comparisonChart"></canvas></div>
+      </div>
 
-  <div class="chart-box">
-   <div class="chart-title">Population by LGA</div>
-   <div class="chart-container"><canvas id="popChart"></canvas></div>
-  </div>
-  <div class="chart-box">
-   <div class="chart-title">Households by LGA</div>
-   <div class="chart-container"><canvas id="hhChart"></canvas></div>
-  </div>
-  <div class="chart-box">
-   <div class="chart-title">Buildings and compounds by LGA</div>
-   <div class="chart-container tall"><canvas id="builtChart"></canvas></div>
-  </div>
+      <div class="chart-card">
+        <div class="chart-title">Top 10 districts by population</div>
+        <div class="chart-holder"><canvas id="districtChart"></canvas></div>
+      </div>
 
-  <div class="section" style="margin-top:14px">
-   <div class="section-title">Detected GeoJSON fields</div>
-   <table class="field-table">
-    <tbody id="fieldDiagnostics">
-     <tr><td>Population</td><td>Pending</td></tr>
-     <tr><td>Households</td><td>Pending</td></tr>
-     <tr><td>Buildings</td><td>Pending</td></tr>
-     <tr><td>Compounds</td><td>Pending</td></tr>
-     <tr><td>Area</td><td>Pending</td></tr>
-    </tbody>
-   </table>
-  </div>
+      <div class="chart-card">
+        <div class="chart-title">EA distribution by selected administrative area</div>
+        <div class="chart-holder"><canvas id="eaChart"></canvas></div>
+      </div>
 
-  <div class="section">
-   <div class="section-title">Methodology and interpretation</div>
-   <p class="note">
-    Indicators are aggregated from the displayed EA features. Population density is total population divided by total EA area. EA extrusion is a relative thematic visualisation and does not represent surveyed building heights or terrain elevation.
-   </p>
-   <p class="note">
-    Enumerated values are prioritised where available. Mapping/listing alternatives are used where enumerated values are missing. Area uses Area_sqkm first, then Shape_Area converted from m², then geometry-based calculation.
-   </p>
-  </div>
- </div>
- <div class="footer">
-  Produced by Ansu Singhateh | GIS Analyst | GIS-Cartography Unit | Gambia Bureau of Statistics<br>
-  SILKYSINGZ GEOAI • Research and educational use
- </div>
-</aside>
+      <div class="chart-card">
+        <div class="chart-title">Selected area summary</div>
+        <table class="data-table">
+          <tbody id="summaryTable">
+            <tr><td colspan="2">Load EA data to calculate summary.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-title">Data availability and field mapping</div>
+        <div class="detected" id="analyticsDiagnostics">Waiting for data.</div>
+      </div>
+    </div>
+    <div class="footer">
+      <strong>Produced by Ansu Singhateh</strong><br>
+      GIS Analyst | GIS / Cartography Unit | Gambia Bureau of Statistics<br>
+      GBoS GEOAI • Research and educational use
+    </div>
+  </section>
 </main>
 
 <script>
 "use strict";
 
-/* ============================================================
-   SILKYSINGZ GEOAI — GAMBIA 3D EA SPATIAL INTELLIGENCE
-   Robust EA loading, independent of optional OSM services.
-   ============================================================ */
+/* =========================================================
+   GBoS GEOAI — GAMBIA 3D ENUMERATION AREA INTELLIGENCE
+   Core EA data source:
+   https://raw.githubusercontent.com/silkysingz94-oss/
+   Urban-Planning-Intelligence/main/Census_EAs_Geo.json
 
-const DEFAULT_URL =
+   Primary source fields:
+   enum_pop, enum_hhs, build_ls, comp_ls, Area_sqkm
+   ========================================================= */
+
+const DATA_URL =
  "https://raw.githubusercontent.com/silkysingz94-oss/Urban-Planning-Intelligence/main/Census_EAs_Geo.json";
 
+const GAMBIA_CENTER = [-15.45, 13.45];
+const GAMBIA_BOUNDS = [[-16.95, 13.0],[-13.75, 13.95]];
+
 const FIELD_ALIASES = {
- population:["enum_pop","ls_pop","map_pop","mapping_po","sum_pop","population","pop"],
- households:["enum_hhs","ls_hhs","map_hhs","mapping_hh","sum_hhs","households","hhs"],
- buildings:["build_ls","build_map","buildings","building_count","total_buildings"],
- compounds:["comp_ls","comp_map","compounds","compound_count","total_compounds"],
- area:["Area_sqkm","area_sqkm","area_km2","area_km"],
- shapeArea:["Shape_Area","shape_area"]
+  lga: ["lganame","lga_name","lga","region","region_name","rco"],
+  district: ["distname","district_name","district","dist_name"],
+  ward: ["wardname","ward_name","ward"],
+  ea: ["eaname","ea_name","enumeration_area","ea","feacode","ea_code"],
+  code: ["feacode","ea_code","eacode","eaid","code"],
+  population: ["enum_pop","enumerated_population","population","pop","sum_pop","map_pop","ls_pop"],
+  households: ["enum_hhs","enumerated_households","households","hh","sum_hhs","map_hhs","ls_hhs"],
+  buildings: ["build_ls","listed_buildings","buildings","building_count","build_map"],
+  compounds: ["comp_ls","listed_compounds","compounds","compound_count","comp_map"],
+  area: ["Area_sqkm","area_sqkm","area_km2","area_sq_km","Shape_Area","shape_area"]
 };
 
-const FIELD_LABELS = {
- population:"Population",
- households:"Households",
- buildings:"Buildings",
- compounds:"Compounds",
- area:"Area"
-};
-
-let allEA = [];
-let displayedEA = [];
+let allFeatures = [];
+let displayedFeatures = [];
+let geojsonData = null;
 let map = null;
 let mapReady = false;
-let charts = {};
-let osmRoadFeatures = [];
-let osmBuildingFeatures = [];
-let currentFieldNames = {};
-let currentTheme = "population";
-let mapSourcesAdded = false;
+let charts = {comparison:null,district:null,ea:null};
+let currentMetric = "population";
+let currentBase = "light";
+let mapLayersAdded = false;
+let sourceLoadController = null;
 
 const $ = id => document.getElementById(id);
 
-function setStatus(message, isError=false) {
- $("dataStatus").textContent = message;
- $("dataStatus").style.background = isError ? "#8f3030" : "#254762";
+function escapeHTML(value){
+  return String(value ?? "").replace(/[&<>"']/g, ch => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  })[ch]);
 }
 
-function showLoading(title, message, showRetry=false, isError=false) {
- $("loading").style.display = "flex";
- $("spinner").style.display = isError ? "none" : "block";
- $("loadingTitle").textContent = title;
- $("loadingTitle").className = isError ? "error-text" : "";
- $("loadingMessage").textContent = message;
- $("loadingRetry").style.display = showRetry ? "inline-block" : "none";
+function normalizeKey(value){
+  return String(value ?? "").toLowerCase().replace(/[^a-z0-9]/g,"");
 }
 
-function hideLoading() {
- $("loading").style.display = "none";
-}
-
-function normalKey(value) {
- return String(value ?? "").toLowerCase().replace(/[^a-z0-9]/g,"");
-}
-
-function getPropertyKey(properties, aliases) {
- if (!properties) return null;
- const keys = Object.keys(properties);
- for (const alias of aliases) {
-  const match = keys.find(k => normalKey(k) === normalKey(alias));
-  if (match) return match;
- }
- return null;
-}
-
-function numericValue(value) {
- if (value === null || value === undefined || value === "") return null;
- if (typeof value === "string") value = value.replace(/,/g,"").trim();
- const n = Number(value);
- return Number.isFinite(n) ? n : null;
-}
-
-/* Uses first valid numeric field, rather than stopping at a null alias. */
-function readNumber(properties, aliases) {
- for (const alias of aliases) {
-  const key = getPropertyKey(properties,[alias]);
-  if (!key) continue;
-  const value = numericValue(properties[key]);
-  if (value !== null) return {value,field:key};
- }
- return {value:null,field:null};
-}
-
-function getAdminValue(properties, aliases) {
- const key = getPropertyKey(properties,aliases);
- return key ? String(properties[key] ?? "").trim() : "";
-}
-
-function getLGA(p) {
- return getAdminValue(p,["lganame","lga","lga_name","region"]);
-}
-function getDistrict(p) {
- return getAdminValue(p,["distname","district","district_name"]);
-}
-function getWard(p) {
- return getAdminValue(p,["wardname","ward","ward_name"]);
-}
-function getEAName(p) {
- return getAdminValue(p,["eaname","feacode","ea_code","ea_name","enumeration_area"]);
-}
-
-function calculateGeometryAreaKm2(feature) {
- try {
-  const geom = feature.geometry;
-  if (!geom) return null;
-  const coords = geom.type === "Polygon" ? [geom.coordinates] :
-   geom.type === "MultiPolygon" ? geom.coordinates : null;
-  if (!coords) return null;
-
-  let areaM2 = 0;
-  for (const polygon of coords) {
-   if (!polygon || !polygon.length) continue;
-   const ring = polygon[0];
-   if (!ring || ring.length < 3) continue;
-   let sum = 0;
-   for (let i=0;i<ring.length;i++) {
-    const a = ring[i], b = ring[(i+1)%ring.length];
-    const lon1=a[0]*Math.PI/180, lon2=b[0]*Math.PI/180;
-    const lat1=a[1]*Math.PI/180, lat2=b[1]*Math.PI/180;
-    sum += (lon2-lon1)*(2+Math.sin(lat1)+Math.sin(lat2));
-   }
-   areaM2 += Math.abs(sum*6378137*6378137/2);
-   for (let r=1;r<polygon.length;r++) {
-    const hole=polygon[r];
-    let hs=0;
-    for(let i=0;i<hole.length;i++){
-     const a=hole[i],b=hole[(i+1)%hole.length];
-     hs+=(b[0]-a[0])*(2+Math.sin(a[1]*Math.PI/180)+Math.sin(b[1]*Math.PI/180));
+function getProperty(feature, aliases){
+  const props = feature && feature.properties ? feature.properties : {};
+  const keys = Object.keys(props);
+  for(const alias of aliases){
+    const target = normalizeKey(alias);
+    const actual = keys.find(k => normalizeKey(k) === target);
+    if(actual !== undefined){
+      const value = props[actual];
+      if(value !== null && value !== undefined && String(value).trim() !== ""){
+        return {value,field:actual};
+      }
     }
-    areaM2-=Math.abs(hs*6378137*6378137/2);
-   }
   }
-  return areaM2 > 0 ? areaM2/1000000 : null;
- } catch(e) {
-  return null;
- }
+  return {value:null,field:null};
 }
 
-function prepareFeature(feature,index) {
- const p = feature.properties || {};
- const pop = readNumber(p,FIELD_ALIASES.population);
- const hh = readNumber(p,FIELD_ALIASES.households);
- const buildings = readNumber(p,FIELD_ALIASES.buildings);
- const compounds = readNumber(p,FIELD_ALIASES.compounds);
-
- let area = readNumber(p,FIELD_ALIASES.area);
- if (area.value === null) {
-  const shape = readNumber(p,FIELD_ALIASES.shapeArea);
-  if (shape.value !== null) {
-   // Shape_Area is commonly stored in square metres.
-   area = {value:shape.value/1000000,field:shape.field+" / 1,000,000"};
+function numberValue(value){
+  if(value === null || value === undefined || value === "") return null;
+  if(typeof value === "string"){
+    value = value.replace(/,/g,"").trim();
   }
- }
- if (area.value === null) {
-  const calculated=calculateGeometryAreaKm2(feature);
-  area={value:calculated,field:calculated===null?null:"Calculated from geometry"};
- }
-
- return {
-  ...feature,
-  properties:{
-   ...p,
-   _ea_id:index,
-   _pop:pop.value,
-   _hh:hh.value,
-   _buildings:buildings.value,
-   _compounds:compounds.value,
-   _areaKm2:area.value,
-   _lga:getLGA(p),
-   _district:getDistrict(p),
-   _ward:getWard(p),
-   _eaName:getEAName(p)
-  }
- };
+  const n = Number(value);
+  return Number.isFinite(n) ? n : null;
 }
 
-function detectFields(features) {
- const detected={};
- const sample=features.slice(0,Math.min(features.length,1000));
- for (const metric of ["population","households","buildings","compounds"]) {
-  let found=null;
-  for (const f of sample) {
-   const result=readNumber(f.properties,FIELD_ALIASES[metric]);
-   if(result.field){found=result.field;break;}
-  }
-  detected[metric]=found || "Not found";
- }
- let areaField=null;
- for(const f of sample){
-  const direct=readNumber(f.properties,FIELD_ALIASES.area);
-  if(direct.field){areaField=direct.field;break;}
-  const shape=readNumber(f.properties,FIELD_ALIASES.shapeArea);
-  if(shape.field){areaField=shape.field+" (converted)";break;}
-  if(f.properties._areaKm2!==null){areaField="Calculated from geometry";break;}
- }
- detected.area=areaField || "Not found";
- currentFieldNames=detected;
- renderFieldDiagnostics();
+function readNumber(feature, aliases){
+  const result = getProperty(feature,aliases);
+  return {
+    value:numberValue(result.value),
+    field:result.field
+  };
 }
 
-function renderFieldDiagnostics() {
- const rows=[
-  ["Population",currentFieldNames.population],
-  ["Households",currentFieldNames.households],
-  ["Buildings",currentFieldNames.buildings],
-  ["Compounds",currentFieldNames.compounds],
-  ["Area",currentFieldNames.area]
- ];
- $("fieldDiagnostics").innerHTML=rows.map(r=>
-  `<tr><td>${escapeHTML(r[0])}</td><td>${escapeHTML(r[1])}</td></tr>`
- ).join("");
-}
-
-function escapeHTML(s) {
- return String(s ?? "").replace(/[&<>"']/g,c=>({
-  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
- }[c]));
-}
-
-function toFeatureCollection(features) {
- return {type:"FeatureCollection",features};
-}
-
-function validateGeoJSON(data) {
- if(data && data.type==="FeatureCollection" && Array.isArray(data.features)) return data;
- if(data && data.type==="Feature") return {type:"FeatureCollection",features:[data]};
- if(Array.isArray(data)) {
-  const features=data.filter(x=>x && x.type==="Feature");
-  if(features.length) return {type:"FeatureCollection",features};
- }
- throw new Error("The file does not contain a valid GeoJSON FeatureCollection.");
-}
-
-async function fetchWithTimeout(url,timeout=30000) {
- const controller=new AbortController();
- const timer=setTimeout(()=>controller.abort(),timeout);
- try {
-  const response=await fetch(url,{
-   method:"GET",
-   mode:"cors",
-   cache:"no-cache",
-   signal:controller.signal,
-   headers:{"Accept":"application/geo+json, application/json"}
+function formatNumber(value, decimals=0){
+  if(value === null || value === undefined || !Number.isFinite(Number(value))) return "N/A";
+  return Number(value).toLocaleString("en-US",{
+    maximumFractionDigits:decimals,
+    minimumFractionDigits:decimals
   });
-  if(!response.ok) throw new Error(`HTTP ${response.status} ${response.statusText}`);
-  return await response.json();
- } finally {
-  clearTimeout(timer);
- }
 }
 
-async function loadFromURL() {
- const url=$("geoUrl").value.trim() || DEFAULT_URL;
- if(!/^https?:\/\//i.test(url)) {
-  throw new Error("Please provide a valid HTTP or HTTPS GeoJSON URL.");
- }
- let lastError=null;
- for(let attempt=1;attempt<=3;attempt++){
+function setStatus(message,type=""){
+  const el = $("dataStatus");
+  el.className = "status" + (type ? " "+type : "");
+  el.textContent = message;
+}
+
+function setConnection(message){
+  $("connectionPill").textContent = message;
+}
+
+function featureName(feature, kind){
+  const aliases = FIELD_ALIASES[kind] || [];
+  const result = getProperty(feature,aliases);
+  return result.value === null ? "Unknown" : String(result.value).trim();
+}
+
+function getMetricValue(feature, metric){
+  const p = feature.properties || {};
+  if(metric === "population") return numberValue(p._pop);
+  if(metric === "households") return numberValue(p._hhs);
+  if(metric === "buildings") return numberValue(p._buildings);
+  if(metric === "compounds") return numberValue(p._compounds);
+  if(metric === "area") return numberValue(p._area);
+  if(metric === "density") return numberValue(p._density);
+  return 0;
+}
+
+/* Geodesic-style area fallback for Polygon and MultiPolygon.
+   GeoJSON coordinates are expected to be longitude/latitude. */
+function ringAreaKm2(ring){
+  if(!Array.isArray(ring) || ring.length < 3) return 0;
+  const R = 6371.0088;
+  let sum = 0;
+  for(let i=0;i<ring.length;i++){
+    const a = ring[i];
+    const b = ring[(i+1)%ring.length];
+    if(!a || !b) continue;
+    const lon1 = Number(a[0]) * Math.PI/180;
+    const lon2 = Number(b[0]) * Math.PI/180;
+    const lat1 = Number(a[1]) * Math.PI/180;
+    const lat2 = Number(b[1]) * Math.PI/180;
+    sum += (lon2-lon1) * (2 + Math.sin(lat1) + Math.sin(lat2));
+  }
+  return Math.abs(sum * R * R / 2);
+}
+
+function geometryAreaKm2(geometry){
+  if(!geometry) return null;
+  let total = 0;
   try{
-   showLoading("Loading Gambia EA data",`Downloading GeoJSON (attempt ${attempt} of 3)...`);
-   const data=await fetchWithTimeout(url,35000);
-   const fc=validateGeoJSON(data);
-   return fc;
-  }catch(error){
-   lastError=error;
-   if(attempt<3) await new Promise(resolve=>setTimeout(resolve,900*attempt));
+    if(geometry.type === "Polygon"){
+      const rings = geometry.coordinates || [];
+      if(!rings.length) return null;
+      total += ringAreaKm2(rings[0]);
+      for(let i=1;i<rings.length;i++) total -= ringAreaKm2(rings[i]);
+    }else if(geometry.type === "MultiPolygon"){
+      for(const polygon of geometry.coordinates || []){
+        if(!polygon.length) continue;
+        total += ringAreaKm2(polygon[0]);
+        for(let i=1;i<polygon.length;i++) total -= ringAreaKm2(polygon[i]);
+      }
+    }else{
+      return null;
+    }
+    return Math.max(0,total);
+  }catch(e){
+    return null;
   }
- }
- throw lastError || new Error("Unable to download the GeoJSON.");
 }
 
-async function loadData(source="url") {
- showLoading("Loading Gambia EA data","Preparing enumeration areas and spatial indicators...");
- setStatus("Loading...");
- $("loadBtn").disabled=true;
- $("reloadBtn").disabled=true;
+function enrichFeature(feature,index){
+  const copy = JSON.parse(JSON.stringify(feature));
+  copy.properties = copy.properties || {};
+  const p = copy.properties;
 
- try{
-  let fc;
-  if(source==="file"){
-   const file=$("fileInput").files[0];
-   if(!file) throw new Error("Select a GeoJSON or JSON file first.");
-   const text=await file.text();
-   fc=validateGeoJSON(JSON.parse(text));
-  }else{
-   fc=await loadFromURL();
+  const pop = readNumber(copy,FIELD_ALIASES.population);
+  const hhs = readNumber(copy,FIELD_ALIASES.households);
+  const buildings = readNumber(copy,FIELD_ALIASES.buildings);
+  const compounds = readNumber(copy,FIELD_ALIASES.compounds);
+  const areaField = readNumber(copy,FIELD_ALIASES.area);
+
+  let area = areaField.value;
+  let areaSource = areaField.field;
+
+  if(area !== null && areaSource &&
+     normalizeKey(areaSource) === normalizeKey("Shape_Area")){
+    area = area / 1000000;
   }
 
-  if(!fc.features.length) throw new Error("The GeoJSON contains no features.");
+  if(area === null || area <= 0){
+    area = geometryAreaKm2(copy.geometry);
+    areaSource = area === null ? null : "Calculated from geometry";
+  }
 
-  allEA=fc.features
-   .filter(f=>f && f.geometry && f.properties)
-   .map((f,i)=>prepareFeature(f,i));
+  p._lga = featureName(copy,"lga");
+  p._district = featureName(copy,"district");
+  p._ward = featureName(copy,"ward");
+  p._ea = featureName(copy,"ea");
+  p._code = featureName(copy,"code");
+  if(p._code === "Unknown") p._code = String(index+1);
 
-  if(!allEA.length) throw new Error("No valid polygon features were found.");
+  p._pop = pop.value;
+  p._hhs = hhs.value;
+  p._buildings = buildings.value;
+  p._compounds = compounds.value;
+  p._area = area;
+  p._density = pop.value !== null && area !== null && area > 0
+    ? pop.value/area : null;
 
-  detectFields(allEA);
-  populateAdminSelectors();GEOAI_3D_Viewer 
+  p._field_pop = pop.field;
+  p._field_hhs = hhs.field;
+  p._field_buildings = buildings.field;
+  p._field_compounds = compounds.field;
+  p._field_area = areaSource;
+
+  return copy;
+}
+
+function validPolygonFeature(feature){
+  return feature && feature.geometry &&
+    ["Polygon","MultiPolygon"].includes(feature.geometry.type);
+}
+
+function normalizeGeoJSON(input){
+  let features = [];
+  if(input && input.type === "FeatureCollection" && Array.isArray(input.features)){
+    features = input.features;
+  }else if(input && input.type === "Feature"){
+    features = [input];
+  }else if(Array.isArray(input)){
+    features = input.filter(x => x && x.type === "Feature");
+  }else{
+    throw new Error("The uploaded file is not a valid GeoJSON FeatureCollection or Feature.");
+  }
+
+  const cleaned = features.filter(validPolygonFeature).map(enrichFeature);
+  if(!cleaned.length){
+    throw new Error("No Polygon or MultiPolygon EA features were found in the GeoJSON.");
+  }
+  return {type:"FeatureCollection",features:cleaned};
+}
+
+function detectFields(){
+  if(!allFeatures.length) return;
+  const p = allFeatures[0].properties || {};
+  const keys = Object.keys(p).filter(k => !k.startsWith("_"));
+  const found = {
+    lga:getProperty(allFeatures[0],FIELD_ALIASES.lga).field,
+    district:getProperty(allFeatures[0],FIELD_ALIASES.district).field,
+    ward:getProperty(allFeatures[0],FIELD_ALIASES.ward).field,
+    population:getProperty(allFeatures[0],FIELD_ALIASES.population).field,
+    households:getProperty(allFeatures[0],FIELD_ALIASES.households).field,
+    buildings:getProperty(allFeatures[0],FIELD_ALIASES.buildings).field,
+    compounds:getProperty(allFeatures[0],FIELD_ALIASES.compounds).field,
+    area:getProperty(allFeatures[0],FIELD_ALIASES.area).field
+  };
+
+  const rows = Object.entries(found).map(([label,field]) =>
+    `<div><b>${escapeHTML(label)}:</b> ${field ? escapeHTML(field) : "Not detected"}</div>`
+  ).join("");
+
+  $("fieldDiagnostics").innerHTML = rows;
+  $("analyticsDiagnostics").innerHTML =
+    `<b>Source properties detected in the first EA feature:</b><br>${rows}`+
+    `<br><b>Raw properties available:</b> ${keys.length}`;
+}
+
+/* ================= MAP STYLES ================= */
+
+function rasterStyle(type){
+  let tiles = [];
+  let attribution = "";
+
+  if(type === "satellite" || type === "hybrid"){
+    tiles = ["https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"];
+    attribution = "Tiles © Esri";
+  }else if(type === "streets"){
+    tiles = ["https://a.tile.openstreetmap.org/{z}/{x}/{y}.png"];
+    attribution = "© OpenStreetMap contributors";
+  }else if(type === "dark"){
+    tiles = ["https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png"];
+    attribution = "© CARTO";
+  }else{
+    tiles = ["https://basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"];
+    attribution = "© CARTO";
+  }
+
+  const style = {
+    version:8,
+    sources:{
+      "base-raster":{
+        type:"raster",
+        tiles,
+        tileSize:256,
+        attribution
+      }
+    },
+    layers:[{
+      id:"base-raster-layer",
+      type:"raster",
+      source:"base-raster",
+      paint:{"raster-opacity":1}
+    }]
+  };
+
+  if(type === "hybrid"){
+    style.sources["hybrid-labels"] = {
+      type:"raster",
+      tiles:["https://a.tile.openstreetmap.org/{z}/{x}/{y}.png"],
+      tileSize:256,
+      attribution:"© OpenStreetMap contributors"
+    };
+    style.layers.push({
+      id:"hybrid-label-layer",
+      type:"raster",
+      source:"hybrid-labels",
+      paint:{"raster-opacity":0.65}
+    });
+  }
+  return style;
+}
+
+function createMap(){
+  if(typeof maplibregl === "undefined"){
+    $("mapLoading").innerHTML =
+      '<div class="loading-box"><strong>Map library unavailable</strong>'+
+      '<p>MapLibre could not be loaded. Check your internet connection or CDN access. The EA data and dashboard code can still be used once the mapping library is available.</p></div>';
+    setStatus("MapLibre library could not load. Check internet/CDN access.","error");
+    return;
+  }
+
+  try{
+    map = new maplibregl.Map({
+      container:"map",
+      style:rasterStyle("light"),
+      center:GAMBIA_CENTER,
+      zoom:7.1,
+      pitch:48,
+      bearing:0,
+      maxPitch:75,
+      attributionControl:true
+    });
+
+    map.addControl(new maplibregl.NavigationControl({visualizePitch:true}),"top-right");
+    map.addControl(new maplibregl.ScaleControl({maxWidth:100,unit:"metric"}),"bottom-left");
+
+    map.on("load",()=>{
+      mapReady = true;
+      addEALayers();
+      $("mapLoading").style.display = "none";
+      map.resize();
+      if(geojsonData) updateMapData();
+    });
+
+    map.on("error",event=>{
+      const message = event && event.error && event.error.message
+        ? event.error.message : "Map tile or rendering request failed.";
+      console.warn("Map rendering notice:",message);
+    });
+
+    map.on("mousemove",event=>{
+      if(!event.lngLat) return;
+      $("coordinateText").textContent =
+        `WGS 84 | ${event.lngLat.lng.toFixed(4)}, ${event.lngLat.lat.toFixed(4)}`;
+    });
+
+  }catch(error){
+    console.error(error);
+    $("mapLoading").innerHTML =
+      '<div class="loading-box"><strong>Map initialisation failed</strong>'+
+      '<p>'+escapeHTML(error.message)+'</p></div>';
+  }
+}
+
+function addEALayers(){
+  if(!mapReady || mapLayersAdded) return;
+
+  map.addSource("ea-source",{
+    type:"geojson",
+    data:{type:"FeatureCollection",features:[]},
+    promoteId:"_code"
+  });
+
+  map.addLayer({
+    id:"ea-extrusion",
+    type:"fill-extrusion",
+    source:"ea-source",
+    filter:["==",["geometry-type"],"Polygon"],
+    paint:{
+      "fill-extrusion-color":[
+        "interpolate",["linear"],["coalesce",["get","_density"],0],
+        0,"#fff2a8",
+        100,"#f6bd59",
+        500,"#ed8746",
+        1500,"#d94e4e",
+        5000,"#922b58"
+      ],
+      "fill-extrusion-height":["coalesce",["get","_height"],0],
+      "fill-extrusion-base":0,
+      "fill-extrusion-opacity":0.86,
+      "fill-extrusion-vertical-gradient":true
+    }
+  });
+
+  map.addLayer({
+    id:"ea-fill",
+    type:"fill",
+    source:"ea-source",
+    paint:{
+      "fill-color":[
+        "interpolate",["linear"],["coalesce",["get","_density"],0],
+        0,"#fff2a8",
+        100,"#f6bd59",
+        500,"#ed8746",
+        1500,"#d94e4e",
+        5000,"#922b58"
+      ],
+      "fill-opacity":0.42
+    }
+  });
+
+  map.addLayer({
+    id:"ea-outline",
+    type:"line",
+    source:"ea-source",
+    paint:{
+      "line-color":"#ffffff",
+      "line-width":["interpolate",["linear"],["zoom"],5,0.25,9,0.7,13,1.25],
+      "line-opacity":0.9
+    }
+  });
+
+  map.addLayer({
+    id:"ea-labels",
+    type:"symbol",
+    source:"ea-source",
+    layout:{
+      "text-field":["coalesce",["get","_code"],["get","_ea"]],
+      "text-size":["interpolate",["linear"],["zoom"],7,8,11,10,14,12],
+      "text-font":["Open Sans Regular","Arial Unicode MS Regular"],
+      "text-allow-overlap":false,
+      "text-ignore-placement":false
+    },
+    paint:{
+      "text-color":"#17324a",
+      "text-halo-color":"#ffffff",
+      "text-halo-width":1.2
+    }
+  });
+
+  map.on("click","ea-fill",showFeaturePopup);
+  map.on("click","ea-extrusion",showFeaturePopup);
+  map.on("mouseenter","ea-fill",()=>map.getCanvas().style.cursor="pointer");
+  map.on("mouseleave","ea-fill",()=>map.getCanvas().style.cursor="");
+  map.on("mouseenter","ea-extrusion",()=>map.getCanvas().style.cursor="pointer");
+  map.on("mouseleave","ea-extrusion",()=>map.getCanvas().style.cursor="");
+
+  mapLayersAdded = true;
+  applyLayerVisibility();
+}
+
+function showFeaturePopup(event){
+  const feature = event.features && event.features[0];
+  if(!feature) return;
+  const p = feature.properties || {};
+  const content = `
+    <div class="popup-title">Enumeration Area ${escapeHTML(p._code || p._ea)}</div>
+    <div class="popup-line"><b>LGA:</b> ${escapeHTML(p._lga)}</div>
+    <div class="popup-line"><b>District:</b> ${escapeHTML(p._district)}</div>
+    <div class="popup-line"><b>Ward:</b> ${escapeHTML(p._ward)}</div>
+    <div class="popup-line"><b>Population:</b> ${formatNumber(numberValue(p._pop))}</div>
+    <div class="popup-line"><b>Households:</b> ${formatNumber(numberValue(p._hhs))}</div>
+    <div class="popup-line"><b>Buildings:</b> ${formatNumber(numberValue(p._buildings))}</div>
+    <div class="popup-line"><b>Compounds:</b> ${formatNumber(numberValue(p._compounds))}</div>
+    <div class="popup-line"><b>Area:</b> ${formatNumber(numberValue(p._area),3)} km²</div>
+    <div class="popup-line"><b>Density:</b> ${formatNumber(numberValue(p._density),1)} people/km²</div>
+  `;
+  new maplibregl.Popup({closeButton:true,maxWidth:"260px"})
+    .setLngLat(event.lngLat).setHTML(content).addTo(map);
+}
+
+function updateMapData(){
+  if(!mapReady || !mapLayersAdded || !map.getSource("ea-source")) return;
+
+  const scale = Number($("heightScale").value) || 0.3;
+  const values = displayedFeatures.map(f=>getMetricValue(f,currentMetric))
+    .filter(v=>v !== null && Number.isFinite(v));
+  const maxValue = Math.max(1,...values);
+
+  const prepared = displayedFeatures.map(feature=>{
+    const f = JSON.parse(JSON.stringify(feature));
+    const value = getMetricValue(f,currentMetric);
+    const safeValue = value === null ? 0 : Math.max(0,value);
+    f.properties._height = Math.min(2500,Math.sqrt(safeValue/maxValue)*maxValue*scale);
+    return f;
+  });
+
+  map.getSource("ea-source").setData({
+    type:"FeatureCollection",
+    features:prepared
+  });
+
+  const extrusionOn = $("showExtrusion").checked;
+  const labelsOn = $("showLabels").checked;
+  const outlinesOn = $("showBoundaries").checked;
+
+  if(map.getLayer("ea-extrusion")) map.setLayoutProperty("ea-extrusion","visibility",extrusionOn?"visible":"none");
+  if(map.getLayer("ea-fill")) map.setLayoutProperty("ea-fill","visibility",extrusionOn?"none":"visible");
+  if(map.getLayer("ea-labels")) map.setLayoutProperty("ea-labels","visibility",labelsOn?"visible":"none");
+  if(map.getLayer("ea-outline")) map.setLayoutProperty("ea-outline","visibility",outlinesOn?"visible":"none");
+
+  updateLegend(values);
+  $("mapCount").textContent = `${displayedFeatures.length.toLocaleString()} displayed EAs`;
+}
+
+function updateLegend(values){
+  const names = {
+    population:"Enumerated population",
+    households:"Enumerated households",
+    buildings:"Listed buildings",
+    compounds:"Listed compounds",
+    density:"Population density (people/km²)",
+    area:"EA area (km²)"
+  };
+  $("legendTitle").textContent = names[currentMetric] || "EA thematic distribution";
+  const valid = values.filter(v=>Number.isFinite(v));
+  const min = valid.length ? Math.min(...valid) : 0;
+  const max = valid.length ? Math.max(...valid) : 0;
+  $("legendMin").textContent = formatNumber(min,currentMetric==="area"?2:0);
+  $("legendMax").textContent = formatNumber(max,currentMetric==="area"?2:0);
+}
+
+function applyLayerVisibility(){
+  if(!mapReady || !mapLayersAdded) return;
+  const extrusionOn = $("showExtrusion").checked;
+  map.setLayoutProperty("ea-extrusion","visibility",extrusionOn?"visible":"none");
+  map.setLayoutProperty("ea-fill","visibility",extrusionOn?"none":"visible");
+  map.setLayoutProperty("ea-labels","visibility",$("showLabels").checked?"visible":"none");
+  map.setLayoutProperty("ea-outline","visibility",$("showBoundaries").checked?"visible":"none");
+}
+
+function setBasemap(type){
+  if(!map) return;
+  currentBase = type;
+  const oldCenter = map.getCenter();
+  const oldZoom = map.getZoom();
+  const oldPitch = map.getPitch();
+  const oldBearing = map.getBearing();
+
+  map.setStyle(rasterStyle(type));
+
+  map.once("style.load",()=>{
+    mapReady = true;
+    mapLayersAdded = false;
+    addEALayers();
+    map.jumpTo({center:oldCenter,zoom:oldZoom,pitch:oldPitch,bearing:oldBearing});
+    if(geojsonData) updateMapData();
+  });
+}
+
+function zoomToFeatures(features){
+  if(!map || !features || !features.length) return;
+
+  let minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
+  function visit(coords){
+    if(!Array.isArray(coords)) return;
+    if(coords.length >= 2 && typeof coords[0] === "number" && typeof coords[1] === "number"){
+      minX=Math.min(minX,coords[0]);
+      minY=Math.min(minY,coords[1]);
+      maxX=Math.max(maxX,coords[0]);
+      maxY=Math.max(maxY,coords[1]);
+    }else{
+      coords.forEach(visit);
+    }
+  }
+
+  features.forEach(f=>visit(f.geometry && f.geometry.coordinates));
+  if(!Number.isFinite(minX) || !Number.isFinite(minY)) return;
+
+  if(Math.abs(maxX-minX)<0.001){minX-=0.005;maxX+=0.005}
+  if(Math.abs(maxY-minY)<0.001){minY-=0.005;maxY+=0.005}
+
+  map.fitBounds([[minX,minY],[maxX,maxY]],{
+    padding:{top:65,bottom:65,left:55,right:55},
+    maxZoom:13.5,
+    duration:900
+  });
+}
+
+/* ================= ADMINISTRATIVE FILTERS ================= */
+
+function uniqueSorted(values){
+  return [...new Set(values.filter(v=>v && v!=="Unknown").map(String))]
+    .sort((a,b)=>a.localeCompare(b));
+}
+
+function fillSelect(select,values,defaultLabel){
+  const current = select.value;
+  select.innerHTML = "";
+  const first = document.createElement("option");
+  first.value = "";
+  first.textContent = defaultLabel;
+  select.appendChild(first);
+
+  values.forEach(value=>{
+    const option = document.createElement("option");
+    option.value = value;
+    option.textContent = value;
+    select.appendChild(option);
+  });
+
+  if(values.includes(current)) select.value=current;
+}
+
+function populateLGA(){
+  fillSelect($("lgaSelect"),uniqueSorted(allFeatures.map(f=>f.properties._lga)),"All LGAs");
+  populateDistrict();
+}
+
+function populateDistrict(){
+  const lga = $("lgaSelect").value;
+  const source = lga
+    ? allFeatures.filter(f=>f.properties._lga===lga)
+    : allFeatures;
+  fillSelect($("districtSelect"),uniqueSorted(source.map(f=>f.properties._district)),"All districts");
+  populateWard();
+}
+
+function populateWard(){
+  const lga = $("lgaSelect").value;
+  const district = $("districtSelect").value;
+  let source = allFeatures;
+  if(lga) source=source.filter(f=>f.properties._lga===lga);
+  if(district) source=source.filter(f=>f.properties._district===district);
+  fillSelect($("wardSelect"),uniqueSorted(source.map(f=>f.properties._ward)),"All wards");
+}
+
+function filterFeatures(){
+  const lga = $("lgaSelect").value;
+  const district = $("districtSelect").value;
+  const ward = $("wardSelect").value;
+
+  return allFeatures.filter(f=>{
+    const p=f.properties;
+    return (!lga || p._lga===lga) &&
+      (!district || p._district===district) &&
+      (!ward || p._ward===ward);
+  });
+}
+
+function selectionLabel(){
+  const lga=$("lgaSelect").value;
+  const district=$("districtSelect").value;
+  const ward=$("wardSelect").value;
+  return [lga,district,ward].filter(Boolean).join(" / ") || "National";
+}
+
+function applySelection(shouldZoom=true){
+  if(!allFeatures.length) return;
+  displayedFeatures=filterFeatures();
+  updateMapData();
+  updateAnalytics();
+
+  const label=selectionLabel();
+  $("analyticsScope").textContent=label;
+  $("mapTitle").textContent=label==="National"
+    ? "The Gambia | National EA Coverage" : label;
+  $("mapSubtitle").textContent=
+    `${displayedFeatures.length.toLocaleString()} of ${allFeatures.length.toLocaleString()} EA features displayed`;
+
+  $("selectionStatus").textContent=
+    `${displayedFeatures.length.toLocaleString()} EA features match the selected administrative area.`;
+  $("selectionStatus").className="status good";
+
+  if(shouldZoom) zoomToFeatures(displayedFeatures);
+}
+
+function resetSelection(){
+  $("lgaSelect").value="";
+  populateDistrict();
+  $("districtSelect").value="";
+  populateWard();
+  $("wardSelect").value="";
+  applySelection(true);
+  if(map) map.easeTo({center:GAMBIA_CENTER,zoom:7.1,pitch:48,bearing:0,duration:900});
+}
+
+/* ================= ANALYTICS ================= */
+
+function sumMetric(features,key){
+  let sum=0,found=false;
+  features.forEach(f=>{
+    const value=numberValue(f.properties[key]);
+    if(value!==null){sum+=value;found=true}
+  });
+  return found?sum:null;
+}
+
+function summarize(features){
+  const pop=sumMetric(features,"_pop");
+  const hhs=sumMetric(features,"_hhs");
+  const buildings=sumMetric(features,"_buildings");
+  const compounds=sumMetric(features,"_compounds");
+  const area=sumMetric(features,"_area");
+  const density=pop!==null && area!==null && area>0 ? pop/area : null;
+  const hhSize=pop!==null && hhs!==null && hhs>0 ? pop/hhs : null;
+
+  return {count:features.length,pop,hhs,buildings,compounds,area,density,hhSize};
+}
+
+function setKpi(id,value,decimals=0){
+  $(id).textContent=value===null || value===undefined
+    ? "N/A" : formatNumber(value,decimals);
+}
+
+function updateAnalytics(){
+  const s=summarize(displayedFeatures);
+  setKpi("kpiEAs",s.count);
+  setKpi("kpiPopulation",s.pop);
+  setKpi("kpiHouseholds",s.hhs);
+  setKpi("kpiBuildings",s.buildings);
+  setKpi("kpiCompounds",s.compounds);
+  setKpi("kpiArea",s.area,2);
+  setKpi("kpiDensity",s.density,1);
+  setKpi("kpiHHSize",s.hhSize,2);
+
+  $("recordCount").textContent=`${allFeatures.length.toLocaleString()} EAs loaded`;
+
+  $("summaryTable").innerHTML=`
+    <tr><td>Displayed enumeration areas</td><td>${formatNumber(s.count)}</td></tr>
+    <tr><td>Population</td><td>${formatNumber(s.pop)}</td></tr>
+    <tr><td>Households</td><td>${formatNumber(s.hhs)}</td></tr>
+    <tr><td>Buildings</td><td>${formatNumber(s.buildings)}</td></tr>
+    <tr><td>Compounds</td><td>${formatNumber(s.compounds)}</td></tr>
+    <tr><td>Total EA area (km²)</td><td>${formatNumber(s.area,3)}</td></tr>
+    <tr><td>Population density (people/km²)</td><td>${formatNumber(s.density,2)}</td></tr>
+    <tr><td>Average household size</td><td>${formatNumber(s.hhSize,2)}</td></tr>
+  `;
+
+  updateCharts();
+}
+
+function destroyChart(chart){
+  if(chart){chart.destroy()}
+}
+
+function chartAvailable(){
+  return typeof Chart !== "undefined";
+}
+
+function updateCharts(){
+  if(!chartAvailable()){
+    document.querySelectorAll(".chart-holder").forEach(el=>{
+      el.innerHTML='<div class="no-chart">Chart.js is unavailable. Check internet access to the chart library CDN.</div>';
+    });
+    return;
+  }
+
+  const totals=summarize(displayedFeatures);
+  destroyChart(charts.comparison);
+  destroyChart(charts.district);
+  destroyChart(charts.ea);
+
+  charts.comparison=new Chart($("comparisonChart"),{
+    type:"bar",
+    data:{
+      labels:["Population","Households","Buildings","Compounds"],
+      datasets:[{
+        label:"Total",
+        data:[
+          totals.pop||0,totals.hhs||0,
+          totals.buildings||0,totals.compounds||0
+        ],
+        backgroundColor:["#287bb5","#20a5bd","#e99a32","#299b73"],
+        borderRadius:4
+      }]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{
+        x:{ticks:{font:{size:9}},grid:{display:false}},
+        y:{beginAtZero:true,ticks:{font:{size:9},callback:v=>Number(v).toLocaleString()}}
+      }
+    }
+  });
+
+  const districtGroups={};
+  displayedFeatures.forEach(f=>{
+    const name=f.properties._district || "Unknown";
+    if(!districtGroups[name]) districtGroups[name]=0;
+    districtGroups[name]+=numberValue(f.properties._pop)||0;
+  });
+
+  const topDistricts=Object.entries(districtGroups)
+    .sort((a,b)=>b[1]-a[1]).slice(0,10);
+
+  charts.district=new Chart($("districtChart"),{
+    type:"bar",
+    data:{
+      labels:topDistricts.map(x=>x[0]),
+      datasets:[{
+        data:topDistricts.map(x=>x[1]),
+        backgroundColor:"#287bb5",
+        borderRadius:3
+      }]
+    },
+    options:{
+      indexAxis:"y",responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{
+        x:{beginAtZero:true,ticks:{font:{size:8},callback:v=>Number(v).toLocaleString()}},
+        y:{ticks:{font:{size:9}},grid:{display:false}}
+      }
+    }
+  });
+
+  const groupCounts={};
+  displayedFeatures.forEach(f=>{
+    const name=f.properties._ward!=="Unknown"
+      ? f.properties._ward
+      : (f.properties._district || "Unknown");
+    groupCounts[name]=(groupCounts[name]||0)+1;
+  });
+
+  const topGroups=Object.entries(groupCounts).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  charts.ea=new Chart($("eaChart"),{
+    type:"doughnut",
+    data:{
+      labels:topGroups.map(x=>x[0]),
+      datasets:[{
+        data:topGroups.map(x=>x[1]),
+        backgroundColor:["#287bb5","#20a5bd","#299b73","#e99a32","#d65d5d","#8165b5","#6f9d9c","#a6aeb8"],
+        borderWidth:1,borderColor:"#fff"
+      }]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{
+        legend:{position:"bottom",labels:{boxWidth:9,font:{size:8},padding:8}}
+      }
+    }
+  });
+}
+
+/* ================= DATA LOADING ================= */
+
+async function loadFromURL(){
+  setStatus("Connecting to the GitHub GeoJSON source…");
+  setConnection("LOADING DATA");
+  $("mapLoading").style.display="flex";
+
+  if(sourceLoadController) sourceLoadController.abort();
+  sourceLoadController=new AbortController();
+  const timeout=setTimeout(()=>sourceLoadController.abort(),25000);
+
+  try{
+    const response=await fetch(DATA_URL,{
+      method:"GET",
+      mode:"cors",
+      cache:"no-store",
+      signal:sourceLoadController.signal
+    });
+    clearTimeout(timeout);
+
+    if(!response.ok) throw new Error(`GitHub returned HTTP ${response.status}.`);
+    const json=await response.json();
+    loadGeoJSON(json,"GitHub repository");
+  }catch(error){
+    clearTimeout(timeout);
+    console.error("GitHub GeoJSON loading error:",error);
+    $("mapLoading").style.display="none";
+    setConnection("GITHUB SOURCE UNAVAILABLE");
+    setStatus(
+      "Could not load the GitHub GeoJSON. This may be caused by a network, DNS, CORS or connection problem. Upload Census_EAs_Geo.json using the file input above.",
+      "warn"
+    );
+  }
+}
+
+function loadGeoJSON(input,sourceName){
+  try{
+    const normalized=normalizeGeoJSON(input);
+    geojsonData=normalized;
+    allFeatures=normalized.features;
+    displayedFeatures=allFeatures.slice();
+
+    populateLGA();
+    $("lgaSelect").value="";
+    populateDistrict();
+    $("districtSelect").value="";
+    populateWard();
+    $("wardSelect").value="";
+
+    detectFields();
+    applySelection(false);
+    updateMapData();
+
+    const missingPop=allFeatures.filter(f=>f.properties._pop===null).length;
+    const missingHhs=allFeatures.filter(f=>f.properties._hhs===null).length;
+    const missingBuildings=allFeatures.filter(f=>f.properties._buildings===null).length;
+    const missingCompounds=allFeatures.filter(f=>f.properties._compounds===null).length;
+
+    setStatus(
+      `${sourceName}: ${allFeatures.length.toLocaleString()} polygon EA features loaded. Missing values — population: ${missingPop}, households: ${missingHhs}, buildings: ${missingBuildings}, compounds: ${missingCompounds}.`,
+      "good"
+    );
+    setConnection("EA DATA LOADED");
+    $("mapLoading").style.display="none";
+
+    if(mapReady){
+      updateMapData();
+      zoomToFeatures(allFeatures);
+    }
+
+    $("mapTitle").textContent="The Gambia | National EA Coverage";
+    $("mapSubtitle").textContent=`${allFeatures.length.toLocaleString()} EA features loaded from ${sourceName}`;
+  }catch(error){
+    console.error(error);
+    setStatus(`Data processing error: ${error.message}`,"error");
+    setConnection("DATA ERROR");
+    $("mapLoading").style.display="none";
+  }
+}
+
+function uploadGeoJSON(file){
+  if(!file) return;
+  const reader=new FileReader();
+  reader.onload=event=>{
+    try{
+      const json=JSON.parse(event.target.result);
+      loadGeoJSON(json,`Uploaded file: ${file.name}`);
+    }catch(error){
+      setStatus(`Could not read the uploaded GeoJSON: ${error.message}`,"error");
+    }
+  };
+  reader.onerror=()=>setStatus("The selected file could not be read.","error");
+  reader.readAsText(file);
+}
+
+/* ================= EXPORTS ================= */
+
+function csvEscape(value){
+  const text=String(value ?? "");
+  return '"' + text.replace(/"/g,'""') + '"';
+}
+
+function exportCSV(){
+  if(!displayedFeatures.length){
+    setStatus("There are no displayed EA records to export.","warn");
+    return;
+  }
+
+  const headers=[
+    "LGA","District","Ward","EA_Name","EA_Code",
+    "Population_Enumerated","Households_Enumerated",
+    "Buildings_Listed","Compounds_Listed",
+    "Area_sqkm","Population_Density_people_per_sqkm"
+  ];
+
+  const rows=displayedFeatures.map(f=>{
+    const p=f.properties;
+    return [
+      p._lga,p._district,p._ward,p._ea,p._code,
+      p._pop,p._hhs,p._buildings,p._compounds,p._area,p._density
+    ];
+  });
+
+  const csv=[headers,...rows].map(row=>row.map(csvEscape).join(",")).join("\r\n");
+  downloadBlob(csv,"text/csv;charset=utf-8","GBoS_Gambia_EA_Spatial_Statistics.csv");
+}
+
+function exportGeoJSON(){
+  if(!displayedFeatures.length){
+    setStatus("There are no displayed EA features to export.","warn");
+    return;
+  }
+  const output={
+    type:"FeatureCollection",
+    name:"GBoS_Gambia_Selected_EA_Features",
+    features:displayedFeatures
+  };
+  downloadBlob(JSON.stringify(output,null,2),"application/geo+json","GBoS_Gambia_Selected_EAs.geojson");
+}
+
+function downloadBlob(content,mime,filename){
+  const blob=new Blob([content],{type:mime});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;
+  a.download=filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+/* ================= EVENT HANDLERS ================= */
+
+$("loadGitHub").addEventListener("click",loadFromURL);
+$("retryLoad").addEventListener("click",loadFromURL);
+
+$("geoFile").addEventListener("change",event=>{
+  const file=event.target.files && event.target.files[0];
+  uploadGeoJSON(file);
+});
+
+$("lgaSelect").addEventListener("change",()=>{
+  populateDistrict();
+  $("districtSelect").value="";
+  populateWard();
+  $("wardSelect").value="";
+});
+
+$("districtSelect").addEventListener("change",()=>{
+  populateWard();
+  $("wardSelect").value="";
+});
+
+$("applySelection").addEventListener("click",()=>applySelection(true));
+$("resetSelection").addEventListener("click",resetSelection);
+
+$("metricSelect").addEventListener("change",()=>{
+  currentMetric=$("metricSelect").value;
+  updateMapData();
+});
+
+$("heightScale").addEventListener("change",updateMapData);
+$("showLabels").addEventListener("change",applyLayerVisibility);
+$("showExtrusion").addEventListener("change",applyLayerVisibility);
+$("showBoundaries").addEventListener("change",applyLayerVisibility);
+
+$("baseSelect").addEventListener("change",()=>{
+  setBasemap($("baseSelect").value);
+});
+
+$("mapView").addEventListener("change",()=>{
+  if(!map) return;
+  const is3D=$("mapView").value==="3d";
+  map.easeTo({
+    pitch:is3D?48:0,
+    bearing:is3D?-12:0,
+    duration:700
+  });
+});
+
+$("zoomGambia").addEventListener("click",()=>{
+  if(map) map.fitBounds(GAMBIA_BOUNDS,{padding:45,duration:800});
+});
+
+$("mapReset").addEventListener("click",()=>{
+  if(map) map.easeTo({bearing:0,pitch:48,duration:600});
+});
+
+$("exportCsv").addEventListener("click",exportCSV);
+$("downloadCsvTop").addEventListener("click",exportCSV);
+$("exportGeo").addEventListener("click",exportGeoJSON);
+$("downloadGeoTop").addEventListener("click",exportGeoJSON);
+
+/* ================= STARTUP ================= */
+
+window.addEventListener("resize",()=>{
+  if(map) map.resize();
+  Object.values(charts).forEach(chart=>{
+    if(chart) chart.resize();
+  });
+});
+
+createMap();
+
+/* Load the source after the dashboard has initialised.
+   If GitHub fails, local upload remains available. */
+window.setTimeout(()=>{
+  loadFromURL();
+},500);
+
+</script>
+</body>
+</html>
+
 
