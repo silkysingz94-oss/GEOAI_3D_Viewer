@@ -3,8 +3,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GBoS GEOAI | Gambia 3D Spatial Intelligence</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GBoS GEOAI | Gambia 3D EA Intelligence</title>
 
 <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet">
 <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
@@ -13,154 +13,114 @@
 
 <style>
 :root{
- --bg:#081321;
- --panel:#101e30;
- --panel2:#14253a;
- --line:#263b52;
- --text:#edf4ff;
- --muted:#9eb0c7;
- --accent:#36b8e8;
- --green:#32c997;
- --orange:#f4a340;
- --red:#e35d6a;
+ --bg:#081321;--panel:#101e30;--panel2:#15283e;
+ --line:#294058;--text:#edf5ff;--muted:#a5b6ca;
+ --cyan:#38bce9;--green:#32c997;--orange:#f4a340;
 }
 *{box-sizing:border-box}
-body{
- margin:0;background:var(--bg);color:var(--text);
- font-family:Arial,Helvetica,sans-serif;
- overflow:hidden;
-}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif;overflow:hidden}
 header{
- height:68px;background:#0d1a2a;border-bottom:1px solid var(--line);
- display:flex;align-items:center;justify-content:space-between;
- padding:0 20px;gap:12px;
+ height:68px;padding:0 18px;background:#0c1929;
+ border-bottom:1px solid var(--line);display:flex;
+ align-items:center;justify-content:space-between
 }
 .brand{display:flex;align-items:center;gap:12px}
-.brand-icon{
- width:40px;height:40px;border-radius:11px;
- background:linear-gradient(135deg,#087da8,#35c6ac);
- display:grid;place-items:center;font-size:20px;font-weight:bold;
+.logo{
+ width:40px;height:40px;border-radius:10px;
+ display:grid;place-items:center;font-weight:bold;font-size:20px;
+ background:linear-gradient(135deg,#087fa9,#36c99c)
 }
-.brand h1{font-size:17px;margin:0}
+.brand h1{font-size:16px;margin:0}
 .brand p{font-size:10px;color:var(--muted);margin:4px 0 0}
-.header-right{font-size:11px;color:var(--muted);text-align:right}
-.status{color:#4fe0ad}
+.head-status{text-align:right;font-size:10px;color:var(--muted);line-height:1.6}
 main{
- height:calc(100vh - 68px);
- display:grid;grid-template-columns:minmax(260px,1fr) minmax(420px,1.15fr) minmax(270px,1fr);
- gap:10px;padding:10px;
+ height:calc(100vh - 68px);padding:10px;gap:10px;
+ display:grid;grid-template-columns:minmax(260px,1fr) minmax(400px,1.15fr) minmax(270px,1fr)
 }
 .panel{
  background:var(--panel);border:1px solid var(--line);
- border-radius:10px;min-height:0;overflow:hidden;
- display:flex;flex-direction:column;
+ border-radius:9px;min-height:0;overflow:hidden;
+ display:flex;flex-direction:column
 }
-.panel-scroll{overflow-y:auto;padding:13px;min-height:0}
-.panel-title{
- font-size:13px;font-weight:bold;margin:0 0 12px;
- display:flex;align-items:center;justify-content:space-between;
+.scroll{overflow-y:auto;min-height:0;padding:13px}
+.heading{
+ font-size:12px;font-weight:bold;margin:0 0 12px;
+ display:flex;justify-content:space-between;align-items:center
 }
-.section{
- border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:14px;
-}
-.section:last-child{border-bottom:0}
-label{
- display:block;font-size:11px;color:var(--muted);
- margin:9px 0 5px;
-}
+.section{border-bottom:1px solid var(--line);padding-bottom:13px;margin-bottom:13px}
+.section:last-child{border:0}
+label{display:block;color:var(--muted);font-size:10px;margin:9px 0 5px}
 select,input,button{
  width:100%;padding:9px;border-radius:6px;
- border:1px solid #304760;background:#0b1929;
- color:var(--text);font-size:12px;
+ border:1px solid #344c66;background:#0a1929;color:var(--text);font-size:11px
 }
 button{cursor:pointer;font-weight:bold}
-button.primary{background:#087fa9;border-color:#087fa9}
-button.secondary{background:#1a3048}
-button.success{background:#146a58;border-color:#146a58}
-button.warning{background:#78501e;border-color:#78501e}
-button:hover{filter:brightness(1.15)}
-.btn-row{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}
-.btn-row.three{grid-template-columns:1fr 1fr 1fr}
-.checkrow{
- display:flex;align-items:center;gap:8px;
- font-size:11px;color:var(--text);margin:9px 0;
-}
-.checkrow input{width:auto}
-.small{font-size:10px;color:var(--muted);line-height:1.5}
-#map-panel{position:relative;overflow:hidden}
+button:hover{filter:brightness(1.18)}
+.primary{background:#087fa9;border-color:#087fa9}
+.success{background:#146b58;border-color:#146b58}
+.warning{background:#76501e;border-color:#76501e}
+.secondary{background:#1a3048}
+.btnrow{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:9px}
+.btnrow.four{grid-template-columns:1fr 1fr}
+.check{display:flex;align-items:center;gap:8px;margin:9px 0;font-size:10px}
+.check input{width:auto}
+.small{font-size:9px;color:var(--muted);line-height:1.55}
+.tag{font-size:9px;padding:4px 7px;border-radius:5px;background:#17364d;color:#80dafa}
+#map-panel{position:relative}
 #map{position:absolute;inset:0}
 .map-top{
- position:absolute;top:12px;left:12px;right:12px;z-index:5;
- display:flex;justify-content:space-between;gap:8px;pointer-events:none;
+ position:absolute;z-index:5;top:12px;left:12px;right:12px;
+ display:flex;justify-content:space-between;gap:8px;pointer-events:none
 }
-.map-chip{
- background:#0a1728eF;border:1px solid #3b536c;
- border-radius:7px;padding:8px 10px;font-size:11px;
- pointer-events:auto;
+.chip{
+ background:#091827ed;border:1px solid #405870;
+ padding:8px 10px;border-radius:6px;font-size:10px;pointer-events:auto
 }
+.map-tools{
+ position:absolute;right:12px;top:60px;z-index:5;
+ width:42px;display:flex;flex-direction:column;gap:6px
+}
+.map-tools button{padding:8px 3px}
 .map-bottom{
  position:absolute;bottom:12px;left:12px;z-index:5;
- background:#0a1728ed;border:1px solid #3b536c;
- border-radius:7px;padding:9px;font-size:10px;color:#dceaff;
- max-width:270px;
+ background:#091827ed;border:1px solid #405870;border-radius:6px;
+ padding:9px;font-size:9px;line-height:1.6;max-width:250px
 }
-.map-buttons{
- position:absolute;top:60px;right:12px;z-index:5;
- display:flex;flex-direction:column;gap:6px;width:42px;
-}
-.map-buttons button{padding:8px 4px}
-.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.kpi{
- background:var(--panel2);border:1px solid var(--line);
- border-radius:8px;padding:11px;min-width:0;
-}
-.kpi .name{font-size:10px;color:var(--muted)}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.kpi{background:var(--panel2);border:1px solid var(--line);padding:10px;border-radius:7px}
+.kpi .label{font-size:9px;color:var(--muted)}
 .kpi .value{font-size:19px;font-weight:bold;margin-top:7px;overflow-wrap:anywhere}
 .kpi .unit{font-size:9px;color:var(--muted);margin-top:4px}
-.chart-box{
- background:var(--panel2);border:1px solid var(--line);
- border-radius:8px;padding:10px;margin:10px 0;
+.chartbox{background:var(--panel2);border:1px solid var(--line);padding:9px;border-radius:7px;margin-top:8px}
+.chartbox h3{font-size:10px;margin:0 0 8px}
+.chartwrap{height:205px;position:relative}
+.details{width:100%;border-collapse:collapse;font-size:10px}
+.details td{padding:8px 4px;border-bottom:1px solid var(--line)}
+.details td:first-child{color:var(--muted)}
+.details td:last-child{text-align:right;font-weight:bold}
+.gradient{
+ height:14px;border-radius:4px;margin:11px 0 6px;
+ background:linear-gradient(90deg,#313695,#4575b4,#74add1,#ffffbf,#fdae61,#d73027)
 }
-.chart-box h3{font-size:11px;margin:0 0 8px}
-.chart-wrap{height:210px;position:relative}
-.legend-gradient{
- height:13px;border-radius:4px;
- background:linear-gradient(90deg,
- #313695 0%,#4575b4 20%,#74add1 40%,
- #ffffbf 60%,#fdae61 80%,#d73027 100%);
- margin:10px 0 7px;
-}
-.legend-labels{
- display:flex;justify-content:space-between;
- font-size:9px;color:var(--muted);
-}
-.legend-ticks{
- display:flex;justify-content:space-between;
- font-size:9px;color:#e8f1ff;margin-top:5px;
-}
-.details-table{width:100%;border-collapse:collapse;font-size:11px}
-.details-table td{padding:8px 5px;border-bottom:1px solid var(--line)}
-.details-table td:first-child{color:var(--muted)}
-.details-table td:last-child{text-align:right;font-weight:bold}
-.tag{
- display:inline-block;padding:4px 7px;border-radius:5px;
- background:#18354b;color:#75d8f6;font-size:9px;
+.legendlabels{display:flex;justify-content:space-between;font-size:9px;color:var(--muted)}
+.legendvalues{display:flex;justify-content:space-between;font-size:9px;margin-top:7px}
+#fieldDiagnostics{
+ background:#091827;border:1px solid var(--line);padding:8px;
+ border-radius:6px;font-size:9px;line-height:1.7;color:#c3d7ed;overflow-wrap:anywhere
 }
 #log{
- background:#091625;border:1px solid var(--line);
- border-radius:6px;padding:8px;font-size:10px;
- color:#9fb8d2;max-height:100px;overflow:auto;line-height:1.6;
+ background:#091827;border:1px solid var(--line);padding:8px;
+ border-radius:6px;max-height:100px;overflow:auto;font-size:9px;line-height:1.6;color:#a9c2da
 }
-#fileEA{font-size:10px}
 .footer{
- padding:10px;border-top:1px solid var(--line);
- font-size:9px;color:var(--muted);line-height:1.6;
+ padding:9px 12px;border-top:1px solid var(--line);
+ font-size:9px;color:var(--muted);line-height:1.6
 }
 @media(max-width:1050px){
  body{overflow:auto}
- main{height:auto;min-height:calc(100vh - 68px);grid-template-columns:1fr}
- .panel{min-height:400px}
- #map-panel{height:600px;min-height:600px;order:0}
+ main{height:auto;grid-template-columns:1fr}
+ .panel{min-height:390px}
+ #map-panel{height:600px;min-height:600px}
 }
 </style>
 </head>
@@ -168,111 +128,115 @@ button:hover{filter:brightness(1.15)}
 <body>
 <header>
  <div class="brand">
-  <div class="brand-icon">G</div>
+  <div class="logo">G</div>
   <div>
-   <h1>GBoS GEOAI | Gambia Spatial Intelligence</h1>
-   <p>3D ENUMERATION AREA • POPULATION • HOUSEHOLDS • BUILDINGS • COMPOUNDS</p>
+   <h1>GBoS GEOAI | Gambia 3D Spatial Intelligence</h1>
+   <p>ENUMERATION AREAS • POPULATION • HOUSEHOLDS • BUILDINGS • COMPOUNDS</p>
   </div>
  </div>
- <div class="header-right">
-  <div class="status">● Spatial dashboard</div>
-  <div>GIS / Cartography Unit | GBoS</div>
+ <div class="head-status">
+  <div style="color:#42d5a5">● GEOJSON DATA DASHBOARD</div>
+  GIS / Cartography Unit | GBoS
  </div>
 </header>
 
 <main>
 
-<!-- LEFT: CONTROLS -->
+<!-- LEFT CONTROLS -->
 <section class="panel">
- <div class="panel-scroll">
-  <div class="panel-title">CONTROL PANEL <span class="tag">3D GIS</span></div>
+ <div class="scroll">
+  <div class="heading">CONTROL PANEL <span class="tag">3D GIS</span></div>
 
   <div class="section">
-   <div class="panel-title">EA DATA SOURCE</div>
-   <label>GitHub EA GeoJSON</label>
+   <div class="heading">EA DATA SOURCE</div>
    <button class="primary" id="loadGitHub">LOAD GITHUB EA DATA</button>
-   <label>Or upload local EA GeoJSON</label>
-   <input type="file" id="fileEA" accept=".json,.geojson,application/json">
-   <div class="small" id="dataStatus">Waiting for EA data...</div>
+   <label>Or upload EA GeoJSON</label>
+   <input type="file" id="fileEA" accept=".json,.geojson">
+   <p class="small" id="dataStatus">Loading EA data...</p>
   </div>
 
   <div class="section">
-   <div class="panel-title">ADMINISTRATIVE SELECTION</div>
+   <div class="heading">ADMINISTRATIVE SELECTION</div>
    <label>Local Government Area</label>
    <select id="lga"><option value="">All LGAs</option></select>
    <label>District</label>
    <select id="district"><option value="">All districts</option></select>
    <label>Ward</label>
    <select id="ward"><option value="">All wards</option></select>
-   <div class="btn-row">
-    <button class="primary" id="applySelection">APPLY & ZOOM</button>
-    <button class="secondary" id="resetSelection">RESET</button>
+   <div class="btnrow">
+    <button class="primary" id="apply">APPLY & ZOOM</button>
+    <button class="secondary" id="resetSelection">RESET SELECTION</button>
    </div>
   </div>
 
   <div class="section">
-   <div class="panel-title">3D THEMATIC VISUALISATION</div>
-   <label>3D extrusion indicator</label>
+   <div class="heading">3D THEMATIC DISPLAY</div>
+   <label>Thematic indicator</label>
    <select id="metric">
-    <option value="population">Population</option>
-    <option value="households">Households</option>
+    <option value="population">Enumerated population</option>
+    <option value="households">Enumerated households</option>
+    <option value="buildings">Buildings — listing</option>
+    <option value="buildMap">Buildings — mapping</option>
+    <option value="compounds">Compounds — listing</option>
+    <option value="compMap">Compounds — mapping</option>
     <option value="popDensity">Population density</option>
     <option value="hhDensity">Household density</option>
-    <option value="buildings">Buildings</option>
-    <option value="compounds">Compounds</option>
    </select>
-   <label>3D extrusion strength</label>
+   <label>Extrusion height</label>
    <select id="heightScale">
     <option value="0.5">Low</option>
     <option value="1" selected>Normal</option>
     <option value="1.8">High</option>
     <option value="3">Very high</option>
    </select>
-   <label>3D view mode</label>
+   <label>Map display mode</label>
    <select id="viewMode">
-    <option value="3d">3D extruded polygons</option>
-    <option value="flat">2D thematic polygons</option>
-    <option value="outline">EA outlines only</option>
+    <option value="3d">3D extruded EA polygons</option>
+    <option value="2d">2D thematic polygons</option>
+    <option value="outline">EA boundaries only</option>
    </select>
    <label>Basemap</label>
    <select id="basemap">
     <option value="voyager">Voyager</option>
     <option value="satellite">Satellite</option>
-    <option value="hybrid">Hybrid</option>
+    <option value="hybrid">Satellite + labels</option>
     <option value="dark">Dark</option>
     <option value="osm">OpenStreetMap</option>
    </select>
-   <div class="btn-row">
+   <div class="btnrow">
     <button class="success" id="run">RUN ANALYSIS</button>
-    <button class="secondary" id="resetView">RESET VIEW</button>
+    <button class="secondary" id="resetView">RESET MAP VIEW</button>
    </div>
   </div>
 
   <div class="section">
-   <div class="panel-title">MAP LAYERS</div>
-   <label class="checkrow"><input type="checkbox" id="showEA" checked> Show enumeration areas</label>
-   <label class="checkrow"><input type="checkbox" id="showLabels"> Show EA labels</label>
-   <label class="checkrow"><input type="checkbox" id="showBuildings" checked> Show OSM buildings</label>
-   <label class="checkrow"><input type="checkbox" id="showRoads" checked> Show OSM roads</label>
+   <div class="heading">MAP LAYERS</div>
+   <label class="check"><input type="checkbox" id="showEA" checked> Show EA polygons</label>
+   <label class="check"><input type="checkbox" id="showLabels"> Show EA labels</label>
+   <label class="check"><input type="checkbox" id="showBuildings" checked> Show OSM buildings</label>
+   <label class="check"><input type="checkbox" id="showRoads" checked> Show OSM roads</label>
    <button class="warning" id="loadOSM">LOAD OSM BUILDINGS & ROADS</button>
-   <p class="small">OSM buildings and roads are reference layers. They are not official GBoS building or compound counts.</p>
+   <p class="small">OSM features are reference data, not official EA building or compound totals.</p>
   </div>
 
   <div class="section">
-   <div class="panel-title">DATA EXPORTS</div>
-   <div class="btn-row">
-    <button class="secondary" id="csvExport">EXPORT EA CSV</button>
-    <button class="secondary" id="geoExport">EXPORT EA GEOJSON</button>
-   </div>
-   <div class="btn-row">
-    <button class="secondary" id="osmExport">EXPORT LOADED OSM</button>
-    <button class="secondary" id="viewExport">EXPORT VIEW DATA</button>
+   <div class="heading">DATA EXPORTS</div>
+   <div class="btnrow">
+    <button class="secondary" id="exportCSV">EXPORT EA CSV</button>
+    <button class="secondary" id="exportEA">EXPORT EA GEOJSON</button>
+    <button class="secondary" id="exportOSM">EXPORT LOADED OSM</button>
+    <button class="secondary" id="exportView">EXPORT VIEW DATA</button>
    </div>
   </div>
 
   <div class="section">
-   <div class="panel-title">PROCESSING LOG</div>
-   <div id="log">Dashboard initialising...</div>
+   <div class="heading">DETECTED GEOJSON FIELDS</div>
+   <div id="fieldDiagnostics">Waiting for data...</div>
+  </div>
+
+  <div class="section">
+   <div class="heading">PROCESSING LOG</div>
+   <div id="log">Initialising dashboard...</div>
   </div>
  </div>
  <div class="footer">
@@ -281,122 +245,95 @@ button:hover{filter:brightness(1.15)}
  </div>
 </section>
 
-<!-- CENTRE: MAP -->
+<!-- MAP -->
 <section class="panel" id="map-panel">
  <div id="map"></div>
  <div class="map-top">
-  <div class="map-chip" id="mapTitle">THE GAMBIA | NATIONAL EA VIEW</div>
-  <div class="map-chip" id="eaCount">0 EAs</div>
+  <div class="chip" id="mapTitle">THE GAMBIA | NATIONAL EA VIEW</div>
+  <div class="chip" id="mapCount">0 EAs</div>
  </div>
- <div class="map-buttons">
-  <button class="secondary" id="pitchUp" title="Tilt map">↗</button>
-  <button class="secondary" id="pitchDown" title="Reduce tilt">↘</button>
-  <button class="secondary" id="north" title="North">N</button>
+ <div class="map-tools">
+  <button class="secondary" id="tiltUp">↗</button>
+  <button class="secondary" id="tiltDown">↘</button>
+  <button class="secondary" id="north">N</button>
  </div>
  <div class="map-bottom">
-  <b>3D THEMATIC EA MAP</b><br>
-  Extrusion height and colour represent the selected EA indicator.
-  <div id="mapMetric" style="margin-top:5px;color:#65d8f5">Indicator: Population</div>
+  <b>3D EA THEMATIC EXTRUSION</b><br>
+  Height and colour represent the selected EA indicator.
+  <div id="mapIndicator" style="color:#5ed7f5;margin-top:4px">Indicator: Population</div>
  </div>
 </section>
 
-<!-- RIGHT: ANALYTICS -->
+<!-- ANALYTICS -->
 <section class="panel">
- <div class="panel-scroll">
-  <div class="panel-title">SPATIAL ANALYTICS <span class="tag">LIVE</span></div>
+ <div class="scroll">
+  <div class="heading">SPATIAL ANALYTICS <span class="tag">LIVE</span></div>
 
   <div class="section">
-   <div class="panel-title">NATIONAL / SELECTED AREA SUMMARY</div>
-   <div class="kpi-grid">
-    <div class="kpi">
-     <div class="name">ENUMERATION AREAS</div>
-     <div class="value" id="kEA">0</div>
-     <div class="unit">Displayed EA features</div>
-    </div>
-    <div class="kpi">
-     <div class="name">POPULATION</div>
-     <div class="value" id="kPop">N/A</div>
-     <div class="unit">Sum of available EA values</div>
-    </div>
-    <div class="kpi">
-     <div class="name">HOUSEHOLDS</div>
-     <div class="value" id="kHH">N/A</div>
-     <div class="unit">Sum of available EA values</div>
-    </div>
-    <div class="kpi">
-     <div class="name">MEAN POP. DENSITY</div>
-     <div class="value" id="kDensity">N/A</div>
-     <div class="unit">People per km²</div>
-    </div>
-    <div class="kpi">
-     <div class="name">BUILDINGS</div>
-     <div class="value" id="kBuildings">N/A</div>
-     <div class="unit">Only if EA attribute exists</div>
-    </div>
-    <div class="kpi">
-     <div class="name">COMPOUNDS</div>
-     <div class="value" id="kCompounds">N/A</div>
-     <div class="unit">Only if EA attribute exists</div>
-    </div>
+   <div class="heading">SELECTED EA STATISTICS</div>
+   <div class="kpis">
+    <div class="kpi"><div class="label">ENUMERATION AREAS</div><div class="value" id="kEA">0</div><div class="unit">Displayed EA features</div></div>
+    <div class="kpi"><div class="label">POPULATION</div><div class="value" id="kPop">N/A</div><div class="unit" id="popFieldLabel">enum_pop</div></div>
+    <div class="kpi"><div class="label">HOUSEHOLDS</div><div class="value" id="kHH">N/A</div><div class="unit" id="hhFieldLabel">enum_hhs</div></div>
+    <div class="kpi"><div class="label">MEAN POP. DENSITY</div><div class="value" id="kDensity">N/A</div><div class="unit">People per km²</div></div>
+    <div class="kpi"><div class="label">BUILDINGS</div><div class="value" id="kBuildings">N/A</div><div class="unit" id="buildingFieldLabel">build_ls</div></div>
+    <div class="kpi"><div class="label">COMPOUNDS</div><div class="value" id="kCompounds">N/A</div><div class="unit" id="compoundFieldLabel">comp_ls</div></div>
    </div>
   </div>
 
   <div class="section">
-   <div class="panel-title">POPULATION DISTRIBUTION BY LGA</div>
-   <div class="chart-box">
-    <h3>Population by Local Government Area</h3>
-    <div class="chart-wrap"><canvas id="popChart"></canvas></div>
+   <div class="heading">POPULATION DISTRIBUTION BY LGA</div>
+   <div class="chartbox">
+    <h3>Enumerated population by LGA</h3>
+    <div class="chartwrap"><canvas id="popChart"></canvas></div>
    </div>
   </div>
 
   <div class="section">
-   <div class="panel-title">HOUSEHOLD DISTRIBUTION BY LGA</div>
-   <div class="chart-box">
-    <h3>Households by Local Government Area</h3>
-    <div class="chart-wrap"><canvas id="hhChart"></canvas></div>
+   <div class="heading">HOUSEHOLD DISTRIBUTION BY LGA</div>
+   <div class="chartbox">
+    <h3>Enumerated households by LGA</h3>
+    <div class="chartwrap"><canvas id="hhChart"></canvas></div>
    </div>
   </div>
 
   <div class="section">
-   <div class="panel-title">SELECTED AREA DETAILS</div>
-   <table class="details-table">
+   <div class="heading">SELECTED AREA DETAILS</div>
+   <table class="details">
     <tr><td>Selected LGA</td><td id="dLGA">All LGAs</td></tr>
     <tr><td>Selected district</td><td id="dDistrict">All districts</td></tr>
     <tr><td>Selected ward</td><td id="dWard">All wards</td></tr>
     <tr><td>EA data source</td><td id="dSource">GitHub</td></tr>
-    <tr><td>Displayed area</td><td id="dArea">N/A</td></tr>
+    <tr><td>Displayed EAs</td><td id="dCount">0</td></tr>
+    <tr><td>Total EA area</td><td id="dArea">N/A</td></tr>
     <tr><td>Mean EA area</td><td id="dMeanArea">N/A</td></tr>
-    <tr><td>Current indicator</td><td id="dMetric">Population</td></tr>
+    <tr><td>Population field</td><td id="dPopField">N/A</td></tr>
+    <tr><td>Household field</td><td id="dHHField">N/A</td></tr>
    </table>
   </div>
 
   <div class="section">
-   <div class="panel-title">CONTINUOUS 3D THEMATIC LEGEND</div>
-   <div id="legendTitle" class="small">Population</div>
-   <div class="legend-gradient" id="legendGradient"></div>
-   <div class="legend-labels">
-    <span>Low value</span><span>High value</span>
+   <div class="heading">CONTINUOUS 3D COLOUR LEGEND</div>
+   <div class="small" id="legendTitle">Enumerated population</div>
+   <div class="gradient"></div>
+   <div class="legendlabels"><span>Low</span><span>High</span></div>
+   <div class="legendvalues">
+    <span id="legMin">0</span><span id="legQ1">—</span>
+    <span id="legQ2">—</span><span id="legQ3">—</span><span id="legMax">—</span>
    </div>
-   <div class="legend-ticks">
-    <span id="legendMin">0</span>
-    <span id="legendMid1">—</span>
-    <span id="legendMid2">—</span>
-    <span id="legendMax">—</span>
-   </div>
-   <p class="small">The continuous colour scale is calculated from the currently displayed EA features. The same colour expression is used by the 3D layer.</p>
-   <div class="small" id="legendMissing"></div>
+   <p class="small" id="legendNote">Legend range is calculated from the displayed EA features. It uses the same colour scale as the 3D layer.</p>
   </div>
 
   <div class="section">
-   <div class="panel-title">METHODOLOGY</div>
+   <div class="heading">METHOD AND DATA NOTES</div>
    <div class="small">
-    • EA attributes are read from the loaded GeoJSON properties.<br>
-    • Population and household totals are aggregated from valid numeric values.<br>
-    • Polygon area is calculated geodesically using Turf.js.<br>
-    • Density is calculated as the total indicator divided by total area.<br>
-    • Extrusion height is scaled relative to the displayed EA values.<br>
-    • Colour classes are continuous and update with the selected indicator.<br>
-    • Missing building and compound attributes are not estimated.
+    • Enumerated population: enum_pop.<br>
+    • Enumerated households: enum_hhs.<br>
+    • Buildings: build_ls; mapping buildings: build_map.<br>
+    • Compounds: comp_ls; mapping compounds: comp_map.<br>
+    • Area: Area_sqkm, then Shape_Area, then GeoJSON geometry.<br>
+    • Density: selected total divided by total displayed EA area.<br>
+    • 3D height is a relative thematic extrusion, not measured building height or terrain elevation.
    </div>
   </div>
  </div>
@@ -411,273 +348,353 @@ button:hover{filter:brightness(1.15)}
 <script>
 "use strict";
 
-/* ============================================================
-   CONFIGURATION
-============================================================ */
+/* ==========================================================
+   CONFIGURATION: ACTUAL GEOJSON FIELD NAMES
+========================================================== */
 
 const EA_URL =
  "https://raw.githubusercontent.com/silkysingz94-oss/Urban-Planning-Intelligence/main/Census_EAs_Geo.json";
 
-const COLORS = [
+const FIELD={
+ lga:["lganame"],
+ district:["distname"],
+ ward:["wardname"],
+ ea:["feacode","eaname"],
+
+ // Enumerated values are prioritised.
+ population:["enum_pop","ls_pop","map_pop","mapping_po","sum_pop","population","pop"],
+ households:["enum_hhs","ls_hhs","map_hhs","mapping_hh","sum_hhs","households","hhs"],
+
+ // Listing values are prioritised for building/compound totals.
+ buildings:["build_ls","build_map","buildings","building_count","total_buildings"],
+ buildingsMap:["build_map","build_ls","buildings","building_count"],
+ compounds:["comp_ls","comp_map","compounds","compound_count","total_compounds"],
+ compoundsMap:["comp_map","comp_ls","compounds","compound_count"],
+
+ area:["Area_sqkm","area_sqkm","area_km2"],
+ shapeArea:["Shape_Area","shape_area"]
+};
+
+const PALETTE=[
  "#313695","#4575b4","#74add1",
  "#ffffbf","#fdae61","#d73027"
 ];
 
-const ALIASES = {
- lga:["lganame","lga","lga_name","region","regionname","admin1"],
- district:["distname","district","district_name","dist_name"],
- ward:["wardname","ward","ward_name"],
- ea:["feacode","eaname","ea_code","ea","enumeration_area","ea_name"],
- population:[
-  "sum_pop","population","pop","pop_total","total_population",
-  "total_pop","pop_sum","pop2023","pop_2023"
- ],
- households:[
-  "sum_hhs","households","hh","hhs","total_households",
-  "household","hh_total","total_hh","hh_sum"
- ],
- buildings:[
-  "buildings","building_count","total_buildings",
-  "no_buildings","number_buildings","bld_count"
- ],
- compounds:[
-  "compounds","compound_count","total_compounds",
-  "no_compounds","number_compounds","cmp_count"
- ]
-};
+let allEA=null;
+let displayedEA=null;
+let osmBuildings={type:"FeatureCollection",features:[]};
+let osmRoads={type:"FeatureCollection",features:[]};
+let sourceName="GitHub";
+let selectedMetric="population";
+let currentRange={min:0,max:1};
+let detectedFields={};
+let popChart=null,hhChart=null;
+let mapLoaded=false;
 
-let fullEA = null;
-let viewEA = null;
-let osmBuildings = {type:"FeatureCollection",features:[]};
-let osmRoads = {type:"FeatureCollection",features:[]};
-let dataSourceName = "GitHub";
-let charts = {pop:null,hh:null};
-let mapReady = false;
-let currentMetric = "population";
-let colorRange = {min:0,max:1};
-let nationalBounds = null;
+const $=id=>document.getElementById(id);
 
-/* ============================================================
-   HELPERS
-============================================================ */
-
-const $ = id => document.getElementById(id);
+/* ==========================================================
+   LOGGING AND FIELD UTILITIES
+========================================================== */
 
 function log(message){
  const el=$("log");
- const time=new Date().toLocaleTimeString();
- el.innerHTML += "<br>["+time+"] "+escapeHTML(message);
+ el.innerHTML+="<br>"+new Date().toLocaleTimeString()+" — "+escapeHTML(message);
  el.scrollTop=el.scrollHeight;
 }
 
-function escapeHTML(value){
- return String(value ?? "").replace(/[&<>"']/g,c=>({
+function escapeHTML(v){
+ return String(v??"").replace(/[&<>"']/g,c=>({
   "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
  }[c]));
 }
 
-function norm(value){
- return String(value ?? "").trim().toLowerCase()
-  .replace(/[\s_-]+/g,"");
+function norm(v){
+ return String(v??"").toLowerCase().replace(/[^a-z0-9]/g,"");
 }
 
-function numberValue(value){
- if(value===null || value===undefined || value==="") return null;
- if(typeof value==="string"){
-  value=value.replace(/,/g,"").trim();
-  if(!value) return null;
- }
- const n=Number(value);
- return Number.isFinite(n) ? n : null;
+function numeric(v){
+ if(v===null||v===undefined||v==="")return null;
+ if(typeof v==="string")v=v.replace(/,/g,"").trim();
+ if(v==="")return null;
+ const n=Number(v);
+ return Number.isFinite(n)?n:null;
 }
 
 function findField(properties,aliases){
- const keys=Object.keys(properties || {});
- const normalised=new Map(keys.map(k=>[norm(k),k]));
+ const keys=Object.keys(properties||{});
  for(const alias of aliases){
-  const found=normalised.get(norm(alias));
-  if(found!==undefined) return found;
+  const key=keys.find(k=>norm(k)===norm(alias));
+  if(key!==undefined)return key;
  }
  return null;
 }
 
-function getValue(properties,aliases){
+function readNumber(properties,aliases){
  const field=findField(properties,aliases);
- if(!field) return null;
- return numberValue(properties[field]);
+ if(!field)return null;
+ return numeric(properties[field]);
 }
 
-function getText(properties,aliases){
+function readText(properties,aliases){
  const field=findField(properties,aliases);
- if(!field) return "";
- return String(properties[field] ?? "").trim();
+ return field?String(properties[field]??"").trim():"";
 }
 
-function sumValues(features,aliases){
- let total=0,count=0;
- features.forEach(f=>{
-  const value=getValue(f.properties,aliases);
-  if(value!==null){
-   total+=value;
-   count++;
-  }
- });
- return count ? total : null;
-}
-
-function fmt(value,digits=0){
- if(value===null || value===undefined || !Number.isFinite(value)) return "N/A";
+function format(value,digits=0){
+ if(value===null||value===undefined||!Number.isFinite(value))return "N/A";
  return value.toLocaleString("en-US",{
   maximumFractionDigits:digits,
   minimumFractionDigits:digits
  });
 }
 
-function metricLabel(metric){
- return ({
-  population:"Population",
-  households:"Households",
-  popDensity:"Population density",
-  hhDensity:"Household density",
-  buildings:"Buildings",
-  compounds:"Compounds"
- })[metric] || metric;
+function sumField(features,aliases){
+ let total=0,count=0;
+ features.forEach(f=>{
+  const v=readNumber(f.properties,aliases);
+  if(v!==null){total+=v;count++;}
+ });
+ return count?total:null;
 }
 
-function getMetricValue(feature,metric){
- const p=feature.properties || {};
- if(metric==="population") return getValue(p,ALIASES.population);
- if(metric==="households") return getValue(p,ALIASES.households);
- if(metric==="buildings") return getValue(p,ALIASES.buildings);
- if(metric==="compounds") return getValue(p,ALIASES.compounds);
- if(metric==="popDensity"){
-  const pop=getValue(p,ALIASES.population);
-  const area=feature.properties._areaKm2;
-  return pop!==null && area>0 ? pop/area : null;
- }
- if(metric==="hhDensity"){
-  const hh=getValue(p,ALIASES.households);
-  const area=feature.properties._areaKm2;
-  return hh!==null && area>0 ? hh/area : null;
+function fieldUsed(features,aliases){
+ for(const f of features){
+  const key=findField(f.properties,aliases);
+  if(key && numeric(f.properties[key])!==null)return key;
  }
  return null;
 }
 
-function featureAreaKm2(feature){
+function areaKm2(feature){
+ const p=feature.properties||{};
+
+ // The supplied EA GeoJSON has Area_sqkm in square kilometres.
+ const stored=readNumber(p,FIELD.area);
+ if(stored!==null && stored>0)return stored;
+
+ // Shape_Area is stored in square metres in this dataset.
+ const shape=readNumber(p,FIELD.shapeArea);
+ if(shape!==null && shape>0)return shape/1000000;
+
+ // Last resort: calculate area from polygon geometry.
  try{
-  const area=turf.area(feature);
-  return Number.isFinite(area) && area>0 ? area/1000000 : null;
- }catch(e){return null}
+  const a=turf.area(feature)/1000000;
+  return Number.isFinite(a)&&a>0?a:null;
+ }catch(e){return null;}
 }
 
-function validPolygonFeature(feature){
- return feature && feature.geometry &&
-  ["Polygon","MultiPolygon"].includes(feature.geometry.type);
+function validPolygon(f){
+ return f&&f.geometry&&
+  (f.geometry.type==="Polygon"||f.geometry.type==="MultiPolygon");
 }
 
-function prepareData(fc){
- if(!fc || !Array.isArray(fc.features)) throw new Error("Invalid GeoJSON FeatureCollection.");
- const features=fc.features.filter(validPolygonFeature).map((f,i)=>{
-  const props={...(f.properties || {})};
-  const area=featureAreaKm2(f);
-  props._areaKm2=area;
-  props._internalId=i;
-  return {...f,properties:props};
+function prepareFeatureCollection(fc){
+ if(!fc||!Array.isArray(fc.features))throw new Error("Invalid GeoJSON FeatureCollection.");
+
+ const features=fc.features.filter(validPolygon).map((f,i)=>{
+  const p={...(f.properties||{})};
+  p._areaKm2=areaKm2(f);
+  p._internalId=i;
+  return {...f,properties:p};
  });
  return {type:"FeatureCollection",features};
 }
 
-function uniqueValues(features,aliases){
- const values=new Set();
- features.forEach(f=>{
-  const v=getText(f.properties,aliases);
-  if(v) values.add(v);
- });
- return [...values].sort((a,b)=>a.localeCompare(b));
+/* ==========================================================
+   ACTUAL INDICATOR VALUES
+========================================================== */
+
+function metricInfo(metric){
+ const definitions={
+  population:{label:"Enumerated population",fields:FIELD.population,unit:"persons"},
+  households:{label:"Enumerated households",fields:FIELD.households,unit:"households"},
+  buildings:{label:"Buildings — listing",fields:FIELD.buildings,unit:"buildings"},
+  buildMap:{label:"Buildings — mapping",fields:FIELD.buildingsMap,unit:"buildings"},
+  compounds:{label:"Compounds — listing",fields:FIELD.compounds,unit:"compounds"},
+  compMap:{label:"Compounds — mapping",fields:FIELD.compoundsMap,unit:"compounds"},
+  popDensity:{label:"Population density",fields:FIELD.population,unit:"persons/km²"},
+  hhDensity:{label:"Household density",fields:FIELD.households,unit:"households/km²"}
+ };
+ return definitions[metric];
 }
 
-function setOptions(select,values,placeholder){
- const old=select.value;
- select.innerHTML="";
- const first=document.createElement("option");
- first.value="";
- first.textContent=placeholder;
- select.appendChild(first);
- values.forEach(v=>{
-  const op=document.createElement("option");
-  op.value=v;op.textContent=v;
-  select.appendChild(op);
- });
- if(values.includes(old)) select.value=old;
-}
+function valueFor(feature,metric){
+ const p=feature.properties||{};
+ const info=metricInfo(metric);
+ if(!info)return null;
 
-function getSelectedFeatures(){
- if(!fullEA) return [];
- const lga=$("lga").value;
- const district=$("district").value;
- const ward=$("ward").value;
- return fullEA.features.filter(f=>{
-  const p=f.properties;
-  return (!lga || getText(p,ALIASES.lga)===lga) &&
-   (!district || getText(p,ALIASES.district)===district) &&
-   (!ward || getText(p,ALIASES.ward)===ward);
- });
-}
+ const base=readNumber(p,info.fields);
+ if(base===null)return null;
 
-function updateAdminOptions(){
- if(!fullEA) return;
- const lga=$("lga").value;
- const district=$("district").value;
- const ward=$("ward").value;
-
- setOptions($("lga"),uniqueValues(fullEA.features,ALIASES.lga),"All LGAs");
-
- const lgaFeatures=fullEA.features.filter(f=>
-  !lga || getText(f.properties,ALIASES.lga)===lga
- );
- setOptions($("district"),uniqueValues(lgaFeatures,ALIASES.district),"All districts");
-
- const selectedDistrict=$("district").value;
- const districtFeatures=lgaFeatures.filter(f=>
-  !selectedDistrict || getText(f.properties,ALIASES.district)===selectedDistrict
- );
- setOptions($("ward"),uniqueValues(districtFeatures,ALIASES.ward),"All wards");
-
- if(ward && !uniqueValues(districtFeatures,ALIASES.ward).includes(ward)){
-  $("ward").value="";
+ if(metric==="popDensity"||metric==="hhDensity"){
+  const area=numeric(p._areaKm2);
+  return area>0?base/area:null;
  }
+ return base;
 }
 
-/* ============================================================
-   MAP INITIALISATION
-============================================================ */
+function addCalculatedValues(fc){
+ const metric=$("metric").value;
+ return {
+  type:"FeatureCollection",
+  features:fc.features.map(f=>{
+   const v=valueFor(f,metric);
+   return {
+    ...f,
+    properties:{
+     ...f.properties,
+     _metricValue:v===null?0:v,
+     _metricAvailable:v!==null
+    }
+   };
+  })
+ };
+}
+
+/* ==========================================================
+   DETECT FIELDS AND SHOW DIAGNOSTICS
+========================================================== */
+
+function detectDatasetFields(features){
+ detectedFields={
+  population:fieldUsed(features,FIELD.population),
+  households:fieldUsed(features,FIELD.households),
+  buildings:fieldUsed(features,FIELD.buildings),
+  buildingsMap:fieldUsed(features,FIELD.buildingsMap),
+  compounds:fieldUsed(features,FIELD.compounds),
+  compoundsMap:fieldUsed(features,FIELD.compoundsMap),
+  area:fieldUsed(features,FIELD.area)||fieldUsed(features,FIELD.shapeArea)
+ };
+
+ const entries=[
+  ["Population",detectedFields.population],
+  ["Households",detectedFields.households],
+  ["Buildings — listing",detectedFields.buildings],
+  ["Buildings — mapping",detectedFields.buildingsMap],
+  ["Compounds — listing",detectedFields.compounds],
+  ["Compounds — mapping",detectedFields.compoundsMap],
+  ["Area",detectedFields.area],
+  ["LGA",fieldUsedText(features,FIELD.lga)],
+  ["District",fieldUsedText(features,FIELD.district)],
+  ["Ward",fieldUsedText(features,FIELD.ward)],
+  ["EA code",fieldUsedText(features,FIELD.ea)]
+ ];
+
+ $("fieldDiagnostics").innerHTML=entries.map(([name,value])=>
+  "<b>"+escapeHTML(name)+":</b> "+
+  (value?"<span style='color:#4ed8aa'>"+escapeHTML(value)+"</span>":
+  "<span style='color:#f3a34a'>Not detected</span>")
+ ).join("<br>");
+
+ $("popFieldLabel").textContent=detectedFields.population||"Not detected";
+ $("hhFieldLabel").textContent=detectedFields.households||"Not detected";
+ $("buildingFieldLabel").textContent=detectedFields.buildings||"Not detected";
+ $("compoundFieldLabel").textContent=detectedFields.compounds||"Not detected";
+
+ $("dPopField").textContent=detectedFields.population||"N/A";
+ $("dHHField").textContent=detectedFields.households||"N/A";
+}
+
+function fieldUsedText(features,aliases){
+ for(const f of features){
+  const k=findField(f.properties,aliases);
+  if(k)return k;
+ }
+ return null;
+}
+
+/* ==========================================================
+   ADMINISTRATIVE FILTERS
+========================================================== */
+
+function uniqueValues(features,aliases){
+ const set=new Set();
+ features.forEach(f=>{
+  const v=readText(f.properties,aliases);
+  if(v)set.add(v);
+ });
+ return [...set].sort((a,b)=>a.localeCompare(b));
+}
+
+function setSelect(id,values,placeholder){
+ const el=$(id);
+ const previous=el.value;
+ el.innerHTML="";
+ const first=document.createElement("option");
+ first.value="";first.textContent=placeholder;
+ el.appendChild(first);
+ values.forEach(v=>{
+  const o=document.createElement("option");
+  o.value=v;o.textContent=v;
+  el.appendChild(o);
+ });
+ if(values.includes(previous))el.value=previous;
+}
+
+function refreshAdminOptions(){
+ if(!allEA)return;
+ const lga=$("lga").value;
+ const district=$("district").value;
+
+ setSelect("lga",uniqueValues(allEA.features,FIELD.lga),"All LGAs");
+
+ const byLGA=allEA.features.filter(f=>
+  !lga||readText(f.properties,FIELD.lga)===lga
+ );
+ setSelect("district",uniqueValues(byLGA,FIELD.district),"All districts");
+
+ const byDistrict=byLGA.filter(f=>
+  !district||readText(f.properties,FIELD.district)===district
+ );
+ setSelect("ward",uniqueValues(byDistrict,FIELD.ward),"All wards");
+}
+
+function filteredFeatures(){
+ const lga=$("lga").value;
+ const district=$("district").value;
+ const ward=$("ward").value;
+
+ return allEA.features.filter(f=>{
+  const p=f.properties;
+  return (!lga||readText(p,FIELD.lga)===lga)&&
+   (!district||readText(p,FIELD.district)===district)&&
+   (!ward||readText(p,FIELD.ward)===ward);
+ });
+}
+
+/* ==========================================================
+   MAP STYLES
+========================================================== */
 
 const styles={
  voyager:{
-  version:8,sources:{
-   base:{type:"raster",tiles:["https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png"],tileSize:256,attribution:"© CARTO © OpenStreetMap"}
-  },layers:[{id:"base",type:"raster",source:"base"}]
+  version:8,
+  sources:{base:{type:"raster",tiles:["https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png"],tileSize:256,attribution:"© CARTO © OpenStreetMap"}},
+  layers:[{id:"base",type:"raster",source:"base"}]
  },
  dark:{
-  version:8,sources:{
-   base:{type:"raster",tiles:["https://basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}.png"],tileSize:256,attribution:"© CARTO © OpenStreetMap"}
-  },layers:[{id:"base",type:"raster",source:"base"}]
+  version:8,
+  sources:{base:{type:"raster",tiles:["https://basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}.png"],tileSize:256,attribution:"© CARTO © OpenStreetMap"}},
+  layers:[{id:"base",type:"raster",source:"base"}]
  },
  osm:{
-  version:8,sources:{
-   base:{type:"raster",tiles:["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],tileSize:256,attribution:"© OpenStreetMap"}
-  },layers:[{id:"base",type:"raster",source:"base"}]
+  version:8,
+  sources:{base:{type:"raster",tiles:["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],tileSize:256,attribution:"© OpenStreetMap"}},
+  layers:[{id:"base",type:"raster",source:"base"}]
  },
  satellite:{
-  version:8,sources:{
-   base:{type:"raster",tiles:["https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"],tileSize:256,attribution:"© Esri"}
-  },layers:[{id:"base",type:"raster",source:"base"}]
+  version:8,
+  sources:{base:{type:"raster",tiles:["https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"],tileSize:256,attribution:"© Esri"}},
+  layers:[{id:"base",type:"raster",source:"base"}]
  },
  hybrid:{
-  version:8,sources:{
+  version:8,
+  sources:{
    imagery:{type:"raster",tiles:["https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"],tileSize:256,attribution:"© Esri"},
    labels:{type:"raster",tiles:["https://basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}.png"],tileSize:256,attribution:"© CARTO"}
-  },layers:[
+  },
+  layers:[
    {id:"imagery",type:"raster",source:"imagery"},
    {id:"labels",type:"raster",source:"labels"}
   ]
@@ -685,279 +702,96 @@ const styles={
 };
 
 const map=new maplibregl.Map({
- container:"map",
- style:styles.voyager,
- center:[-15.45,13.45],
- zoom:7.1,
- pitch:58,
- bearing:-12,
- antialias:true
+ container:"map",style:styles.voyager,
+ center:[-15.45,13.45],zoom:7.1,pitch:60,bearing:-12,antialias:true
 });
-
 map.addControl(new maplibregl.NavigationControl({visualizePitch:true}),"top-right");
-map.addControl(new maplibregl.ScaleControl({maxWidth:120,unit:"metric"}),"bottom-right");
-
-map.on("error",e=>{
- if(e && e.error) console.warn("Map error:",e.error.message);
-});
+map.addControl(new maplibregl.ScaleControl({unit:"metric"}),"bottom-right");
 
 map.on("load",()=>{
- mapReady=true;
- log("Map engine ready.");
- if(fullEA) addEALayers();
+ mapLoaded=true;
+ log("Map loaded.");
+ if(allEA)addAllLayers();
+});
+map.on("error",e=>{
+ if(e.error)console.warn("Map error",e.error.message);
 });
 
-/* ============================================================
-   DATA LOADING
-============================================================ */
+/* ==========================================================
+   CONTINUOUS COLOUR AND 3D HEIGHT
+========================================================== */
 
-async function loadGitHub(){
- try{
-  $("dataStatus").textContent="Loading EA GeoJSON from GitHub...";
-  log("Requesting EA GeoJSON from GitHub.");
-  const response=await fetch(EA_URL,{cache:"no-store"});
-  if(!response.ok) throw new Error("GitHub returned HTTP "+response.status);
-  const raw=await response.json();
-  loadEA(raw,"GitHub");
- }catch(error){
-  console.error(error);
-  $("dataStatus").textContent="GitHub load failed. Upload local GeoJSON.";
-  log("EA load failed: "+error.message);
- }
+function getMetricValues(){
+ if(!displayedEA)return [];
+ return displayedEA.features.map(f=>valueFor(f,$("metric").value))
+  .filter(v=>v!==null&&Number.isFinite(v));
 }
 
-function loadEA(raw,source){
- try{
-  let fc=raw;
-  if(Array.isArray(raw)) fc={type:"FeatureCollection",features:raw};
-  if(fc.type!=="FeatureCollection" || !Array.isArray(fc.features)){
-   throw new Error("Input must be a GeoJSON FeatureCollection.");
-  }
-  fullEA=prepareData(fc);
-  dataSourceName=source;
-  $("dSource").textContent=source;
-  $("dataStatus").textContent=
-   fmt(fullEA.features.length)+" valid polygon EA features loaded.";
-  log("Loaded "+fullEA.features.length+" polygon EAs from "+source+".");
-
-  $("lga").value="";
-  $("district").value="";
-  $("ward").value="";
-  updateAdminOptions();
-  applySelection();
-  if(mapReady) addEALayers();
- }catch(error){
-  console.error(error);
-  log("Data preparation error: "+error.message);
-  $("dataStatus").textContent=error.message;
- }
-}
-
-$("loadGitHub").addEventListener("click",loadGitHub);
-
-$("fileEA").addEventListener("change",async e=>{
- const file=e.target.files[0];
- if(!file) return;
- try{
-  const raw=JSON.parse(await file.text());
-  loadEA(raw,file.name);
- }catch(error){
-  log("Upload error: "+error.message);
- }
-});
-
-/* ============================================================
-   MAP SOURCES AND LAYERS
-============================================================ */
-
-function addEALayers(){
- if(!mapReady || !fullEA) return;
- const source=map.getSource("ea-source");
- if(source){
-  source.setData(viewEA || fullEA);
- }else{
-  map.addSource("ea-source",{
-   type:"geojson",
-   data:viewEA || fullEA,
-   promoteId:"_internalId"
-  });
- }
-
- if(!map.getLayer("ea-extrusion")){
-  map.addLayer({
-   id:"ea-extrusion",
-   type:"fill-extrusion",
-   source:"ea-source",
-   paint:{
-    "fill-extrusion-color":colorExpression(),
-    "fill-extrusion-height":heightExpression(),
-    "fill-extrusion-base":0,
-    "fill-extrusion-opacity":0.90,
-    "fill-extrusion-vertical-gradient":true
-   },
-   layout:{"visibility":"visible"}
-  });
- }
-
- if(!map.getLayer("ea-fill")){
-  map.addLayer({
-   id:"ea-fill",type:"fill",source:"ea-source",
-   paint:{
-    "fill-color":colorExpression(),
-    "fill-opacity":0.82
-   },
-   layout:{"visibility":"none"}
-  });
- }
-
- if(!map.getLayer("ea-outline")){
-  map.addLayer({
-   id:"ea-outline",type:"line",source:"ea-source",
-   paint:{
-    "line-color":"#e7f5ff",
-    "line-width":["interpolate",["linear"],["zoom"],6,0.35,12,1.2,16,2],
-    "line-opacity":0.72
-   }
-  });
- }
-
- if(!map.getLayer("ea-label")){
-  map.addLayer({
-   id:"ea-label",type:"symbol",source:"ea-source",
-   layout:{
-    "visibility":"none",
-    "text-field":["coalesce",["get","feacode"],["get","eaname"],""],
-    "text-size":10,
-    "text-font":["Open Sans Semibold","Arial Unicode MS Bold"],
-    "text-allow-overlap":false
-   },
-   paint:{
-    "text-color":"#ffffff",
-    "text-halo-color":"#12243b",
-    "text-halo-width":1.5
-   }
-  });
- }
-
- addOSMLayers();
- updateThematicStyle();
- updateLayerVisibility();
- fitToFeatures(viewEA || fullEA);
-}
-
-function addOSMLayers(){
- if(!mapReady) return;
-
- if(!map.getSource("osm-buildings")){
-  map.addSource("osm-buildings",{type:"geojson",data:osmBuildings});
- }
- if(!map.getSource("osm-roads")){
-  map.addSource("osm-roads",{type:"geojson",data:osmRoads});
- }
-
- if(!map.getLayer("osm-building-fill")){
-  map.addLayer({
-   id:"osm-building-fill",type:"fill",source:"osm-buildings",
-   paint:{
-    "fill-color":"#f5ad55",
-    "fill-opacity":0.75,
-    "fill-outline-color":"#6e4324"
-   }
-  });
- }
- if(!map.getLayer("osm-building-extrusion")){
-  map.addLayer({
-   id:"osm-building-extrusion",type:"fill-extrusion",
-   source:"osm-buildings",
-   paint:{
-    "fill-extrusion-color":"#f5a340",
-    "fill-extrusion-height":5,
-    "fill-extrusion-base":0,
-    "fill-extrusion-opacity":0.85
-   }
-  });
- }
- if(!map.getLayer("osm-road-lines")){
-  map.addLayer({
-   id:"osm-road-lines",type:"line",source:"osm-roads",
-   paint:{
-    "line-color":"#f7e4bd",
-    "line-width":["interpolate",["linear"],["zoom"],7,0.5,13,2,17,4]
-   }
-  });
- }
- updateLayerVisibility();
-}
-
-/* ============================================================
-   CONTINUOUS COLOUR AND HEIGHT EXPRESSIONS
-============================================================ */
-
-function getCurrentValues(){
- return (viewEA || {features:[]}).features
-  .map(f=>getMetricValue(f,currentMetric))
-  .filter(v=>v!==null && Number.isFinite(v));
-}
-
-function getRange(){
- const values=getCurrentValues();
- if(!values.length) return {min:0,max:1};
- return {
-  min:Math.min(...values),
-  max:Math.max(...values)
- };
+function getNumericRange(values){
+ if(!values.length)return {min:0,max:1};
+ return {min:Math.min(...values),max:Math.max(...values)};
 }
 
 function colorExpression(){
- const r=colorRange;
- if(r.max===r.min){
-  return COLORS[3];
- }
+ const min=currentRange.min;
+ const max=currentRange.max;
+ if(max===min)return PALETTE[3];
+
+ const step=(max-min)/5;
  return [
-  "interpolate",["linear"],
-  ["to-number",["get","_metricValue"],0],
-  r.min,COLORS[0],
-  r.min+(r.max-r.min)*0.2,COLORS[1],
-  r.min+(r.max-r.min)*0.4,COLORS[2],
-  r.min+(r.max-r.min)*0.6,COLORS[3],
-  r.min+(r.max-r.min)*0.8,COLORS[4],
-  r.max,COLORS[5]
+  "interpolate",["linear"],["to-number",["get","_metricValue"],0],
+  min,PALETTE[0],
+  min+step,PALETTE[1],
+  min+step*2,PALETTE[2],
+  min+step*3,PALETTE[3],
+  min+step*4,PALETTE[4],
+  max,PALETTE[5]
  ];
 }
 
 function heightExpression(){
- const scale=Number($("heightScale").value || 1);
- const r=colorRange;
- const span=Math.max(r.max-r.min,0.000001);
+ const scale=Number($("heightScale").value)||1;
+ const min=currentRange.min;
+ const max=currentRange.max;
+ const range=Math.max(max-min,0.000001);
  const value=["to-number",["get","_metricValue"],0];
- const normalised=["max",0,["/",["-",value,r.min],span]];
- return ["*",["+",8,["*",normalised,125]],scale];
+ const normalised=["max",0,["/",["-",value,min],range]];
+ return ["*",["+",6,["*",normalised,150]],scale];
+}
+
+function updateLegend(values){
+ const info=metricInfo($("metric").value);
+ $("legendTitle").textContent=info.label;
+
+ if(!values.length){
+  ["legMin","legQ1","legQ2","legQ3","legMax"].forEach(id=>$(id).textContent="N/A");
+  $("legendNote").textContent="No valid values for this indicator in the displayed EA features.";
+  return;
+ }
+
+ const min=Math.min(...values);
+ const max=Math.max(...values);
+ const span=max-min;
+ $("legMin").textContent=format(min,2);
+ $("legQ1").textContent=format(min+span*.25,2);
+ $("legQ2").textContent=format(min+span*.50,2);
+ $("legQ3").textContent=format(min+span*.75,2);
+ $("legMax").textContent=format(max,2);
+ $("legendNote").textContent=
+  "Actual range: "+format(min,2)+" to "+format(max,2)+
+  " "+info.unit+". Based on "+values.length+" EA values.";
 }
 
 function updateThematicStyle(){
- if(!viewEA) return;
+ if(!displayedEA)return;
+ selectedMetric=$("metric").value;
 
- currentMetric=$("metric").value;
- const values=getCurrentValues();
- colorRange=getRange();
+ const values=getMetricValues();
+ currentRange=getNumericRange(values);
+ displayedEA=addCalculatedValues(displayedEA);
 
- viewEA={
-  type:"FeatureCollection",
-  features:viewEA.features.map(f=>{
-   const v=getMetricValue(f,currentMetric);
-   return {
-    ...f,
-    properties:{
-     ...f.properties,
-     _metricValue:v===null?0:v,
-     _hasMetric:v!==null
-    }
-   };
-  })
- };
-
- if(mapReady && map.getSource("ea-source")){
-  map.getSource("ea-source").setData(viewEA);
+ if(mapLoaded&&map.getSource("ea-source")){
+  map.getSource("ea-source").setData(displayedEA);
   if(map.getLayer("ea-extrusion")){
    map.setPaintProperty("ea-extrusion","fill-extrusion-color",colorExpression());
    map.setPaintProperty("ea-extrusion","fill-extrusion-height",heightExpression());
@@ -966,188 +800,177 @@ function updateThematicStyle(){
    map.setPaintProperty("ea-fill","fill-color",colorExpression());
   }
  }
-
  updateLegend(values);
- $("mapMetric").textContent="Indicator: "+metricLabel(currentMetric);
- $("dMetric").textContent=metricLabel(currentMetric);
+ $("mapIndicator").textContent="Indicator: "+metricInfo(selectedMetric).label;
 }
 
-function updateLegend(values){
- $("legendTitle").textContent=metricLabel(currentMetric);
- if(!values.length){
-  $("legendMin").textContent="N/A";
-  $("legendMid1").textContent="N/A";
-  $("legendMid2").textContent="N/A";
-  $("legendMax").textContent="N/A";
-  $("legendMissing").textContent="No usable values for this indicator in the displayed EA data.";
-  return;
- }
- const min=Math.min(...values);
- const max=Math.max(...values);
- const span=max-min;
- $("legendMin").textContent=fmt(min,2);
- $("legendMid1").textContent=fmt(min+span/3,2);
- $("legendMid2").textContent=fmt(min+span*2/3,2);
- $("legendMax").textContent=fmt(max,2);
- $("legendMissing").textContent=
-  "Range: "+fmt(min,2)+" to "+fmt(max,2)+" | "+values.length+
-  " EA values | "+metricLabel(currentMetric);
-}
+/* ==========================================================
+   MAP LAYERS
+========================================================== */
 
-/* ============================================================
-   LAYER VISIBILITY AND CAMERA
-============================================================ */
+function addAllLayers(){
+ if(!mapLoaded||!allEA)return;
 
-function updateLayerVisibility(){
- if(!mapReady) return;
- const mode=$("viewMode").value;
- const eaVisible=$("showEA").checked;
+ if(map.getSource("ea-source")){
+  map.getSource("ea-source").setData(displayedEA||allEA);
+ }else{
+  map.addSource("ea-source",{type:"geojson",data:displayedEA||allEA});
+ }
 
- if(map.getLayer("ea-extrusion")){
-  map.setLayoutProperty("ea-extrusion","visibility",
-   eaVisible && mode==="3d" ? "visible":"none");
- }
- if(map.getLayer("ea-fill")){
-  map.setLayoutProperty("ea-fill","visibility",
-   eaVisible && mode==="flat" ? "visible":"none");
- }
- if(map.getLayer("ea-outline")){
-  map.setLayoutProperty("ea-outline","visibility",
-   eaVisible && mode!=="outline" ? "visible":"none");
-  if(eaVisible && mode==="outline"){
-   map.setPaintProperty("ea-outline","line-width",1.5);
-   map.setPaintProperty("ea-outline","line-color","#48d8ff");
-  }else if(map.getLayer("ea-outline")){
-   map.setPaintProperty("ea-outline","line-width",
-    ["interpolate",["linear"],["zoom"],6,0.35,12,1.2,16,2]);
-   map.setPaintProperty("ea-outline","line-color","#e7f5ff");
-  }
- }
- if(map.getLayer("ea-label")){
-  map.setLayoutProperty("ea-label","visibility",
-   $("showLabels").checked && eaVisible ? "visible":"none");
- }
- if(map.getLayer("osm-building-fill")){
-  const visible=$("showBuildings").checked;
-  map.setLayoutProperty("osm-building-fill","visibility",visible?"visible":"none");
-  map.setLayoutProperty("osm-building-extrusion","visibility",visible && mode==="3d"?"visible":"none");
- }
- if(map.getLayer("osm-road-lines")){
-  map.setLayoutProperty("osm-road-lines","visibility",
-   $("showRoads").checked?"visible":"none");
- }
-}
-
-function fitToFeatures(fc){
- if(!mapReady || !fc || !fc.features.length) return;
- try{
-  const bounds=new maplibregl.LngLatBounds();
-  fc.features.forEach(f=>{
-   const coords=f.geometry.coordinates;
-   function walk(a){
-    if(typeof a[0]==="number" && typeof a[1]==="number"){
-     bounds.extend(a);
-    }else if(Array.isArray(a)){
-     a.forEach(walk);
-    }
+ if(!map.getLayer("ea-extrusion")){
+  map.addLayer({
+   id:"ea-extrusion",type:"fill-extrusion",source:"ea-source",
+   paint:{
+    "fill-extrusion-color":colorExpression(),
+    "fill-extrusion-height":heightExpression(),
+    "fill-extrusion-base":0,
+    "fill-extrusion-opacity":0.94,
+    "fill-extrusion-vertical-gradient":true
    }
-   walk(coords);
   });
-  if(!bounds.isEmpty()){
-   map.fitBounds(bounds,{padding:55,maxZoom:13,duration:900});
-  }
- }catch(e){log("Could not calculate map extent: "+e.message)}
-}
-
-/* ============================================================
-   SELECTION AND SUMMARY
-============================================================ */
-
-function applySelection(){
- if(!fullEA) return;
- const features=getSelectedFeatures();
- viewEA=prepareData({type:"FeatureCollection",features});
- const lga=$("lga").value;
- const district=$("district").value;
- const ward=$("ward").value;
-
- $("dLGA").textContent=lga || "All LGAs";
- $("dDistrict").textContent=district || "All districts";
- $("dWard").textContent=ward || "All wards";
- $("mapTitle").textContent=
-  [ward,district,lga].filter(Boolean).join(" | ") || "THE GAMBIA | NATIONAL EA VIEW";
-
- if(mapReady && map.getSource("ea-source")){
-  updateThematicStyle();
-  map.getSource("ea-source").setData(viewEA);
-  updateLayerVisibility();
-  fitToFeatures(viewEA);
  }
- updateAnalytics();
- log("Displayed "+features.length+" EA features.");
-}
 
-function updateAnalytics(){
- if(!viewEA) return;
- const features=viewEA.features;
- const n=features.length;
- const pop=sumValues(features,ALIASES.population);
- const hh=sumValues(features,ALIASES.households);
- const buildings=sumValues(features,ALIASES.buildings);
- const compounds=sumValues(features,ALIASES.compounds);
+ if(!map.getLayer("ea-fill")){
+  map.addLayer({
+   id:"ea-fill",type:"fill",source:"ea-source",
+   paint:{"fill-color":colorExpression(),"fill-opacity":0.85}
+  });
+ }
 
- const areas=features.map(f=>f.properties._areaKm2)
-  .filter(v=>v!==null && v>0);
- const totalArea=areas.length===n && n>0
-  ? areas.reduce((a,b)=>a+b,0)
-  : areas.reduce((a,b)=>a+b,0);
- const popDensity=pop!==null && totalArea>0 ? pop/totalArea:null;
+ if(!map.getLayer("ea-outline")){
+  map.addLayer({
+   id:"ea-outline",type:"line",source:"ea-source",
+   paint:{
+    "line-color":"#e7f4ff",
+    "line-width":["interpolate",["linear"],["zoom"],6,.35,12,1.1,16,2],
+    "line-opacity:.78"
+   }
+  });
+ }
 
- $("kEA").textContent=fmt(n);
- $("kPop").textContent=fmt(pop);
- $("kHH").textContent=fmt(hh);
- $("kDensity").textContent=fmt(popDensity,2);
- $("kBuildings").textContent=fmt(buildings);
- $("kCompounds").textContent=fmt(compounds);
- $("eaCount").textContent=fmt(n)+" EAs";
- $("dArea").textContent=areas.length?fmt(totalArea,2)+" km²":"N/A";
- $("dMeanArea").textContent=areas.length?fmt(totalArea/areas.length,3)+" km²":"N/A";
+ if(!map.getLayer("ea-label")){
+  map.addLayer({
+   id:"ea-label",type:"symbol",source:"ea-source",
+   layout:{
+    "text-field":["coalesce",["get","feacode"],["get","eaname"],""],
+    "text-size":10,"text-allow-overlap":false,
+    "visibility":"none"
+   },
+   paint:{
+    "text-color":"#ffffff",
+    "text-halo-color":"#17283c",
+    "text-halo-width":1.5
+   }
+  });
+ }
 
- updateCharts(features);
+ addOSMLayers();
  updateThematicStyle();
+ updateVisibility();
+ fitFeatures(displayedEA||allEA);
 }
 
-/* ============================================================
-   CHARTS
-============================================================ */
+function addOSMLayers(){
+ if(!mapLoaded)return;
 
-function aggregateByLGA(features,aliases){
- const result=new Map();
- features.forEach(f=>{
-  const name=getText(f.properties,ALIASES.lga) || "Unspecified";
-  const value=getValue(f.properties,aliases);
-  if(value===null) return;
-  result.set(name,(result.get(name)||0)+value);
- });
- return [...result.entries()].sort((a,b)=>b[1]-a[1]);
-}
+ if(!map.getSource("osm-buildings"))
+  map.addSource("osm-buildings",{type:"geojson",data:osmBuildings});
+ if(!map.getSource("osm-roads"))
+  map.addSource("osm-roads",{type:"geojson",data:osmRoads});
 
-function renderChart(key,canvasId,data,label,color){
- const canvas=$(canvasId);
- if(charts[key]){
-  charts[key].destroy();
-  charts[key]=null;
+ if(!map.getLayer("osm-building-fill")){
+  map.addLayer({
+   id:"osm-building-fill",type:"fill",source:"osm-buildings",
+   paint:{"fill-color":"#f6a640","fill-opacity":.8,"fill-outline-color":"#633e20"}
+  });
  }
+ if(!map.getLayer("osm-building-extrusion")){
+  map.addLayer({
+   id:"osm-building-extrusion",type:"fill-extrusion",source:"osm-buildings",
+   paint:{
+    "fill-extrusion-color":"#f4a340",
+    "fill-extrusion-height":7,
+    "fill-extrusion-base":0,
+    "fill-extrusion-opacity":.88
+   }
+  });
+ }
+ if(!map.getLayer("osm-road-lines")){
+  map.addLayer({
+   id:"osm-road-lines",type:"line",source:"osm-roads",
+   paint:{
+    "line-color":"#fff0ca",
+    "line-width":["interpolate",["linear"],["zoom"],7,.5,13,2,17,4]
+   }
+  });
+ }
+ updateVisibility();
+}
+
+function updateVisibility(){
+ if(!mapLoaded)return;
+ const mode=$("viewMode").value;
+ const visible=$("showEA").checked;
+
+ if(map.getLayer("ea-extrusion"))
+  map.setLayoutProperty("ea-extrusion","visibility",visible&&mode==="3d"?"visible":"none");
+ if(map.getLayer("ea-fill"))
+  map.setLayoutProperty("ea-fill","visibility",visible&&mode==="2d"?"visible":"none");
+ if(map.getLayer("ea-outline")){
+  map.setLayoutProperty("ea-outline","visibility",visible?"visible":"none");
+  map.setPaintProperty("ea-outline","line-color",mode==="outline"?"#41d6ff":"#e7f4ff");
+  map.setPaintProperty("ea-outline","line-width",mode==="outline"?1.4:.65);
+ }
+ if(map.getLayer("ea-label"))
+  map.setLayoutProperty("ea-label","visibility",$("showLabels").checked&&visible?"visible":"none");
+
+ const buildings=$("showBuildings").checked;
+ if(map.getLayer("osm-building-fill"))
+  map.setLayoutProperty("osm-building-fill","visibility",buildings&&mode!=="3d"?"visible":"none");
+ if(map.getLayer("osm-building-extrusion"))
+  map.setLayoutProperty("osm-building-extrusion","visibility",buildings&&mode==="3d"?"visible":"none");
+ if(map.getLayer("osm-road-lines"))
+  map.setLayoutProperty("osm-road-lines","visibility",$("showRoads").checked?"visible":"none");
+}
+
+function fitFeatures(fc){
+ if(!mapLoaded||!fc||!fc.features.length)return;
+ const bounds=new maplibregl.LngLatBounds();
+ function walk(a){
+  if(typeof a[0]==="number"&&typeof a[1]==="number")bounds.extend(a);
+  else if(Array.isArray(a))a.forEach(walk);
+ }
+ fc.features.forEach(f=>walk(f.geometry.coordinates));
+ if(!bounds.isEmpty())map.fitBounds(bounds,{padding:55,maxZoom:14,duration:850});
+}
+
+/* ==========================================================
+   STATISTICS AND CHARTS
+========================================================== */
+
+function aggregate(features,aliases){
+ const totals=new Map();
+ features.forEach(f=>{
+  const lga=readText(f.properties,FIELD.lga)||"Unspecified";
+  const v=readNumber(f.properties,aliases);
+  if(v===null)return;
+  totals.set(lga,(totals.get(lga)||0)+v);
+ });
+ return [...totals.entries()].sort((a,b)=>b[1]-a[1]);
+}
+
+function makeChart(oldChart,canvasId,data,label,color){
+ if(oldChart)oldChart.destroy();
+
  const labels=data.map(d=>d[0]);
  const values=data.map(d=>d[1]);
 
- charts[key]=new Chart(canvas,{
+ return new Chart($(canvasId),{
   type:"bar",
   data:{
    labels,
    datasets:[{
-    label,
-    data:values,
+    label,data:values,
     backgroundColor:color,
     borderColor:color,
     borderWidth:1,
@@ -1155,29 +978,19 @@ function renderChart(key,canvasId,data,label,color){
    }]
   },
   options:{
-   indexAxis:"y",
-   responsive:true,
-   maintainAspectRatio:false,
-   animation:{duration:350},
+   indexAxis:"y",responsive:true,maintainAspectRatio:false,
    plugins:{
     legend:{display:false},
-    tooltip:{
-     callbacks:{
-      label:ctx=>label+": "+fmt(ctx.raw)
-     }
-    }
+    tooltip:{callbacks:{label:c=>label+": "+format(c.raw)}}
    },
    scales:{
     x:{
      beginAtZero:true,
-     ticks:{
-      color:"#aabbd0",
-      callback:value=>Number(value).toLocaleString()
-     },
-     grid:{color:"rgba(160,180,205,.12)"}
+     ticks:{color:"#aabbd0",callback:v=>Number(v).toLocaleString()},
+     grid:{color:"rgba(160,180,205,.13)"}
     },
     y:{
-     ticks:{color:"#dce8f7",font:{size:10}},
+     ticks:{color:"#dce8f7",font:{size:9}},
      grid:{display:false}
     }
    }
@@ -1186,83 +999,194 @@ function renderChart(key,canvasId,data,label,color){
 }
 
 function updateCharts(features){
- const popData=aggregateByLGA(features,ALIASES.population);
- const hhData=aggregateByLGA(features,ALIASES.households);
-
- renderChart("pop","popChart",popData,"Population","#35aee0");
- renderChart("hh","hhChart",hhData,"Households","#31c49a");
+ popChart=makeChart(
+  popChart,"popChart",
+  aggregate(features,FIELD.population),
+  "Population","#35afe0"
+ );
+ hhChart=makeChart(
+  hhChart,"hhChart",
+  aggregate(features,FIELD.households),
+  "Households","#31c49a"
+ );
 }
 
-/* ============================================================
+function updateAnalytics(){
+ if(!displayedEA)return;
+ const features=displayedEA.features;
+ const count=features.length;
+
+ const population=sumField(features,FIELD.population);
+ const households=sumField(features,FIELD.households);
+ const buildings=sumField(features,FIELD.buildings);
+ const compounds=sumField(features,FIELD.compounds);
+
+ const areas=features.map(f=>numeric(f.properties._areaKm2))
+  .filter(v=>v!==null&&v>0);
+ const totalArea=areas.length?areas.reduce((a,b)=>a+b,0):null;
+ const density=population!==null&&totalArea>0?population/totalArea:null;
+
+ $("kEA").textContent=format(count);
+ $("kPop").textContent=format(population);
+ $("kHH").textContent=format(households);
+ $("kBuildings").textContent=format(buildings);
+ $("kCompounds").textContent=format(compounds);
+ $("kDensity").textContent=format(density,2);
+
+ $("dCount").textContent=format(count);
+ $("dArea").textContent=totalArea!==null?format(totalArea,3)+" km²":"N/A";
+ $("dMeanArea").textContent=areas.length?format(totalArea/areas.length,4)+" km²":"N/A";
+
+ $("mapCount").textContent=format(count)+" EAs";
+ updateCharts(features);
+ updateThematicStyle();
+}
+
+/* ==========================================================
+   APPLY SELECTION
+========================================================== */
+
+function applySelection(){
+ if(!allEA)return;
+ const filtered=filteredFeatures();
+ displayedEA=prepareFeatureCollection({
+  type:"FeatureCollection",features:filtered
+ });
+
+ const lga=$("lga").value;
+ const district=$("district").value;
+ const ward=$("ward").value;
+
+ $("dLGA").textContent=lga||"All LGAs";
+ $("dDistrict").textContent=district||"All districts";
+ $("dWard").textContent=ward||"All wards";
+ $("mapTitle").textContent=
+  [ward,district,lga].filter(Boolean).join(" | ")||"THE GAMBIA | NATIONAL EA VIEW";
+
+ if(mapLoaded&&map.getSource("ea-source")){
+  updateThematicStyle();
+  map.getSource("ea-source").setData(displayedEA);
+  updateVisibility();
+  fitFeatures(displayedEA);
+ }
+ updateAnalytics();
+ log("Selected "+filtered.length+" EA features.");
+}
+
+/* ==========================================================
+   LOAD DATA
+========================================================== */
+
+function loadData(raw,name){
+ try{
+  let fc=raw;
+  if(Array.isArray(raw))fc={type:"FeatureCollection",features:raw};
+  allEA=prepareFeatureCollection(fc);
+  if(!allEA.features.length)throw new Error("No valid polygon EA features found.");
+
+  sourceName=name;
+  $("dSource").textContent=name;
+  $("dataStatus").textContent=format(allEA.features.length)+" EA polygon features loaded.";
+
+  detectDatasetFields(allEA.features);
+
+  $("lga").value="";
+  $("district").value="";
+  $("ward").value="";
+  refreshAdminOptions();
+
+  displayedEA=allEA;
+  if(mapLoaded)addAllLayers();
+  updateAnalytics();
+
+  log("Successfully loaded "+allEA.features.length+" EA features.");
+  log("Population field detected: "+(detectedFields.population||"not found"));
+  log("Household field detected: "+(detectedFields.households||"not found"));
+  log("Building field detected: "+(detectedFields.buildings||"not found"));
+  log("Compound field detected: "+(detectedFields.compounds||"not found"));
+ }catch(error){
+  console.error(error);
+  $("dataStatus").textContent=error.message;
+  log("Data loading error: "+error.message);
+ }
+}
+
+async function loadGitHub(){
+ try{
+  $("dataStatus").textContent="Loading GitHub EA GeoJSON...";
+  log("Connecting to GitHub EA GeoJSON.");
+  const response=await fetch(EA_URL,{cache:"no-store"});
+  if(!response.ok)throw new Error("GitHub HTTP "+response.status);
+  const json=await response.json();
+  loadData(json,"GitHub");
+ }catch(error){
+  $("dataStatus").textContent="GitHub unavailable. Upload local GeoJSON.";
+  log("GitHub loading failed: "+error.message);
+ }
+}
+
+$("loadGitHub").addEventListener("click",loadGitHub);
+
+$("fileEA").addEventListener("change",async e=>{
+ const file=e.target.files[0];
+ if(!file)return;
+ try{
+  loadData(JSON.parse(await file.text()),file.name);
+ }catch(error){
+  log("File upload error: "+error.message);
+ }
+});
+
+/* ==========================================================
    BASEMAP SWITCH
-============================================================ */
+========================================================== */
 
 $("basemap").addEventListener("change",()=>{
  const selected=$("basemap").value;
- const center=map.getCenter();
- const zoom=map.getZoom();
- const pitch=map.getPitch();
- const bearing=map.getBearing();
-
+ const camera={
+  center:map.getCenter(),zoom:map.getZoom(),
+  pitch:map.getPitch(),bearing:map.getBearing()
+ };
  map.setStyle(styles[selected]);
  map.once("style.load",()=>{
-  if(fullEA) addEALayers();
-  map.jumpTo({center,zoom,pitch,bearing});
-  log("Basemap changed to "+selected+".");
+  if(allEA)addAllLayers();
+  map.jumpTo(camera);
+  log("Basemap changed: "+selected);
  });
 });
 
-/* ============================================================
-   OSM BUILDINGS AND ROADS
-============================================================ */
+/* ==========================================================
+   OSM REFERENCE DATA
+========================================================== */
 
-function currentBBox(){
- if(!viewEA || !viewEA.features.length) return null;
- const bounds=new maplibregl.LngLatBounds();
- viewEA.features.forEach(f=>{
-  function walk(a){
-   if(typeof a[0]==="number" && typeof a[1]==="number") bounds.extend(a);
-   else if(Array.isArray(a)) a.forEach(walk);
-  }
-  walk(f.geometry.coordinates);
- });
- if(bounds.isEmpty()) return null;
- return bounds.toArray().flat();
-}
-
-function osmQuery(bbox){
- const [west,south,east,north]=bbox;
- return `
- [out:json][timeout:45];
- (
-  way["building"](${south},${west},${north},${east});
-  way["highway"](${south},${west},${north},${east});
- );
- out geom;
- `;
+function selectedBBox(){
+ if(!displayedEA||!displayedEA.features.length)return null;
+ const b=new maplibregl.LngLatBounds();
+ function walk(a){
+  if(typeof a[0]==="number"&&typeof a[1]==="number")b.extend(a);
+  else if(Array.isArray(a))a.forEach(walk);
+ }
+ displayedEA.features.forEach(f=>walk(f.geometry.coordinates));
+ return b.isEmpty()?null:b.toArray().flat();
 }
 
 function osmToGeoJSON(data){
- const buildings=[];
- const roads=[];
+ const buildings=[],roads=[];
  (data.elements||[]).forEach(el=>{
-  if(el.type!=="way" || !Array.isArray(el.geometry)) return;
+  if(el.type!=="way"||!Array.isArray(el.geometry))return;
   const coords=el.geometry.map(p=>[p.lon,p.lat]);
   const tags=el.tags||{};
-  if(tags.building){
-   if(coords.length>=4 &&
-    coords[0][0]===coords[coords.length-1][0] &&
-    coords[0][1]===coords[coords.length-1][1]){
+  if(tags.building&&coords.length>=4){
+   const a=coords[0],b=coords[coords.length-1];
+   if(a[0]===b[0]&&a[1]===b[1]){
     buildings.push({
-     type:"Feature",
-     properties:{...tags,osm_id:el.id},
+     type:"Feature",properties:{...tags,osm_id:el.id},
      geometry:{type:"Polygon",coordinates:[coords]}
     });
    }
-  }else if(tags.highway && coords.length>=2){
+  }else if(tags.highway&&coords.length>=2){
    roads.push({
-    type:"Feature",
-    properties:{...tags,osm_id:el.id},
+    type:"Feature",properties:{...tags,osm_id:el.id},
     geometry:{type:"LineString",coordinates:coords}
    });
   }
@@ -1274,239 +1198,204 @@ function osmToGeoJSON(data){
 }
 
 async function loadOSM(){
- const bbox=currentBBox();
- if(!bbox){
-  log("Select an area before requesting OSM data.");
-  return;
- }
+ const bbox=selectedBBox();
+ if(!bbox){log("Select an area before requesting OSM.");return;}
  const [w,s,e,n]=bbox;
- if((e-w)>2.5 || (n-s)>1.5){
-  log("OSM request is too large. Select a district or ward first.");
+ if(e-w>2.5||n-s>1.5){
+  log("Select a smaller area such as a district or ward for OSM.");
   return;
  }
 
- const query=osmQuery(bbox);
+ const query=`[out:json][timeout:45];(way["building"](${s},${w},${n},${e});way["highway"](${s},${w},${n},${e}););out geom;`;
  const endpoints=[
   "https://overpass-api.de/api/interpreter",
   "https://overpass.kumi.systems/api/interpreter"
  ];
- log("Requesting OSM reference buildings and roads.");
 
  for(const endpoint of endpoints){
   try{
+   log("Requesting OSM data...");
    const response=await fetch(endpoint,{
     method:"POST",
     headers:{"Content-Type":"application/x-www-form-urlencoded;charset=UTF-8"},
     body:"data="+encodeURIComponent(query)
    });
-   if(!response.ok) throw new Error("HTTP "+response.status);
+   if(!response.ok)throw new Error("HTTP "+response.status);
    const json=await response.json();
    const result=osmToGeoJSON(json);
    osmBuildings=result.buildings;
    osmRoads=result.roads;
-
-   if(mapReady){
-    if(map.getSource("osm-buildings")) map.getSource("osm-buildings").setData(osmBuildings);
-    if(map.getSource("osm-roads")) map.getSource("osm-roads").setData(osmRoads);
+   if(mapLoaded){
+    if(map.getSource("osm-buildings"))map.getSource("osm-buildings").setData(osmBuildings);
+    if(map.getSource("osm-roads"))map.getSource("osm-roads").setData(osmRoads);
     addOSMLayers();
-    updateLayerVisibility();
    }
-   log("OSM loaded: "+osmBuildings.features.length+
-    " building footprints and "+osmRoads.features.length+" road segments.");
+   log("OSM buildings: "+osmBuildings.features.length+
+    "; road segments: "+osmRoads.features.length);
    return;
-  }catch(error){
-   log("OSM endpoint failed: "+error.message);
-  }
+  }catch(error){log("OSM endpoint failed: "+error.message);}
  }
- log("OSM could not be loaded. Check internet access or try again later.");
+ log("OSM data unavailable. Try again later or check network access.");
 }
-
 $("loadOSM").addEventListener("click",loadOSM);
 
-/* ============================================================
+/* ==========================================================
    EXPORTS
-============================================================ */
+========================================================== */
 
-function downloadFile(content,filename,type){
+function download(content,name,type){
  const blob=new Blob([content],{type});
  const url=URL.createObjectURL(blob);
  const a=document.createElement("a");
- a.href=url;a.download=filename;
+ a.href=url;a.download=name;
  document.body.appendChild(a);a.click();a.remove();
- setTimeout(()=>URL.revokeObjectURL(url),1500);
+ setTimeout(()=>URL.revokeObjectURL(url),1200);
 }
 
-function csvEscape(v){
- const s=String(v ?? "");
- return '"'+s.replace(/"/g,'""')+'"';
-}
-
-$("csvExport").addEventListener("click",()=>{
- if(!viewEA) return;
- const fields=new Set();
- viewEA.features.forEach(f=>Object.keys(f.properties||{}).forEach(k=>{
-  if(!k.startsWith("_")) fields.add(k);
- }));
- const headers=[...fields];
- const rows=[headers.map(csvEscape).join(",")];
- viewEA.features.forEach(f=>{
-  rows.push(headers.map(k=>csvEscape(f.properties[k])).join(","));
- });
- downloadFile(rows.join("\n"),"GBoS_Gambia_EA_Statistics.csv","text/csv;charset=utf-8");
-});
-
-$("geoExport").addEventListener("click",()=>{
- if(!viewEA) return;
- const clean={
-  type:"FeatureCollection",
-  features:viewEA.features.map(f=>({
-   type:"Feature",
-   properties:Object.fromEntries(
-    Object.entries(f.properties||{}).filter(([k])=>!k.startsWith("_"))
-   ),
-   geometry:f.geometry
-  }))
+function cleanFeature(f){
+ return {
+  type:"Feature",
+  properties:Object.fromEntries(
+   Object.entries(f.properties||{}).filter(([k])=>!k.startsWith("_"))
+  ),
+  geometry:f.geometry
  };
- downloadFile(JSON.stringify(clean,null,2),"GBoS_Selected_EA.geojson","application/geo+json");
+}
+
+$("exportCSV").addEventListener("click",()=>{
+ if(!displayedEA)return;
+ const keys=new Set();
+ displayedEA.features.forEach(f=>Object.keys(f.properties||{})
+  .filter(k=>!k.startsWith("_")).forEach(k=>keys.add(k)));
+ const fields=[...keys];
+ const quote=v=>'"'+String(v??"").replace(/"/g,'""')+'"';
+ const rows=[fields.map(quote).join(",")];
+ displayedEA.features.forEach(f=>rows.push(fields.map(k=>quote(f.properties[k])).join(",")));
+ download(rows.join("\n"),"GBoS_EA_Statistics.csv","text/csv;charset=utf-8");
 });
 
-$("osmExport").addEventListener("click",()=>{
- const combined={
+$("exportEA").addEventListener("click",()=>{
+ if(!displayedEA)return;
+ download(JSON.stringify({
+  type:"FeatureCollection",features:displayedEA.features.map(cleanFeature)
+ },null,2),"GBoS_Selected_EAs.geojson","application/geo+json");
+});
+
+$("exportOSM").addEventListener("click",()=>{
+ const fc={
   type:"FeatureCollection",
   features:[
    ...osmBuildings.features.map(f=>({...f,properties:{...f.properties,source:"OSM building"}})),
    ...osmRoads.features.map(f=>({...f,properties:{...f.properties,source:"OSM road"}}))
   ]
  };
- downloadFile(JSON.stringify(combined),"GBoS_OSM_Reference_Data.geojson","application/geo+json");
+ download(JSON.stringify(fc),"GBoS_OSM_Reference_Data.geojson","application/geo+json");
 });
 
-$("viewExport").addEventListener("click",()=>{
- if(!viewEA) return;
- const combined={
+$("exportView").addEventListener("click",()=>{
+ if(!displayedEA)return;
+ const fc={
   type:"FeatureCollection",
   features:[
-   ...viewEA.features.map(f=>({
-    ...f,
-    properties:{...f.properties,source:"EA GeoJSON"}
-   })),
-   ...osmBuildings.features.map(f=>({
-    ...f,properties:{...f.properties,source:"OSM building"}
-   })),
-   ...osmRoads.features.map(f=>({
-    ...f,properties:{...f.properties,source:"OSM road"}
-   }))
+   ...displayedEA.features.map(f=>({...cleanFeature(f),properties:{...cleanFeature(f).properties,source:"EA GeoJSON"}})),
+   ...osmBuildings.features,
+   ...osmRoads.features
   ]
  };
- downloadFile(JSON.stringify(combined),"GBoS_Combined_Spatial_View.geojson","application/geo+json");
+ download(JSON.stringify(fc),"GBoS_Combined_Spatial_View.geojson","application/geo+json");
 });
 
-/* ============================================================
-   EVENT HANDLERS
-============================================================ */
+/* ==========================================================
+   INTERACTION EVENTS
+========================================================== */
 
 $("lga").addEventListener("change",()=>{
  $("district").value="";
  $("ward").value="";
- updateAdminOptions();
+ refreshAdminOptions();
 });
-
 $("district").addEventListener("change",()=>{
  $("ward").value="";
- updateAdminOptions();
+ refreshAdminOptions();
 });
-
-$("applySelection").addEventListener("click",applySelection);
+$("apply").addEventListener("click",applySelection);
+$("run").addEventListener("click",applySelection);
 
 $("resetSelection").addEventListener("click",()=>{
  $("lga").value="";
  $("district").value="";
  $("ward").value="";
- updateAdminOptions();
- applySelection();
-});
-
-$("run").addEventListener("click",()=>{
- if(!fullEA){
-  log("Load EA data before running analysis.");
-  return;
- }
+ refreshAdminOptions();
  applySelection();
 });
 
 $("resetView").addEventListener("click",()=>{
- if(!fullEA) return;
- map.flyTo({center:[-15.45,13.45],zoom:7.1,pitch:58,bearing:-12,duration:900});
+ map.flyTo({center:[-15.45,13.45],zoom:7.1,pitch:60,bearing:-12,duration:900});
 });
 
 $("metric").addEventListener("change",()=>{
- currentMetric=$("metric").value;
  updateThematicStyle();
- updateLayerVisibility();
- updateAnalytics();
+ updateVisibility();
+});
+$("heightScale").addEventListener("change",updateThematicStyle);
+$("viewMode").addEventListener("change",updateVisibility);
+["showEA","showLabels","showBuildings","showRoads"].forEach(id=>{
+ $(id).addEventListener("change",updateVisibility);
 });
 
-$("heightScale").addEventListener("change",()=>{
- updateThematicStyle();
+$("tiltUp").addEventListener("click",()=>{
+ map.easeTo({pitch:Math.min(78,map.getPitch()+10),duration:400});
 });
-
-$("viewMode").addEventListener("change",updateLayerVisibility);
-$("showEA").addEventListener("change",updateLayerVisibility);
-$("showLabels").addEventListener("change",updateLayerVisibility);
-$("showBuildings").addEventListener("change",updateLayerVisibility);
-$("showRoads").addEventListener("change",updateLayerVisibility);
-
-$("pitchUp").addEventListener("click",()=>{
- map.easeTo({pitch:Math.min(75,map.getPitch()+10),duration:400});
-});
-$("pitchDown").addEventListener("click",()=>{
+$("tiltDown").addEventListener("click",()=>{
  map.easeTo({pitch:Math.max(0,map.getPitch()-10),duration:400});
 });
 $("north").addEventListener("click",()=>{
  map.easeTo({bearing:0,duration:400});
 });
 
-/* ============================================================
-   FEATURE POPUPS
-============================================================ */
+/* ==========================================================
+   EA POPUP
+========================================================== */
 
 map.on("click","ea-extrusion",e=>{
- const feature=e.features && e.features[0];
- if(!feature) return;
- const p=feature.properties||{};
- const pop=getValue(p,ALIASES.population);
- const hh=getValue(p,ALIASES.households);
- const building=getValue(p,ALIASES.buildings);
- const compound=getValue(p,ALIASES.compounds);
- const area=p._areaKm2;
+ const f=e.features&&e.features[0];
+ if(!f)return;
+ const p=f.properties||{};
+
+ const pop=readNumber(p,FIELD.population);
+ const hh=readNumber(p,FIELD.households);
+ const build=readNumber(p,FIELD.buildings);
+ const comp=readNumber(p,FIELD.compounds);
+
  const html=`
- <div style="color:#142337;min-width:190px">
- <b>Enumeration Area</b><hr>
- <b>EA:</b> ${escapeHTML(getText(p,ALIASES.ea)||"Not specified")}<br>
- <b>LGA:</b> ${escapeHTML(getText(p,ALIASES.lga)||"N/A")}<br>
- <b>District:</b> ${escapeHTML(getText(p,ALIASES.district)||"N/A")}<br>
- <b>Ward:</b> ${escapeHTML(getText(p,ALIASES.ward)||"N/A")}<br>
- <hr>
- <b>Population:</b> ${fmt(pop)}<br>
- <b>Households:</b> ${fmt(hh)}<br>
- <b>Buildings:</b> ${fmt(building)}<br>
- <b>Compounds:</b> ${fmt(compound)}<br>
- <b>Area:</b> ${fmt(area,3)} km²
+ <div style="color:#142337;min-width:210px;line-height:1.65">
+ <b>ENUMERATION AREA</b><hr>
+ <b>EA code:</b> ${escapeHTML(readText(p,FIELD.ea)||"N/A")}<br>
+ <b>LGA:</b> ${escapeHTML(readText(p,FIELD.lga)||"N/A")}<br>
+ <b>District:</b> ${escapeHTML(readText(p,FIELD.district)||"N/A")}<br>
+ <b>Ward:</b> ${escapeHTML(readText(p,FIELD.ward)||"N/A")}<hr>
+ <b>Population:</b> ${format(pop)}<br>
+ <b>Households:</b> ${format(hh)}<br>
+ <b>Buildings:</b> ${format(build)}<br>
+ <b>Compounds:</b> ${format(comp)}<br>
+ <b>Area:</b> ${format(numeric(p._areaKm2),4)} km²
  </div>`;
- new maplibregl.Popup({maxWidth:"300px"})
+
+ new maplibregl.Popup({maxWidth:"310px"})
   .setLngLat(e.lngLat).setHTML(html).addTo(map);
 });
 
 map.on("mouseenter","ea-extrusion",()=>map.getCanvas().style.cursor="pointer");
 map.on("mouseleave","ea-extrusion",()=>map.getCanvas().style.cursor="");
 
-/* ============================================================
-   STARTUP
-============================================================ */
+/* ==========================================================
+   START
+========================================================== */
 
 loadGitHub();
 
 </script>
 </body>
 </html>
+
 
