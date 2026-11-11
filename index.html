@@ -1,0 +1,1088 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GBoS GEOAI | The Gambia 3D GIS Viewer</title>
+
+<link href="https://unpkg.com/maplibre-gl@5.6.1/dist/maplibre-gl.css" rel="stylesheet">
+<link href="https://unpkg.com/@fortawesome/fontawesome-free@6.7.2/css/all.min.css" rel="stylesheet">
+
+<style>
+:root {
+  --navy:#10243a;
+  --navy2:#183752;
+  --blue:#1677c8;
+  --cyan:#18b6c9;
+  --green:#2e9b69;
+  --orange:#e69b35;
+  --red:#d95757;
+  --bg:#eef2f6;
+  --panel:#ffffff;
+  --text:#24364a;
+  --muted:#738195;
+  --border:#dce4ec;
+  --shadow:0 3px 14px rgba(17,39,61,.10);
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;font-family:Inter,Arial,sans-serif;color:var(--text);overflow:hidden}
+button,input,select{font:inherit}
+button{cursor:pointer}
+#app{height:100%;display:flex;flex-direction:column}
+header{
+  height:66px;flex-shrink:0;background:var(--navy);color:white;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 18px;gap:15px;box-shadow:var(--shadow);z-index:10
+}
+.brand{display:flex;align-items:center;gap:12px;min-width:0}
+.brand-icon{
+  width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#19b6c9,#1677c8);
+  display:grid;place-items:center;font-size:19px
+}
+.brand h1{font-size:16px;margin:0;font-weight:800;letter-spacing:.3px}
+.brand small{display:block;color:#b8cad9;font-size:10px;margin-top:4px}
+.header-right{display:flex;align-items:center;gap:12px;font-size:11px;color:#d7e5f0}
+.status{display:flex;align-items:center;gap:6px}
+.status i{color:#51d69a}
+.header-btn{border:1px solid #49647c;color:white;background:#203c56;padding:8px 11px;border-radius:6px}
+main{display:grid;grid-template-columns:300px minmax(0,1fr) 310px;min-height:0;flex:1}
+.panel{background:var(--panel);overflow-y:auto;min-height:0}
+#leftPanel{border-right:1px solid var(--border)}
+#rightPanel{border-left:1px solid var(--border)}
+.panel-heading{
+  position:sticky;top:0;background:white;z-index:3;padding:14px 15px;
+  border-bottom:1px solid var(--border);font-weight:800;font-size:12px;
+  display:flex;justify-content:space-between;align-items:center
+}
+.section{padding:12px 14px;border-bottom:1px solid var(--border)}
+.section-title{
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.55px;
+  color:#40546b;margin-bottom:11px
+}
+.section-title i{color:var(--blue);margin-right:7px}
+.small{font-size:10px;color:var(--muted);line-height:1.5}
+label{display:block;font-size:10px;font-weight:700;color:#586a7c;margin-bottom:5px}
+select,input[type="text"]{
+  width:100%;border:1px solid var(--border);border-radius:6px;padding:8px;
+  font-size:11px;background:white;color:var(--text);outline:none
+}
+select:focus,input:focus{border-color:var(--blue)}
+.control-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:9px}
+.btn{
+  border:0;border-radius:6px;padding:8px 10px;font-size:10px;font-weight:700;
+  background:#eaf2fa;color:#22557d
+}
+.btn.primary{background:var(--blue);color:white}
+.btn.dark{background:var(--navy2);color:white}
+.btn.green{background:var(--green);color:white}
+.btn.danger{background:#fff0f0;color:#b74444}
+.btn.full{width:100%}
+.btn:hover{filter:brightness(.96)}
+.layer-group{border:1px solid var(--border);border-radius:7px;margin-bottom:7px;overflow:hidden}
+.group-head{
+  display:flex;align-items:center;justify-content:space-between;padding:10px;
+  background:#f7f9fb;font-size:11px;font-weight:800;cursor:pointer
+}
+.group-head .left{display:flex;gap:8px;align-items:center}
+.group-head i{color:#52718d}
+.group-content{padding:8px 10px;display:none}
+.group-content.open{display:block}
+.layer-item{
+  display:flex;align-items:center;gap:8px;padding:6px 2px;
+  border-bottom:1px solid #f0f3f6;font-size:10px
+}
+.layer-item:last-child{border-bottom:0}
+.layer-item input{accent-color:var(--blue)}
+.layer-item span{flex:1}
+.layer-item button{border:0;background:none;color:#7b8da0;font-size:10px}
+.layer-dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+#mapWrap{position:relative;min-width:0;min-height:0;background:#dce6ed}
+#map{position:absolute;inset:0}
+.map-top{
+  position:absolute;top:12px;left:12px;right:12px;z-index:4;
+  display:flex;justify-content:space-between;pointer-events:none;gap:8px
+}
+.map-top>*{pointer-events:auto}
+.map-label{
+  background:white;padding:9px 12px;border-radius:7px;box-shadow:var(--shadow);
+  font-size:11px;font-weight:800
+}
+.map-actions{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}
+.map-actions button{
+  background:white;border:1px solid var(--border);border-radius:6px;
+  padding:8px 10px;font-size:10px;box-shadow:var(--shadow);color:#31475e
+}
+.map-actions button.active{background:var(--blue);color:white}
+.map-bottom{
+  position:absolute;bottom:12px;left:12px;right:12px;z-index:4;
+  display:flex;justify-content:space-between;align-items:flex-end;pointer-events:none
+}
+.map-bottom>*{pointer-events:auto}
+.map-info{
+  background:rgba(255,255,255,.94);padding:8px 10px;border-radius:6px;
+  box-shadow:var(--shadow);font-size:9px;color:#52667b;line-height:1.6
+}
+.scale-note{background:white;border-radius:5px;padding:6px 9px;font-size:10px;box-shadow:var(--shadow)}
+.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.kpi{border:1px solid var(--border);border-radius:7px;padding:10px;background:#fbfcfd}
+.kpi .value{font-size:19px;font-weight:800;color:var(--navy)}
+.kpi .name{font-size:9px;color:var(--muted);margin-top:4px}
+.tool-row{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.tool-row button{display:flex;align-items:center;gap:7px;justify-content:flex-start}
+input[type=range]{width:100%;accent-color:var(--blue)}
+hr{border:0;border-top:1px solid var(--border);margin:10px 0}
+#message{
+  position:absolute;z-index:9;bottom:65px;left:50%;transform:translateX(-50%);
+  background:#142d44;color:white;padding:9px 14px;border-radius:7px;
+  font-size:11px;display:none;box-shadow:var(--shadow);max-width:80%
+}
+#uploadInput{display:none}
+footer{
+  height:27px;flex-shrink:0;background:#f7f9fb;border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;padding:0 12px;
+  color:#6c7c8d;font-size:9px
+}
+.legend-bar{height:9px;border-radius:5px;background:linear-gradient(90deg,#f7fbff,#6baed6,#2171b5,#08306b);margin:8px 0}
+.legend-labels{display:flex;justify-content:space-between;font-size:9px;color:var(--muted)}
+.file-list{font-size:10px;color:#61758a;line-height:1.8;word-break:break-word}
+.modal{
+  display:none;position:absolute;inset:0;z-index:20;background:#10243a88;
+  align-items:center;justify-content:center;padding:15px
+}
+.modal-card{background:white;border-radius:10px;width:min(460px,100%);padding:18px;box-shadow:var(--shadow)}
+.modal-card h3{font-size:14px;margin:0 0 12px}
+.modal-card p{font-size:11px;line-height:1.6;color:#607286}
+.modal-card button{margin-top:10px}
+@media(max-width:950px){
+  main{grid-template-columns:260px minmax(0,1fr)}
+  #rightPanel{display:none}
+}
+@media(max-width:650px){
+  header{height:58px;padding:0 9px}
+  .brand h1{font-size:12px}.brand small{font-size:9px}
+  main{grid-template-columns:1fr;grid-template-rows:43% 57%}
+  #leftPanel{grid-row:2;border:0;border-top:1px solid var(--border)}
+  #mapWrap{grid-row:1}
+  #rightPanel{display:none}
+  .header-right .status{display:none}
+  footer{font-size:8px}
+}
+</style>
+</head>
+
+<body>
+<div id="app">
+<header>
+  <div class="brand">
+    <div class="brand-icon"><i class="fa-solid fa-earth-africa"></i></div>
+    <div>
+      <h1>GBoS GEOAI | THE GAMBIA 3D GIS VIEWER</h1>
+      <small>National Geospatial Data Explorer • GIS / Cartography Unit</small>
+    </div>
+  </div>
+  <div class="header-right">
+    <span class="status"><i class="fa-solid fa-circle"></i> Map service ready</span>
+    <button class="header-btn" id="aboutBtn"><i class="fa-solid fa-circle-info"></i> About</button>
+  </div>
+</header>
+
+<main>
+  <!-- LEFT: LAYERS AND CONTROLS -->
+  <aside class="panel" id="leftPanel">
+    <div class="panel-heading"><span><i class="fa-solid fa-layer-group"></i> LAYERS</span><span id="layerCount">0 loaded</span></div>
+
+    <div class="section">
+      <div class="section-title"><span><i class="fa-solid fa-map"></i> Map configuration</span></div>
+      <label>Basemap</label>
+      <select id="basemap">
+        <option value="streets">Street map</option>
+        <option value="satellite">Satellite imagery</option>
+        <option value="hybrid">Hybrid imagery</option>
+        <option value="terrain">Terrain</option>
+        <option value="light">Light reference</option>
+      </select>
+      <div class="control-row" style="margin-top:9px">
+        <button class="btn primary" id="terrainBtn"><i class="fa-solid fa-mountain"></i> 3D terrain: ON</button>
+        <button class="btn" id="northBtn"><i class="fa-solid fa-compass"></i> North up</button>
+      </div>
+      <label>Terrain exaggeration <span id="exagValue">1.5×</span></label>
+      <input id="exaggeration" type="range" min="1" max="3" step=".1" value="1.5">
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span><i class="fa-solid fa-earth-africa"></i> Gambia coverage</span></div>
+      <div class="control-row">
+        <button class="btn primary" id="gambiaBtn"><i class="fa-solid fa-crosshairs"></i> Full Gambia</button>
+        <button class="btn" id="resetView"><i class="fa-solid fa-rotate-left"></i> Reset view</button>
+      </div>
+      <div class="small">The national view is an approximate geographic extent. Load official administrative boundaries for authoritative area selection.</div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span><i class="fa-solid fa-folder-open"></i> Add spatial data</span></div>
+      <input id="uploadInput" type="file" accept=".geojson,.json,.zip" multiple>
+      <button class="btn primary full" id="uploadBtn"><i class="fa-solid fa-cloud-arrow-up"></i> Upload GeoJSON / ZIP</button>
+      <p class="small">Upload GeoJSON or JSON files. ZIP support requires a GeoJSON file inside the ZIP. Shapefile ZIPs are not read directly by this basic viewer; convert them to GeoJSON first.</p>
+      <div class="file-list" id="fileList">No user datasets loaded.</div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span><i class="fa-solid fa-list"></i> Layer catalogue</span><button class="btn" id="collapseAll">Collapse all</button></div>
+      <div id="layerGroups"></div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span><i class="fa-solid fa-sliders"></i> Selected layer settings</span></div>
+      <label>Active layer</label>
+      <select id="activeLayer"><option value="">No user layer loaded</option></select>
+      <label style="margin-top:9px">Opacity <span id="opacityValue">100%</span></label>
+      <input type="range" id="opacity" min="0" max="100" value="100">
+      <div class="control-row" style="margin-top:9px">
+        <button class="btn" id="moveUp"><i class="fa-solid fa-arrow-up"></i> Draw up</button>
+        <button class="btn" id="moveDown"><i class="fa-solid fa-arrow-down"></i> Draw down</button>
+      </div>
+      <button class="btn danger full" id="removeLayer">Remove selected layer</button>
+    </div>
+  </aside>
+
+  <!-- CENTRE: MAP -->
+  <section id="mapWrap">
+    <div id="map"></div>
+    <div class="map-top">
+      <div class="map-label"><i class="fa-solid fa-earth-africa"></i> The Gambia • 3D spatial view</div>
+      <div class="map-actions">
+        <button id="measureBtn"><i class="fa-solid fa-ruler"></i> Measure</button>
+        <button id="zoomIn"><i class="fa-solid fa-plus"></i></button>
+        <button id="zoomOut"><i class="fa-solid fa-minus"></i></button>
+        <button id="exportBtn"><i class="fa-solid fa-download"></i> Export</button>
+        <button id="citeBtn"><i class="fa-solid fa-quote-right"></i> Cite</button>
+      </div>
+    </div>
+    <div class="map-bottom">
+      <div class="map-info">
+        <b>GBoS GEOAI</b><br>
+        Projection: Web Mercator (EPSG:3857)<br>
+        Terrain: public Terrarium elevation tiles
+      </div>
+      <div class="scale-note" id="scaleText">Scale: —</div>
+    </div>
+    <div id="message"></div>
+  </section>
+
+  <!-- RIGHT: ANALYTICS -->
+  <aside class="panel" id="rightPanel">
+    <div class="panel-heading"><span><i class="fa-solid fa-chart-column"></i> ANALYTICS</span><span><i class="fa-solid fa-chart-line"></i></span></div>
+
+    <div class="section">
+      <div class="section-title">Map overview</div>
+      <div class="kpi-grid">
+        <div class="kpi"><div class="value" id="kpiLayers">0</div><div class="name">User layers</div></div>
+        <div class="kpi"><div class="value" id="kpiFeatures">0</div><div class="name">Loaded features</div></div>
+        <div class="kpi"><div class="value" id="kpiVisible">0</div><div class="name">Visible layers</div></div>
+        <div class="kpi"><div class="value" id="kpiArea">—</div><div class="name">Map coverage</div></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Selected dataset summary</div>
+      <div id="datasetSummary" class="small">Upload a spatial dataset and select it to inspect its summary.</div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Geometry composition</div>
+      <div id="geometryStats" class="small">No spatial features loaded.</div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Attribute preview</div>
+      <div id="attributePreview" class="small">Feature attributes will appear here when a feature is clicked.</div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Legend</div>
+      <div class="small">Terrain elevation and user-layer colours</div>
+      <div class="legend-bar"></div>
+      <div class="legend-labels"><span>Lower</span><span>Higher</span></div>
+      <hr>
+      <div class="small"><span class="layer-dot" style="background:#1677c8"></span> Existing / reference features</div>
+      <div class="small"><span class="layer-dot" style="background:#e69b35"></span> Additional / new features</div>
+      <div class="small"><span class="layer-dot" style="background:#2e9b69"></span> Environmental / land features</div>
+      <div class="small"><span class="layer-dot" style="background:#d95757"></span> Hazard / risk features</div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Methodology and data notes</div>
+      <p class="small">This viewer provides a web-based visualisation environment. The terrain surface is rendered from public elevation tiles. Thematic layers must be supplied from verified datasets. Map display does not establish statistical validity, positional accuracy, official status or completeness.</p>
+      <p class="small">Use official GBoS, government and recognised partner datasets for administrative boundaries, enumeration areas, population and infrastructure analysis.</p>
+    </div>
+  </aside>
+</main>
+
+<footer>
+  <span>© 2026 GBoS GEOAI • The Gambia • GIS / Cartography Unit</span>
+  <span>Produced by Ansu Singhateh | Research and educational use</span>
+</footer>
+</div>
+
+<div class="modal" id="modal">
+  <div class="modal-card">
+    <h3 id="modalTitle">Information</h3>
+    <div id="modalContent"></div>
+    <button class="btn primary full" id="modalClose">Close</button>
+  </div>
+</div>
+
+<script src="https://unpkg.com/maplibre-gl@5.6.1/dist/maplibre-gl.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+"use strict";
+
+/* =========================================================
+   GBoS GEOAI | THE GAMBIA 3D GIS VIEWER
+   Produced by Ansu Singhateh
+   GIS Analyst | GIS / Cartography Unit | GBoS
+   ========================================================= */
+
+const GAMBIA_BOUNDS = [[-16.90,13.00],[-13.75,13.90]];
+const GAMBIA_CENTER = [-15.40,13.45];
+
+const COLORS = [
+  "#1677c8","#e69b35","#2e9b69","#d95757","#8757bd",
+  "#16a6a6","#b46c3c","#6e8296","#d15b91","#749d36"
+];
+
+const catalogue = [
+ {name:"Terrain",icon:"fa-mountain",layers:[
+  ["Terrain elevation","terrain"],["Elevation contours","contours"],["Slope and relief","slope"]
+ ]},
+ {name:"Shaded Relief",icon:"fa-sun",layers:[
+  ["Hillshade","hillshade"],["Multi-directional relief","multirelief"]
+ ]},
+ {name:"Administrative Boundaries",icon:"fa-map-location-dot",layers:[
+  ["Regions / Local Government Areas","regions"],["District boundaries","districts"],
+  ["Ward boundaries","wards"],["Enumeration Areas","eas"]
+ ]},
+ {name:"Energy",icon:"fa-bolt",layers:[
+  ["Electricity infrastructure","electricity"],["Power stations","powerstations"],
+  ["Renewable energy sites","renewables"]
+ ]},
+ {name:"Environment",icon:"fa-leaf",layers:[
+  ["Land cover","landcover"],["Forest and vegetation","vegetation"],
+  ["Wetlands","wetlands"],["Rivers and water bodies","water"],
+  ["Protected areas","protected"],["Coastal environment","coastal"]
+ ]},
+ {name:"Natural Hazards",icon:"fa-triangle-exclamation",layers:[
+  ["Flood hazard","flood"],["Flood extent","floodextent"],
+  ["Coastal erosion","erosion"],["Drought indicators","drought"],
+  ["Fire risk","firerisk"]
+ ]},
+ {name:"Points of Interest",icon:"fa-location-dot",layers:[
+  ["Health facilities","health"],["Schools","schools"],
+  ["Markets","markets"],["Public facilities","public"],
+  ["Tourism sites","tourism"],["Settlement locations","settlements"]
+ ]},
+ {name:"Population and social conditions",icon:"fa-people-group",layers:[
+  ["Population distribution","population"],["Population density","density"],
+  ["Household distribution","households"],["Census Enumeration Areas","census"],
+  ["Social infrastructure","social"],["Demographic indicators","demographics"]
+ ]},
+ {name:"Urban Planning and Land Cover",icon:"fa-city",layers:[
+  ["Built-up areas","builtup"],["Urban expansion","urban"],
+  ["Building footprints","buildings"],["Land use","landuse"],
+  ["Agricultural land","agriculture"],["Settlement growth","growth"]
+ ]},
+ {name:"Transportation Systems",icon:"fa-road",layers:[
+  ["Road network","roads"],["Primary roads","primaryroads"],
+  ["Secondary roads","secondaryroads"],["Local roads","localroads"],
+  ["Bridges","bridges"],["Transport facilities","transport"]
+ ]}
+];
+
+let map;
+let terrainEnabled = true;
+let userLayers = [];
+let activeLayerId = "";
+let measureMode = false;
+let measurePoints = [];
+let measureSourceAdded = false;
+let layerSequence = 0;
+let terrainExaggeration = 1.5;
+
+const $ = id => document.getElementById(id);
+
+function notify(message){
+  const box=$("message");
+  box.textContent=message;
+  box.style.display="block";
+  clearTimeout(notify.timer);
+  notify.timer=setTimeout(()=>box.style.display="none",3200);
+}
+
+function modal(title,html){
+  $("modalTitle").textContent=title;
+  $("modalContent").innerHTML=html;
+  $("modal").style.display="flex";
+}
+
+function escapeHTML(value){
+  return String(value ?? "").replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  })[c]);
+}
+
+function formatNumber(n){
+  return Number(n||0).toLocaleString(undefined,{maximumFractionDigits:2});
+}
+
+/* -------------------- BASEMAP STYLE -------------------- */
+function rasterStyle(type){
+  let tiles, attribution;
+  if(type==="satellite" || type==="hybrid"){
+    tiles=["https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"];
+    attribution="Tiles © Esri";
+  }else if(type==="terrain"){
+    tiles=["https://a.tile.opentopomap.org/{z}/{x}/{y}.png"];
+    attribution="© OpenTopoMap contributors";
+  }else if(type==="light"){
+    tiles=["https://basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"];
+    attribution="© OpenStreetMap © CARTO";
+  }else{
+    tiles=["https://tile.openstreetmap.org/{z}/{x}/{y}.png"];
+    attribution="© OpenStreetMap contributors";
+  }
+
+  const layers=[{
+    id:"basemap-raster",type:"raster",
+    source:"basemap-source",
+    paint:{"raster-opacity":1}
+  }];
+
+  const style={
+    version:8,
+    sources:{
+      "basemap-source":{
+        type:"raster",tiles,tileSize:256,
+        attribution
+      },
+      "terrain-dem":{
+        type:"raster-dem",
+        tiles:["https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png"],
+        tileSize:256,encoding:"terrarium",
+        maxzoom:15
+      }
+    },
+    layers
+  };
+
+  if(type==="hybrid"){
+    style.sources.labels={
+      type:"raster",
+      tiles:["https://basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png"],
+      tileSize:256,attribution:"© CARTO"
+    };
+    style.layers.push({id:"hybrid-labels",type:"raster",source:"labels"});
+  }
+  return style;
+}
+
+function initMap(){
+  map=new maplibregl.Map({
+    container:"map",
+    style:rasterStyle("streets"),
+    center:GAMBIA_CENTER,
+    zoom:7.1,
+    pitch:55,
+    bearing:0,
+    maxPitch:85,
+    attributionControl:true
+  });
+
+  map.addControl(new maplibregl.NavigationControl({visualizePitch:true}),"bottom-right");
+  map.addControl(new maplibregl.FullscreenControl(),"bottom-right");
+  map.on("load",()=>{
+    addTerrain();
+    addHillshade();
+    map.fitBounds(GAMBIA_BOUNDS,{padding:35,duration:0});
+    updateScale();
+    notify("Gambia 3D map initialised.");
+  });
+
+  map.on("move",updateScale);
+  map.on("click",handleMapClick);
+  map.on("error",e=>{
+    if(e && e.error) console.warn("Map service:",e.error.message);
+  });
+}
+
+function addTerrain(){
+  if(!map.getSource("terrain-dem")) return;
+  map.setTerrain(terrainEnabled?{
+    source:"terrain-dem",exaggeration:terrainExaggeration
+  }:null);
+}
+
+function addHillshade(){
+  if(!map.getSource("terrain-dem") || map.getLayer("hillshade-layer"))return;
+  map.addLayer({
+    id:"hillshade-layer",type:"hillshade",source:"terrain-dem",
+    layout:{visibility:"visible"},
+    paint:{
+      "hillshade-exaggeration":0.35,
+      "hillshade-shadow-color":"#374151",
+      "hillshade-highlight-color":"#ffffff",
+      "hillshade-illumination-direction":315
+    }
+  });
+}
+
+function setBasemap(type){
+  const center=map.getCenter();
+  const zoom=map.getZoom();
+  const pitch=map.getPitch();
+  const bearing=map.getBearing();
+
+  const layersSnapshot=userLayers.map(l=>({
+    id:l.id,data:l.data,name:l.name,color:l.color,visible:l.visible,opacity:l.opacity
+  }));
+
+  map.setStyle(rasterStyle(type));
+  map.once("style.load",()=>{
+    addTerrain();
+    addHillshade();
+    layersSnapshot.forEach(l=>addGeoJSONLayer(l));
+    map.jumpTo({center,zoom,pitch,bearing});
+    updateLayerCount();
+  });
+}
+
+/* -------------------- CATALOGUE -------------------- */
+function renderCatalogue(){
+  const root=$("layerGroups");
+  root.innerHTML="";
+
+  catalogue.forEach((group,index)=>{
+    const wrapper=document.createElement("div");
+    wrapper.className="layer-group";
+
+    const head=document.createElement("div");
+    head.className="group-head";
+    head.innerHTML=`<span class="left"><i class="fa-solid ${group.icon}"></i>${escapeHTML(group.name)}</span><i class="fa-solid fa-chevron-down"></i>`;
+
+    const content=document.createElement("div");
+    content.className="group-content";
+
+    group.layers.forEach(([label,key])=>{
+      const row=document.createElement("label");
+      row.className="layer-item";
+      row.innerHTML=`
+        <input type="checkbox" data-catalogue="${key}">
+        <span>${escapeHTML(label)}</span>
+        <i class="fa-solid fa-circle-info" title="Load this layer using a matching GeoJSON dataset"></i>`;
+      row.querySelector("input").addEventListener("change",e=>{
+        if(e.target.checked){
+          notify("Upload the corresponding dataset for: "+label);
+          e.target.checked=false;
+          $("uploadInput").click();
+        }
+      });
+      content.appendChild(row);
+    });
+
+    head.addEventListener("click",()=>content.classList.toggle("open"));
+    wrapper.append(head,content);
+    root.appendChild(wrapper);
+  });
+}
+
+$("collapseAll").addEventListener("click",()=>{
+  document.querySelectorAll(".group-content").forEach(el=>el.classList.remove("open"));
+});
+
+/* -------------------- GEOJSON LAYERS -------------------- */
+function getGeometryTypes(data){
+  const counts={Point:0,LineString:0,Polygon:0,Other:0};
+  const visit=g=>{
+    if(!g)return;
+    const t=g.type;
+    if(t==="Point"||t==="MultiPoint")counts.Point++;
+    else if(t==="LineString"||t==="MultiLineString")counts.LineString++;
+    else if(t==="Polygon"||t==="MultiPolygon")counts.Polygon++;
+    else counts.Other++;
+  };
+  (data.features||[]).forEach(f=>visit(f.geometry));
+  return counts;
+}
+
+function addGeoJSONLayer(layer){
+  if(!map || !map.isStyleLoaded())return;
+  const sourceId=layer.id+"-source";
+  if(map.getSource(sourceId))return;
+
+  map.addSource(sourceId,{type:"geojson",data:layer.data});
+
+  const types=getGeometryTypes(layer.data);
+  if(types.Polygon){
+    map.addLayer({
+      id:layer.id+"-fill",type:"fill",source:sourceId,
+      filter:["match",["geometry-type"],["Polygon","MultiPolygon"],true,false],
+      paint:{
+        "fill-color":layer.color,
+        "fill-opacity":Math.min(.55,layer.opacity),
+        "fill-outline-color":layer.color
+      },
+      layout:{visibility:layer.visible?"visible":"none"}
+    });
+  }
+
+  if(types.LineString){
+    map.addLayer({
+      id:layer.id+"-line",type:"line",source:sourceId,
+      filter:["match",["geometry-type"],["LineString","MultiLineString"],true,false],
+      paint:{
+        "line-color":layer.color,
+        "line-width":["interpolate",["linear"],["zoom"],5,1,12,3,16,5],
+        "line-opacity":layer.opacity
+      },
+      layout:{visibility:layer.visible?"visible":"none"}
+    });
+  }
+
+  if(types.Point){
+    map.addLayer({
+      id:layer.id+"-point",type:"circle",source:sourceId,
+      filter:["match",["geometry-type"],["Point","MultiPoint"],true,false],
+      paint:{
+        "circle-radius":["interpolate",["linear"],["zoom"],4,3,12,6,16,9],
+        "circle-color":layer.color,
+        "circle-stroke-color":"#ffffff",
+        "circle-stroke-width":1,
+        "circle-opacity":layer.opacity
+      },
+      layout:{visibility:layer.visible?"visible":"none"}
+    });
+  }
+}
+
+function addDataset(name,data){
+  if(!data || data.type!=="FeatureCollection" || !Array.isArray(data.features)){
+    throw new Error("The file must contain a GeoJSON FeatureCollection.");
+  }
+
+  const id="gmb-layer-"+(++layerSequence);
+  const layer={
+    id,name,data,
+    color:COLORS[(layerSequence-1)%COLORS.length],
+    visible:true,opacity:1
+  };
+  userLayers.push(layer);
+
+  if(map.isStyleLoaded())addGeoJSONLayer(layer);
+  renderUserLayers();
+  selectLayer(id);
+  updateAnalytics();
+  zoomToLayer(id);
+  notify(name+" loaded: "+formatNumber(data.features.length)+" features.");
+}
+
+function renderUserLayers(){
+  const select=$("activeLayer");
+  const current=activeLayerId;
+  select.innerHTML="";
+
+  if(!userLayers.length){
+    select.innerHTML='<option value="">No user layer loaded</option>';
+  }else{
+    userLayers.forEach(l=>{
+      const opt=document.createElement("option");
+      opt.value=l.id;
+      opt.textContent=l.name;
+      select.appendChild(opt);
+    });
+    if(userLayers.some(l=>l.id===current))select.value=current;
+  }
+
+  $("fileList").innerHTML=userLayers.length
+    ?userLayers.map(l=>`• ${escapeHTML(l.name)} (${formatNumber(l.data.features.length)})`).join("<br>")
+    :"No user datasets loaded.";
+
+  updateLayerCount();
+}
+
+function selectLayer(id){
+  activeLayerId=id;
+  $("activeLayer").value=id||"";
+  const l=userLayers.find(x=>x.id===id);
+  $("opacity").value=l?Math.round(l.opacity*100):100;
+  $("opacityValue").textContent=l?Math.round(l.opacity*100)+"%":"100%";
+  updateDatasetSummary();
+}
+
+function setLayerVisibility(layer,visible){
+  layer.visible=visible;
+  ["fill","line","point"].forEach(suffix=>{
+    const id=layer.id+"-"+suffix;
+    if(map.getLayer(id)){
+      map.setLayoutProperty(id,"visibility",visible?"visible":"none");
+    }
+  });
+}
+
+function setLayerOpacity(layer,value){
+  layer.opacity=value;
+  if(map.getLayer(layer.id+"-fill"))map.setPaintProperty(layer.id+"-fill","fill-opacity",Math.min(.55,value));
+  if(map.getLayer(layer.id+"-line"))map.setPaintProperty(layer.id+"-line","line-opacity",value);
+  if(map.getLayer(layer.id+"-point"))map.setPaintProperty(layer.id+"-point","circle-opacity",value);
+}
+
+function removeLayer(layer){
+  if(!layer)return;
+  ["fill","line","point"].forEach(suffix=>{
+    const id=layer.id+"-"+suffix;
+    if(map.getLayer(id))map.removeLayer(id);
+  });
+  if(map.getSource(layer.id+"-source"))map.removeSource(layer.id+"-source");
+  userLayers=userLayers.filter(x=>x.id!==layer.id);
+  if(activeLayerId===layer.id)activeLayerId=userLayers[0]?.id||"";
+  renderUserLayers();
+  selectLayer(activeLayerId);
+  updateAnalytics();
+}
+
+function zoomToLayer(id){
+  const l=userLayers.find(x=>x.id===id);
+  if(!l)return;
+  const bounds=new maplibregl.LngLatBounds();
+  const walk=coords=>{
+    if(!Array.isArray(coords))return;
+    if(typeof coords[0]==="number"&&typeof coords[1]==="number"){
+      bounds.extend(coords);
+    }else coords.forEach(walk);
+  };
+  (l.data.features||[]).forEach(f=>{
+    if(f.geometry)walk(f.geometry.coordinates);
+  });
+  if(!bounds.isEmpty()){
+    map.fitBounds(bounds,{padding:65,maxZoom:15,duration:900});
+  }
+}
+
+/* -------------------- FILE UPLOAD -------------------- */
+$("uploadBtn").addEventListener("click",()=>$("uploadInput").click());
+
+$("uploadInput").addEventListener("change",async e=>{
+  const files=[...e.target.files];
+  for(const file of files){
+    try{
+      let text;
+      if(file.name.toLowerCase().endsWith(".zip")){
+        const zip=await JSZip.loadAsync(file);
+        const geoFile=Object.values(zip.files).find(f=>
+          !f.dir && /\.(geojson|json)$/i.test(f.name)
+        );
+        if(!geoFile)throw new Error("ZIP does not contain a GeoJSON or JSON file.");
+        text=await geoFile.async("text");
+      }else{
+        text=await file.text();
+      }
+      const data=JSON.parse(text);
+      addDataset(file.name.replace(/\.(geojson|json|zip)$/i,""),data);
+    }catch(err){
+      console.error(err);
+      notify("Could not load "+file.name+": "+err.message);
+    }
+  }
+  e.target.value="";
+});
+
+/* -------------------- LAYER TOOLBAR -------------------- */
+$("activeLayer").addEventListener("change",e=>selectLayer(e.target.value));
+
+$("opacity").addEventListener("input",e=>{
+  const l=userLayers.find(x=>x.id===activeLayerId);
+  const v=Number(e.target.value)/100;
+  $("opacityValue").textContent=e.target.value+"%";
+  if(l)setLayerOpacity(l,v);
+});
+
+$("removeLayer").addEventListener("click",()=>{
+  const l=userLayers.find(x=>x.id===activeLayerId);
+  if(l)removeLayer(l);
+  else notify("Select a user layer first.");
+});
+
+$("moveUp").addEventListener("click",()=>moveActiveLayer("up"));
+$("moveDown").addEventListener("click",()=>moveActiveLayer("down"));
+
+function moveActiveLayer(direction){
+  const l=userLayers.find(x=>x.id===activeLayerId);
+  if(!l)return notify("Select a user layer first.");
+  const suffixes=["fill","line","point"];
+  const ids=suffixes.map(s=>l.id+"-"+s).filter(id=>map.getLayer(id));
+  ids.forEach(id=>{
+    try{
+      if(direction==="up")map.moveLayer(id);
+      else{
+        const styleLayers=map.getStyle().layers;
+        const firstUser=styleLayers.find(x=>x.id.endsWith("-fill")||x.id.endsWith("-line")||x.id.endsWith("-point"));
+        if(firstUser)map.moveLayer(id,firstUser.id);
+      }
+    }catch(e){console.warn(e);}
+  });
+}
+
+/* -------------------- ANALYTICS -------------------- */
+function updateLayerCount(){
+  $("layerCount").textContent=userLayers.length+" loaded";
+  $("kpiLayers").textContent=userLayers.length;
+  $("kpiVisible").textContent=userLayers.filter(l=>l.visible).length;
+}
+
+function updateAnalytics(){
+  const features=userLayers.reduce((s,l)=>s+l.data.features.length,0);
+  $("kpiFeatures").textContent=formatNumber(features);
+  updateLayerCount();
+
+  const totals={Point:0,LineString:0,Polygon:0,Other:0};
+  userLayers.forEach(l=>{
+    const t=getGeometryTypes(l.data);
+    Object.keys(totals).forEach(k=>totals[k]+=t[k]);
+  });
+
+  $("geometryStats").innerHTML=`
+    <b>Point features:</b> ${formatNumber(totals.Point)}<br>
+    <b>Line features:</b> ${formatNumber(totals.LineString)}<br>
+    <b>Polygon features:</b> ${formatNumber(totals.Polygon)}<br>
+    <b>Other:</b> ${formatNumber(totals.Other)}`;
+}
+
+function updateDatasetSummary(){
+  const l=userLayers.find(x=>x.id===activeLayerId);
+  if(!l){
+    $("datasetSummary").textContent="Upload a spatial dataset and select it to inspect its summary.";
+    return;
+  }
+  const types=getGeometryTypes(l.data);
+  const properties=Object.keys(l.data.features[0]?.properties||{});
+  $("datasetSummary").innerHTML=`
+    <b>${escapeHTML(l.name)}</b><br>
+    Features: ${formatNumber(l.data.features.length)}<br>
+    Geometry: ${Object.entries(types).filter(x=>x[1]).map(x=>x[0]).join(", ")||"Not identified"}<br>
+    Attribute fields: ${properties.length}<br>
+    Fields: ${escapeHTML(properties.slice(0,12).join(", "))}${properties.length>12?" …":""}`;
+}
+
+function updateScale(){
+  if(!map)return;
+  const lat=map.getCenter().lat*Math.PI/180;
+  const metresPerPixel=156543.03392*Math.cos(lat)/Math.pow(2,map.getZoom());
+  const km=metresPerPixel*100;
+  $("scaleText").textContent="Approx. 100 px: "+formatNumber(km)+" km";
+}
+
+function updateFeatureInfo(feature){
+  if(!feature){
+    $("attributePreview").textContent="No feature selected.";
+    return;
+  }
+  const props=feature.properties||{};
+  const rows=Object.entries(props).slice(0,20).map(([k,v])=>
+    `<tr><td style="padding:4px;border-bottom:1px solid #edf1f4;font-weight:700">${escapeHTML(k)}</td><td style="padding:4px;border-bottom:1px solid #edf1f4">${escapeHTML(v)}</td></tr>`
+  ).join("");
+  $("attributePreview").innerHTML=`
+    <div style="max-height:240px;overflow:auto">
+    <table style="width:100%;font-size:9px;border-collapse:collapse">${rows}</table>
+    </div>`;
+}
+
+function handleMapClick(e){
+  if(measureMode){
+    measurePoints.push([e.lngLat.lng,e.lngLat.lat]);
+    drawMeasure();
+    return;
+  }
+
+  const queryLayers=userLayers.flatMap(l=>
+    ["fill","line","point"].map(s=>l.id+"-"+s).filter(id=>map.getLayer(id))
+  );
+  if(!queryLayers.length)return;
+  const hits=map.queryRenderedFeatures(e.point,{layers:queryLayers});
+  if(hits.length)updateFeatureInfo(hits[0]);
+}
+
+/* -------------------- MEASUREMENT -------------------- */
+function prepareMeasureSource(){
+  if(measureSourceAdded)return;
+  map.addSource("measure-source",{
+    type:"geojson",
+    data:{type:"FeatureCollection",features:[]}
+  });
+  map.addLayer({
+    id:"measure-line",type:"line",source:"measure-source",
+    filter:["==",["geometry-type"],"LineString"],
+    paint:{"line-color":"#e33c3c","line-width":3,"line-dasharray":[2,2]}
+  });
+  map.addLayer({
+    id:"measure-points",type:"circle",source:"measure-source",
+    filter:["==",["geometry-type"],"Point"],
+    paint:{"circle-radius":5,"circle-color":"#e33c3c","circle-stroke-color":"white","circle-stroke-width":2}
+  });
+  measureSourceAdded=true;
+}
+
+function drawMeasure(){
+  prepareMeasureSource();
+  const features=[];
+  measurePoints.forEach(p=>features.push({
+    type:"Feature",geometry:{type:"Point",coordinates:p},properties:{}
+  }));
+  if(measurePoints.length>=2){
+    features.push({
+      type:"Feature",
+      geometry:{type:"LineString",coordinates:measurePoints},
+      properties:{}
+    });
+  }
+  map.getSource("measure-source").setData({type:"FeatureCollection",features});
+  if(measurePoints.length>=2){
+    let distance=0;
+    for(let i=1;i<measurePoints.length;i++){
+      distance+=maplibregl.MercatorCoordinate.fromLngLat(measurePoints[i]).toAltitude(0)-
+        maplibregl.MercatorCoordinate.fromLngLat(measurePoints[i-1]).toAltitude(0);
+    }
+    // Haversine length is used for the displayed ground distance.
+    distance=0;
+    for(let i=1;i<measurePoints.length;i++){
+      distance+=haversine(measurePoints[i-1],measurePoints[i]);
+    }
+    notify("Measurement: "+(distance>=1000?(distance/1000).toFixed(2)+" km":distance.toFixed(0)+" m"));
+  }else notify("Measurement point added. Click again to continue.");
+}
+
+function haversine(a,b){
+  const R=6371008.8,rad=x=>x*Math.PI/180;
+  const dLat=rad(b[1]-a[1]),dLon=rad(b[0]-a[0]);
+  const q=Math.sin(dLat/2)**2+
+    Math.cos(rad(a[1]))*Math.cos(rad(b[1]))*Math.sin(dLon/2)**2;
+  return 2*R*Math.asin(Math.sqrt(q));
+}
+
+$("measureBtn").addEventListener("click",()=>{
+  measureMode=!measureMode;
+  if(measureMode){
+    measurePoints=[];
+    $("measureBtn").classList.add("active");
+    map.getCanvas().style.cursor="crosshair";
+    prepareMeasureSource();
+    map.getSource("measure-source").setData({type:"FeatureCollection",features:[]});
+    notify("Measurement active: click the map to add points.");
+  }else{
+    $("measureBtn").classList.remove("active");
+    map.getCanvas().style.cursor="";
+    notify("Measurement finished. Click Measure to start again.");
+  }
+});
+
+/* -------------------- MAP CONTROLS -------------------- */
+$("basemap").addEventListener("change",e=>setBasemap(e.target.value));
+
+$("terrainBtn").addEventListener("click",()=>{
+  terrainEnabled=!terrainEnabled;
+  addTerrain();
+  $("terrainBtn").textContent="3D terrain: "+(terrainEnabled?"ON":"OFF");
+  $("terrainBtn").classList.toggle("primary",terrainEnabled);
+});
+
+$("exaggeration").addEventListener("input",e=>{
+  terrainExaggeration=Number(e.target.value);
+  $("exagValue").textContent=terrainExaggeration.toFixed(1)+"×";
+  if(terrainEnabled)addTerrain();
+});
+
+$("northBtn").addEventListener("click",()=>map.easeTo({bearing:0,pitch:0,duration:700}));
+$("zoomIn").addEventListener("click",()=>map.zoomIn());
+$("zoomOut").addEventListener("click",()=>map.zoomOut());
+$("gambiaBtn").addEventListener("click",()=>map.fitBounds(GAMBIA_BOUNDS,{padding:35,duration:900}));
+$("resetView").addEventListener("click",()=>{
+  map.fitBounds(GAMBIA_BOUNDS,{padding:35,duration:900});
+  map.easeTo({pitch:55,bearing:0});
+});
+
+/* -------------------- EXPORT -------------------- */
+function downloadBlob(blob,filename){
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;a.download=filename;a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),1500);
+}
+
+$("exportBtn").addEventListener("click",()=>{
+  const l=userLayers.find(x=>x.id===activeLayerId);
+  modal("Export spatial data",`
+    <p>Choose an export for the loaded user datasets.</p>
+    <button class="btn primary full" id="exportActive">Export selected layer as GeoJSON</button>
+    <button class="btn full" id="exportAll" style="margin-top:7px">Export all loaded layers as JSON</button>
+    <button class="btn full" id="exportMap" style="margin-top:7px">Export map image</button>
+  `);
+
+  $("exportActive").onclick=()=>{
+    if(!l)return notify("Select a layer first.");
+    downloadBlob(new Blob([JSON.stringify(l.data,null,2)],{type:"application/geo+json"}),l.name+".geojson");
+    notify("Selected layer exported.");
+  };
+  $("exportAll").onclick=()=>{
+    const collection={
+      type:"GBoSGEOAIExport",
+      generated:new Date().toISOString(),
+      layers:userLayers.map(x=>({name:x.name,data:x.data}))
+    };
+    downloadBlob(new Blob([JSON.stringify(collection,null,2)],{type:"application/json"}),"Gambia_GBoS_GEOAI_Layers.json");
+    notify("All loaded layers exported.");
+  };
+  $("exportMap").onclick=()=>{
+    try{
+      const canvas=map.getCanvas();
+      canvas.toBlob(blob=>{
+        if(blob)downloadBlob(blob,"Gambia_GBoS_GEOAI_Map.png");
+        else notify("Map image export was blocked by a cross-origin tile source.");
+      });
+    }catch(e){notify("Map image export unavailable: "+e.message);}
+  };
+});
+
+/* -------------------- CITATION AND ABOUT -------------------- */
+$("citeBtn").addEventListener("click",()=>{
+  modal("Map citation",`
+    <p><b>Suggested citation</b></p>
+    <p>Gambia Bureau of Statistics (GBoS), GIS / Cartography Unit. 2026. <i>GBoS GEOAI: The Gambia 3D GIS Viewer.</i> Interactive geospatial visualisation application.</p>
+    <p>Basemap and elevation services are provided by their respective data providers. Cite the original source of each uploaded dataset separately. Verify licence, date, scale, resolution and positional accuracy before publication.</p>
+    <button class="btn primary full" id="copyCitation">Copy citation</button>
+  `);
+  $("copyCitation").onclick=()=>{
+    const text="Gambia Bureau of Statistics (GBoS), GIS / Cartography Unit. 2026. GBoS GEOAI: The Gambia 3D GIS Viewer. Interactive geospatial visualisation application.";
+    navigator.clipboard?.writeText(text).then(()=>notify("Citation copied."));
+  };
+});
+
+$("aboutBtn").addEventListener("click",()=>{
+  modal("About GBoS GEOAI",`
+    <p><b>GBoS GEOAI | The Gambia 3D GIS Viewer</b></p>
+    <p>A browser-based GIS viewer for exploring terrain and visualising user-provided spatial datasets across The Gambia.</p>
+    <p><b>Core tools:</b> 3D terrain, shaded relief, thematic layer catalogue, GeoJSON upload, opacity, layer ordering, measurement, zoom and data export.</p>
+    <p><b>Produced by:</b> Ansu Singhateh<br>GIS Analyst | GIS / Cartography Unit<br>Gambia Bureau of Statistics</p>
+    <p class="small">This application is an independent visualisation tool. It does not imply that all catalogue layers are currently populated with official national datasets.</p>
+  `);
+});
+
+$("modalClose").addEventListener("click",()=>$("modal").style.display="none");
+$("modal").addEventListener("click",e=>{
+  if(e.target===$("modal"))$("modal").style.display="none";
+});
+
+/* -------------------- START APPLICATION -------------------- */
+renderCatalogue();
+initMap();
+</script>
+</body>
+</html>
