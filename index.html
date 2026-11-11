@@ -3,1531 +3,1732 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GBoS GEOAI | Gambia 3D GIS Viewer</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SILKYSINGZ GEOAI | GLFS LISTERS OR ENUMERATORS' MOVEMENT TRACKING</title>
 
-<link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet">
-<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@turf/turf@7/turf.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
 <style>
 :root{
- --navy:#071b31;--navy2:#102b48;--blue:#1685d4;
- --cyan:#27c4d9;--bg:#eef3f8;--line:#d8e1eb;
- --text:#172b40;--muted:#718096;--green:#15966c;
- --orange:#e99a32;--red:#d94c54;
+ --green:#14532d;--dark:#102b24;--light:#edf3ee;
+ --border:#dce5df;--muted:#64748b;
 }
 *{box-sizing:border-box}
-html,body{height:100%;margin:0;font-family:Arial,sans-serif;color:var(--text);overflow:hidden}
-body{background:var(--bg)}
+html,body{height:100%;margin:0;font-family:Arial,sans-serif;color:#172b24}
+body{overflow:hidden;background:#edf2ee}
+button,input,select{font:inherit}
+button{cursor:pointer}
+#app{height:100%;display:flex;flex-direction:column}
 header{
- height:62px;background:linear-gradient(110deg,#06172a,#12395d);
- color:white;display:flex;align-items:center;justify-content:space-between;
- padding:0 18px;position:relative;z-index:10;
- box-shadow:0 3px 12px #06172a35
+ min-height:65px;background:var(--dark);color:white;
+ display:flex;align-items:center;justify-content:space-between;
+ padding:10px 18px;gap:12px
 }
 .brand{display:flex;align-items:center;gap:12px}
-.flag{font-size:27px}
-.brand strong{font-size:15px;letter-spacing:.5px}
-.brand small{display:block;color:#b9d4e9;font-size:10px;margin-top:4px}
-.header-right{display:flex;gap:9px;font-size:10px}
-.pill{padding:7px 10px;border:1px solid #ffffff35;border-radius:20px}
-#app{height:calc(100% - 62px);display:grid;grid-template-columns:305px minmax(0,1fr) 295px}
-.panel{background:#fff;min-height:0;overflow-y:auto;border-right:1px solid var(--line)}
-.right{border-right:0;border-left:1px solid var(--line)}
-.panel-head{padding:15px;background:#f8fafc;border-bottom:1px solid var(--line)}
-.panel-head h2{font-size:13px;margin:0 0 5px;color:var(--navy)}
-.panel-head p{font-size:10px;color:var(--muted);margin:0;line-height:1.5}
-.section{padding:13px 14px;border-bottom:1px solid #e9eef4}
-.section h3{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#52677c;margin:0 0 11px}
-label{font-size:11px;color:#40556b}
-.control{margin-bottom:10px}
-select,input[type=text]{
- width:100%;padding:9px;border:1px solid #ccd7e2;border-radius:6px;
- background:#fff;color:#23384c;font-size:11px;margin-top:5px
+.brand-icon{
+ width:40px;height:40px;border-radius:9px;background: #1d7044;
+ display:grid;place-items:center;font-size:19px
 }
-input[type=range]{width:100%;accent-color:var(--blue)}
-button{
+.brand h1{font-size:15px;margin:0 0 4px}
+.brand p{font-size:10px;margin:0;color:#c7d9ce}
+.header-status{text-align:right;font-size:10px;color:#d5e7dc}
+main{
+ min-height:0;flex:1;display:grid;
+ grid-template-columns:295px minmax(300px,1fr) 285px;
+ gap:9px;padding:9px
+}
+.panel{
+ min-height:0;background:white;border:1px solid var(--border);
+ border-radius:9px;overflow:auto
+}
+.panel-section{padding:12px;border-bottom:1px solid #edf1ee}
+.section-title{
+ font-size:11px;font-weight:800;color:var(--green);
+ text-transform:uppercase;letter-spacing:.5px;margin:0 0 10px
+}
+.field{margin-bottom:9px}
+label{display:block;font-size:10px;font-weight:700;color:#475569;margin-bottom:5px}
+input[type=file],select{
+ width:100%;padding:8px;border:1px solid #cbd5d1;
+ border-radius:6px;background:white;font-size:11px;min-height:33px
+}
+input[type=checkbox]{accent-color:var(--green)}
+input[type=range]{width:100%;accent-color:var(--green)}
+.btn{
  border:0;border-radius:6px;padding:9px 10px;font-size:10px;
- font-weight:700;cursor:pointer;background:var(--blue);color:white
+ font-weight:700;background:#e8eee9;color:#263b30
 }
-button.secondary{background:#e8eef5;color:#27435e}
-button.dark{background:var(--navy2)}
-button:disabled{opacity:.5;cursor:wait}
-.btnrow{display:flex;gap:7px;margin-top:8px}
+.btn-primary{background:#166534;color:white}
+.btn-orange{background:#ea580c;color:white}
+.btn:disabled{opacity:.5;cursor:not-allowed}
 .full{width:100%}
-.layer-group{margin-bottom:12px}
-.group-title{
- display:flex;justify-content:space-between;align-items:center;
- font-size:11px;font-weight:bold;color:#183650;padding:8px 0;
- border-bottom:1px solid #edf1f5;cursor:pointer
+.btn-row{display:flex;gap:6px;flex-wrap:wrap}
+.status{
+ padding:8px;border-radius:6px;background:#f1f5f9;
+ color:#475569;font-size:10px;line-height:1.5;overflow-wrap:anywhere
 }
-.layer-list{padding-top:5px}
-.layer-row{display:flex;align-items:center;gap:7px;padding:6px 2px;font-size:11px}
-.layer-row input{accent-color:var(--blue)}
-.layer-name{flex:1}
-.status{font-size:9px;color:var(--muted)}
-.status.loaded{color:var(--green)}
-.status.error{color:var(--red)}
-.status.loading{color:#c27b16}
-#map-wrap{position:relative;min-width:0;min-height:0;background:#d9e4ed}
-#map{height:100%;width:100%}
-.map-title{
- position:absolute;z-index:4;top:12px;left:12px;padding:10px 13px;
- border-radius:8px;background:#ffffffed;box-shadow:0 2px 12px #142d4520;
- pointer-events:none
+.status.ok{background:#ecfdf5;color:#166534}
+.status.warn{background:#fff7ed;color:#9a3412}
+.status.error{background:#fef2f2;color:#991b1b}
+.hint{font-size:10px;color:var(--muted);line-height:1.5;margin-top:5px}
+.small-stat{
+ display:flex;justify-content:space-between;gap:8px;
+ padding:6px 0;border-bottom:1px solid #eef2ef;font-size:10px
 }
-.map-title strong{font-size:12px;color:#102d49}
-.map-title small{display:block;font-size:9px;color:#718096;margin-top:4px}
-.map-tools{position:absolute;z-index:5;right:12px;top:12px;display:flex;flex-direction:column;gap:6px}
-.map-tools button{background:white;color:#183650;box-shadow:0 2px 8px #0002}
+.small-stat span{color:#64748b}
+.small-stat strong{text-align:right;overflow-wrap:anywhere}
+#map-wrap{
+ position:relative;min-width:0;min-height:0;
+ border:1px solid var(--border);border-radius:9px;overflow:hidden
+}
+#map{height:100%;width:100%;background:#e8eee9}
+.map-tools{
+ position:absolute;top:10px;left:55px;z-index:700;
+ display:flex;gap:5px;flex-wrap:wrap
+}
+.map-chip{
+ background:white;border:1px solid #d7e0da;border-radius:6px;
+ padding:7px 9px;font-size:10px;font-weight:700;
+ box-shadow:0 1px 5px #0002
+}
+.map-legend{
+ position:absolute;right:10px;bottom:22px;z-index:700;
+ background:white;padding:9px 11px;border-radius:7px;
+ box-shadow:0 2px 8px #0002;font-size:10px;line-height:1.9
+}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px}
+.line{display:inline-block;width:18px;height:3px;margin-right:6px;vertical-align:middle}
 #map-message{
- position:absolute;z-index:5;bottom:25px;left:12px;background:#fff;
- padding:8px 11px;border-radius:6px;font-size:10px;
- box-shadow:0 2px 8px #0002;max-width:70%
+ position:absolute;z-index:800;top:55px;left:50%;
+ transform:translateX(-50%);background:#102b24;color:white;
+ padding:8px 12px;border-radius:6px;font-size:10px;
+ display:none;max-width:85%;text-align:center
 }
-.legend{
- position:absolute;z-index:5;bottom:28px;right:12px;background:#fff;
- padding:11px 13px;border-radius:8px;box-shadow:0 2px 10px #0002;
- min-width:155px;font-size:10px
+.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.kpi{background:#f4f8f5;border:1px solid #e5ece7;border-radius:7px;padding:9px}
+.kpi .value{font-size:19px;font-weight:800;color:var(--green);margin-bottom:3px}
+.kpi .name{font-size:9px;color:#64748b}
+.playback-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+.playback-grid .btn{padding:9px 3px}
+.playback-grid .btn i{font-size:13px;margin-bottom:5px}
+.progress-wrap{height:8px;background:#e5e7eb;border-radius:10px;overflow:hidden;margin:7px 0}
+#progress{height:100%;width:0;background:#16a34a;transition:width .04s linear}
+.timeline-labels{display:flex;justify-content:space-between;font-size:9px;color:#64748b}
+.record-list{max-height:240px;overflow:auto}
+.record{
+ border-bottom:1px solid #edf1ee;padding:7px 5px;
+ font-size:9px;line-height:1.5;cursor:pointer
 }
-.legend strong{display:block;margin-bottom:7px}
-.legend-item{display:flex;align-items:center;gap:7px;margin:5px 0;color:#40556b}
-.swatch{width:17px;height:4px;border-radius:3px}
-.kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.kpi{padding:10px;background:#f4f7fa;border:1px solid #e7edf3;border-radius:7px}
-.kpi span{display:block;font-size:9px;color:var(--muted);margin-bottom:6px}
-.kpi strong{font-size:18px;color:#123b5e}
-.kpi small{font-size:9px;color:var(--muted)}
-.metric{font-size:11px;padding:7px 0;border-bottom:1px solid #edf1f5;display:flex;justify-content:space-between;gap:8px}
-.metric b{text-align:right;color:#193e5d}
-.note{font-size:10px;line-height:1.55;color:#718096}
-#log{font-size:10px;line-height:1.6;max-height:150px;overflow:auto}
-#log div{border-bottom:1px solid #edf1f5;padding:4px 0}
-#feature-info{font-size:10px;line-height:1.5;overflow-wrap:anywhere}
-#feature-info table{border-collapse:collapse;width:100%}
-#feature-info td{padding:5px;border-bottom:1px solid #edf1f5;vertical-align:top}
-#feature-info td:first-child{color:#718096;width:42%}
-footer{font-size:9px;color:#8a9bad;padding:12px 14px;line-height:1.6}
-.chartbox{height:190px;position:relative}
+.record:hover{background:#f1f7f2}
+.record.active{background:#ecfdf5;border-left:3px solid #16a34a}
+footer{
+ min-height:27px;background:white;border-top:1px solid var(--border);
+ padding:6px 12px;font-size:9px;color:#64748b;
+ display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap
+}
+.animation-status{
+ background:#f0fdf4;border:1px solid #bbf7d0;
+ border-radius:6px;padding:8px;font-size:10px;
+ color:#166534;line-height:1.5;margin-top:9px
+}
+.route-status{
+ background:#eff6ff;border:1px solid #bfdbfe;
+ color:#1e40af;border-radius:6px;padding:8px;
+ font-size:10px;line-height:1.5;margin-top:8px
+}
 @media(max-width:1050px){
- #app{grid-template-columns:260px minmax(0,1fr)}
- .right{display:none}
+ main{grid-template-columns:260px minmax(260px,1fr)}
+ #right-panel{display:none}
 }
-@media(max-width:650px){
- header{height:54px;padding:0 10px}
- .header-right{display:none}
- #app{height:calc(100% - 54px);grid-template-columns:1fr}
- .left{display:none}
- .map-title{top:8px;left:8px}
+@media(max-width:700px){
+ body{overflow:auto}
+ #app{height:auto;min-height:100%}
+ main{display:flex;flex-direction:column}
+ #map-wrap{height:58vh;min-height:400px;order:2}
+ #right-panel{display:block;order:3}
 }
 </style>
 </head>
 
 <body>
+<div id="app">
 <header>
  <div class="brand">
-  <span class="flag">🇬🇲</span>
+  <div class="brand-icon"><i class="fa-solid fa-route"></i></div>
   <div>
-   <strong>GBoS GEOAI | THE GAMBIA</strong>
-   <small>3D GIS REPOSITORY • GEOSPATIAL INTELLIGENCE</small>
+   <h1>SILKYSINGZ GEOAI | GLFS LISTERS OR ENUMERATORS' MOVEMENT TRACKING</h1>
+   <p>OpenStreetMap pedestrian routing • Compound visits • Household linkage • GPS trajectory</p>
   </div>
  </div>
- <div class="header-right">
-  <span class="pill">GIS / CARTOGRAPHY UNIT</span>
-  <span class="pill" id="connection-status">Connecting…</span>
+ <div class="header-status">
+  <div><strong id="header-records">0</strong> compound records</div>
+  <div id="header-state">Connecting to GitHub...</div>
  </div>
 </header>
 
-<div id="app">
+<main>
+<aside class="panel">
 
-<aside class="panel left">
- <div class="panel-head">
-  <h2>LAYERS & CONTROLS</h2>
-  <p>Explore census, built-up areas, infrastructure and OpenStreetMap data.</p>
- </div>
+ <section class="panel-section">
+  <h3 class="section-title"><i class="fa-solid fa-database"></i> GitHub datasets</h3>
+  <div class="small-stat"><span>Compound CSV</span><strong id="compound-source-state">Waiting</strong></div>
+  <div class="small-stat"><span>Household CSV</span><strong id="household-source-state">Waiting</strong></div>
+  <div class="small-stat"><span>EA boundary JSON</span><strong id="ea-source-state">Waiting</strong></div>
+  <div class="small-stat"><span>OSM routing service</span><strong id="road-source-state">Waiting</strong></div>
 
- <div class="section">
-  <h3>Administrative selection</h3>
-  <div class="control">
-   <label>Local Government Area</label>
-   <select id="lgaSelect"><option value="">All LGAs</option></select>
-  </div>
-  <div class="control">
-   <label>District</label>
-   <select id="districtSelect"><option value="">All districts</option></select>
-  </div>
-  <div class="control">
-   <label>Ward</label>
-   <select id="wardSelect"><option value="">All wards</option></select>
-  </div>
-  <div class="btnrow">
-   <button class="full" id="zoomSelection">ZOOM TO SELECTION</button>
-   <button class="secondary" id="clearSelection">RESET</button>
-  </div>
-  <p class="note">Selection filters loaded vector layers to the selected enumeration-area geography.</p>
- </div>
+  <p class="hint">Routes are requested from OpenStreetMap-based pedestrian routing. No local road GeoJSON is required.</p>
 
- <div class="section">
-  <h3>Map configuration</h3>
-  <div class="control">
-   <label>Basemap</label>
-   <select id="basemap">
-    <option value="streets">CARTO Voyager Streets</option>
-    <option value="osm">OpenStreetMap</option>
-    <option value="light">CARTO Light</option>
-    <option value="satellite">Esri Satellite</option>
-    <option value="hybrid">Satellite + Labels</option>
-    <option value="dark">CARTO Dark Matter</option>
-    <option value="terrain">Terrain / Elevation</option>
+  <button class="btn btn-primary full" id="refresh-github">
+   <i class="fa-solid fa-rotate"></i> Update GitHub datasets
+  </button>
+  <div id="data-status" class="status" style="margin-top:8px">Connecting...</div>
+  <div class="hint">Last update: <span id="last-update">Not yet loaded</span></div>
+
+  <details style="margin-top:9px">
+   <summary style="font-size:10px;font-weight:700;cursor:pointer">Manual file upload</summary>
+   <div class="field" style="margin-top:9px">
+    <label>Compound CSV</label>
+    <input type="file" id="compound-file" accept=".csv">
+   </div>
+   <div class="field">
+    <label>Household CSV</label>
+    <input type="file" id="household-file" accept=".csv">
+   </div>
+   <div class="field">
+    <label>EA boundary JSON</label>
+    <input type="file" id="ea-file" accept=".json,.geojson">
+   </div>
+  </details>
+ </section>
+
+ <section class="panel-section">
+  <h3 class="section-title"><i class="fa-solid fa-filter"></i> Administrative filters</h3>
+  <div class="field"><label>LGA</label><select id="lga-filter"><option value="">All LGAs</option></select></div>
+  <div class="field"><label>District</label><select id="district-filter"><option value="">All districts</option></select></div>
+  <div class="field"><label>Ward</label><select id="ward-filter"><option value="">All wards</option></select></div>
+  <div class="field"><label>Settlement</label><select id="settlement-filter"><option value="">All settlements</option></select></div>
+  <div class="field"><label>Enumeration Area</label><select id="ea-filter"><option value="">All EAs</option></select></div>
+  <div class="field"><label>Enumerator</label><select id="interviewer-filter"><option value="">All enumerators</option></select></div>
+  <div class="field"><label>Team</label><select id="team-filter"><option value="">All teams</option></select></div>
+  <div class="field"><label>Visit date</label><select id="date-filter"><option value="">All dates</option></select></div>
+  <div class="btn-row">
+   <button class="btn btn-primary" id="apply-filter">Apply filters</button>
+   <button class="btn" id="reset-filter">Reset</button>
+  </div>
+ </section>
+
+ <section class="panel-section">
+  <h3 class="section-title"><i class="fa-solid fa-film"></i> OSM route animation</h3>
+
+  <div class="field">
+   <label>Assumed walking speed</label>
+   <select id="travel-speed">
+    <option value="3">Slow walking — 3 km/h</option>
+    <option value="4" selected>Normal walking — 4 km/h</option>
+    <option value="5">Fast walking — 5 km/h</option>
    </select>
   </div>
-  <div class="control">
-   <label>Layer opacity <span id="opacityValue">100%</span></label>
-   <input id="opacity" type="range" min="10" max="100" value="100">
-  </div>
- </div>
 
- <div class="section">
-  <h3>Layer catalogue</h3>
-  <div class="btnrow">
-   <button class="secondary" id="selectAll">SELECT ALL</button>
-   <button class="secondary" id="closeAll">CLOSE ALL</button>
+  <div class="field">
+   <label>Animation playback speed</label>
+   <select id="speed">
+    <option value="0.25">0.25× Very slow</option>
+    <option value="0.5">0.5× Slow</option>
+    <option value="1" selected>1× Normal</option>
+    <option value="2">2× Fast</option>
+    <option value="4">4× Very fast</option>
+    <option value="8">8× Maximum</option>
+   </select>
   </div>
-  <div id="catalogue" style="margin-top:12px"></div>
- </div>
 
- <div class="section">
-  <h3>Measure distance</h3>
-  <p class="note">Click the map to add measurement points.</p>
-  <div class="btnrow">
-   <button id="measureBtn" class="dark">START MEASURE</button>
-   <button id="clearMeasure" class="secondary">CLEAR</button>
+  <div class="field">
+   <label>Seconds per movement segment</label>
+   <select id="interval">
+    <option value="0.5">0.5 second</option>
+    <option value="1">1 second</option>
+    <option value="2" selected>2 seconds</option>
+    <option value="3">3 seconds</option>
+    <option value="5">5 seconds</option>
+   </select>
   </div>
-  <div id="measureResult" class="note" style="margin-top:8px">No measurement.</div>
- </div>
 
- <div class="section">
-  <h3>Export</h3>
-  <div class="btnrow">
-   <button class="full" id="exportVisible">EXPORT VISIBLE DATA</button>
+  <div class="playback-grid">
+   <button class="btn btn-primary" id="play"><i class="fa-solid fa-play"></i><br>PLAY</button>
+   <button class="btn" id="pause"><i class="fa-solid fa-pause"></i><br>PAUSE</button>
+   <button class="btn" id="restart"><i class="fa-solid fa-rotate-left"></i><br>RESTART</button>
+   <button class="btn btn-orange" id="next"><i class="fa-solid fa-forward-step"></i><br>NEXT</button>
   </div>
-  <div class="btnrow">
-   <button class="secondary full" id="exportEAs">EXPORT CENSUS EAs</button>
-   <button class="secondary full" id="exportView">EXPORT MAP</button>
-  </div>
- </div>
 
- <footer>
-  GBoS GEOAI • Research and educational use<br>
-  Produced by Ansu Singhateh<br>
-  GIS Analyst | GIS / Cartography Unit | Gambia Bureau of Statistics
- </footer>
+  <div class="animation-status" id="movement-status">
+   Waiting for GPS records and OSM routes.
+  </div>
+
+  <div class="route-status" id="route-status">
+   OSM routing is waiting for GPS records.
+  </div>
+
+  <div style="margin-top:11px">
+   <div class="timeline-labels">
+    <span id="timeline-start">Start</span>
+    <span id="timeline-current">0 / 0</span>
+    <span id="timeline-end">End</span>
+   </div>
+   <div class="progress-wrap"><div id="progress"></div></div>
+   <input type="range" id="timeline" min="0" max="1000" value="0">
+  </div>
+  <div class="hint">
+   Each consecutive GPS visit is routed using an OSM pedestrian profile. The marker follows the returned route geometry. Estimated time is calculated using the selected assumed walking speed.
+  </div>
+ </section>
+
+ <section class="panel-section">
+  <h3 class="section-title"><i class="fa-solid fa-layer-group"></i> Map display</h3>
+  <div class="field">
+   <label>Basemap</label>
+   <select id="basemap">
+    <option value="street">Street map</option>
+    <option value="satellite">Satellite</option>
+    <option value="hybrid">Hybrid</option>
+    <option value="terrain">Terrain</option>
+   </select>
+  </div>
+  <div class="field">
+   <label><input type="checkbox" id="show-points" checked> Show compound points</label>
+   <label><input type="checkbox" id="show-track" checked> Show OSM movement routes</label>
+   <label><input type="checkbox" id="show-ea" checked> Show EA boundaries</label>
+   <label><input type="checkbox" id="show-labels"> Show point numbers</label>
+   <label><input type="checkbox" id="fit-map" checked> Zoom to filtered records</label>
+  </div>
+ </section>
+
+ <section class="panel-section">
+  <h3 class="section-title"><i class="fa-solid fa-download"></i> Export data</h3>
+  <div class="btn-row">
+   <button class="btn btn-primary" id="export-csv">Export filtered CSV</button>
+   <button class="btn" id="export-track">Export routed GeoJSON</button>
+  </div>
+ </section>
 </aside>
 
-<main id="map-wrap">
+<div id="map-wrap">
  <div id="map"></div>
- <div class="map-title">
-  <strong>THE GAMBIA | 3D GEOSPATIAL VIEWER</strong>
-  <small>National mapping • Census • Infrastructure • Environment</small>
- </div>
  <div class="map-tools">
-  <button id="tiltBtn">3D / 2D</button>
-  <button id="northBtn">NORTH</button>
-  <button id="locateBtn">MY LOCATION</button>
+  <div class="map-chip"><i class="fa-solid fa-location-dot" style="color:#2563eb"></i> Recorded compounds</div>
+  <div class="map-chip"><i class="fa-solid fa-person-walking" style="color:#ea580c"></i> OSM pedestrian route</div>
  </div>
- <div class="legend">
-  <strong>MAP LEGEND</strong>
-  <div class="legend-item"><span class="swatch" style="background:#e6a23c"></span>Selected geography</div>
-  <div class="legend-item"><span class="swatch" style="background:#15966c"></span>Census EAs</div>
-  <div class="legend-item"><span class="swatch" style="background:#1685d4"></span>Roads / facilities</div>
-  <div class="legend-item"><span class="swatch" style="background:#7656b5"></span>Built-up areas</div>
+ <div id="map-message"></div>
+ <div class="map-legend">
+  <div><span class="dot" style="background:#2563eb"></span>Compound GPS point</div>
+  <div><span class="dot" style="background:#ea580c"></span>Moving enumerator</div>
+  <div><span class="line" style="background:#ea580c"></span>OSM route geometry</div>
+  <div><span class="line" style="background:#16a34a"></span>EA boundary</div>
  </div>
- <div id="map-message">Initialising map…</div>
+</div>
+
+<aside class="panel" id="right-panel">
+ <section class="panel-section">
+  <h3 class="section-title"><i class="fa-solid fa-chart-column"></i> Activity summary</h3>
+  <div class="kpi-grid">
+   <div class="kpi"><div class="value" id="kpi-compounds">0</div><div class="name">Compound records</div></div>
+   <div class="kpi"><div class="value" id="kpi-households">0</div><div class="name">Linked households</div></div>
+   <div class="kpi"><div class="value" id="kpi-enumerators">0</div><div class="name">Enumerators</div></div>
+   <div class="kpi"><div class="value" id="kpi-teams">0</div><div class="name">Teams</div></div>
+   <div class="kpi"><div class="value" id="kpi-members">0</div><div class="name">Household members</div></div>
+   <div class="kpi"><div class="value" id="kpi-gps">0%</div><div class="name">GPS availability</div></div>
+  </div>
+ </section>
+
+ <section class="panel-section">
+  <h3 class="section-title"><i class="fa-solid fa-route"></i> OSM journey estimates</h3>
+  <div class="small-stat"><span>Routed distance</span><strong id="stat-distance">0 km</strong></div>
+  <div class="small-stat"><span>Estimated travel time</span><strong id="stat-travel-time">0 min</strong></div>
+  <div class="small-stat"><span>Successfully routed legs</span><strong id="stat-routed-legs">0</strong></div>
+  <div class="small-stat"><span>Unrouted legs</span><strong id="stat-unrouted-legs">0</strong></div>
+  <div class="small-stat"><span>Assumed speed</span><strong id="stat-speed">4 km/h</strong></div>
+  <div class="small-stat"><span>Routing provider</span><strong>OSM / OSRM</strong></div>
+ </section>
+
+ <section class="panel-section">
+  <h3 class="section-title"><i class="fa-solid fa-chart-pie"></i> Filtered records</h3>
+  <div class="small-stat"><span>LGA</span><strong id="stat-lga">All</strong></div>
+  <div class="small-stat"><span>Enumerator</span><strong id="stat-interviewer">All</strong></div>
+  <div class="small-stat"><span>Visit date</span><strong id="stat-date">All</strong></div>
+  <div class="small-stat"><span>Valid GPS records</span><strong id="stat-valid">0</strong></div>
+  <div class="small-stat"><span>Unique compounds</span><strong id="stat-unique">0</strong></div>
+  <div class="small-stat"><span>Households per compound</span><strong id="stat-average">0</strong></div>
+  <div class="small-stat"><span>Movement sequences</span><strong id="stat-sequences">0</strong></div>
+  <div class="small-stat"><span>Animated GPS points</span><strong id="stat-animation-points">0</strong></div>
+ </section>
+
+ <section class="panel-section">
+  <h3 class="section-title"><i class="fa-solid fa-person-walking"></i> Live animation position</h3>
+  <div class="small-stat"><span>Enumerator</span><strong id="current-enumerator">—</strong></div>
+  <div class="small-stat"><span>Compound</span><strong id="current-compound">—</strong></div>
+  <div class="small-stat"><span>Recorded time</span><strong id="current-time">—</strong></div>
+  <div class="small-stat"><span>Visit sequence</span><strong id="current-sequence">—</strong></div>
+  <div class="small-stat"><span>Current journey distance</span><strong id="current-distance">—</strong></div>
+  <div class="small-stat"><span>Estimated journey time</span><strong id="current-eta">—</strong></div>
+  <div class="small-stat"><span>Playback progress</span><strong id="current-progress">0%</strong></div>
+ </section>
+
+ <section class="panel-section">
+  <h3 class="section-title"><i class="fa-solid fa-list"></i> Compound visit sequence</h3>
+  <div id="visit-list" class="record-list"><div class="hint">Waiting for records.</div></div>
+ </section>
+
+ <section class="panel-section">
+  <h3 class="section-title"><i class="fa-solid fa-circle-info"></i> Methodology</h3>
+  <div class="hint">
+   <b>Routing source:</b> OpenStreetMap-based pedestrian routing service using an OSRM-compatible route API.
+   <br><br>
+   <b>Route calculation:</b> Consecutive compound GPS coordinates are sent to the pedestrian-routing service. The returned route geometry is used for map display and animation.
+   <br><br>
+   <b>Animation:</b> The moving marker advances along the returned OSM route geometry, not a straight line between recorded compound coordinates.
+   <br><br>
+   <b>Travel-time estimate:</b> Returned route distance is divided by the selected assumed walking speed. This is an indicative estimate, not measured travel time.
+   <br><br>
+   <b>Unrouted journeys:</b> If the routing service cannot find a route, or a request fails, that leg is marked as unrouted. No straight-line route is substituted.
+   <br><br>
+   <b>Household linkage:</b> Household ParentGlobalID is matched with compound GlobalID.
+   <br><br>
+   <b>Data attribution:</b> © OpenStreetMap contributors. Routing service availability and coverage are subject to the provider's terms and limits.
+  </div>
+ </section>
+</aside>
 </main>
 
-<aside class="panel right">
- <div class="panel-head">
-  <h2>SPATIAL ANALYTICS</h2>
-  <p>Summary of loaded and selected data.</p>
- </div>
- <div class="section">
-  <h3>Data overview</h3>
-  <div class="kpis">
-   <div class="kpi"><span>Loaded layers</span><strong id="kpiLayers">0</strong><small>Datasets</small></div>
-   <div class="kpi"><span>Visible features</span><strong id="kpiFeatures">0</strong><small>Displayed</small></div>
-   <div class="kpi"><span>Census EAs</span><strong id="kpiEAs">—</strong><small>GitHub</small></div>
-   <div class="kpi"><span>Selected layers</span><strong id="kpiSelected">0</strong><small>On map</small></div>
-  </div>
- </div>
- <div class="section">
-  <h3>Selected geography</h3>
-  <div class="metric"><span>LGA</span><b id="statLga">All</b></div>
-  <div class="metric"><span>District</span><b id="statDistrict">All</b></div>
-  <div class="metric"><span>Ward</span><b id="statWard">All</b></div>
-  <div class="metric"><span>Selected EAs</span><b id="statEAs">—</b></div>
- </div>
- <div class="section">
-  <h3>Census population summary</h3>
-  <div class="metric"><span>Population 2013</span><b id="pop2013">—</b></div>
-  <div class="metric"><span>Population 2023</span><b id="pop2023">—</b></div>
-  <div class="metric"><span>Population change</span><b id="popChange">—</b></div>
-  <div class="chartbox"><canvas id="populationChart"></canvas></div>
- </div>
- <div class="section">
-  <h3>Feature inspection</h3>
-  <div id="feature-info" class="note">Click a mapped feature to inspect its attributes.</div>
- </div>
- <div class="section">
-  <h3>Data loading activity</h3>
-  <div id="log"></div>
- </div>
- <div class="section">
-  <h3>Data provenance</h3>
-  <p class="note">
-   Census, built-up, education, road and settlement datasets are fetched from the
-   GEOAI_3D_Viewer GitHub repository. Additional mapped features are requested
-   from OpenStreetMap using Overpass API.
-  </p>
-  <p class="note">
-   OpenStreetMap content is community-mapped and may be incomplete.
-   It should not be interpreted as a complete official GBoS inventory.
-  </p>
-  <p class="note">
-   Building heights use mapped OSM attributes where available.
-   Missing heights receive a visual default and are not surveyed heights.
-  </p>
- </div>
- <footer>Sources: GitHub GEOAI_3D_Viewer; OpenStreetMap contributors; CARTO; Esri.</footer>
-</aside>
+<footer>
+ <span>Produced by Ansu Singhateh | GIS Analyst | GIS-Cartography Unit | Gambia Bureau of Statistics</span>
+ <span>SILKYSINGZ GEOAI • Research and educational use</span>
+</footer>
 </div>
 
 <script>
 /* =========================================================
-   GBoS GEOAI | THE GAMBIA 3D GIS VIEWER
-   GitHub datasets + OpenStreetMap
-   ========================================================= */
+  1. DATA SOURCES AND ROUTING CONFIGURATION
+========================================================= */
 
-const OWNER="silkysingz94-oss";
-const REPO="GEOAI_3D_Viewer";
-const BRANCH="main";
-const RAW=`https://raw.githubusercontent.com/${OWNER}/${REPO}/${BRANCH}/`;
+const EA_JSON_URL="https://raw.githubusercontent.com/silkysingz94-oss/GLFS-Listers-Mobility-Trajectory/main/Census_EAs_Geo.json";
+const COMPOUND_CSV_URL="https://raw.githubusercontent.com/silkysingz94-oss/GLFS-Listers-Mobility-Trajectory/main/GLFS_27ph1_071126_EXCEL.csv";
+const HOUSEHOLD_CSV_URL="https://raw.githubusercontent.com/silkysingz94-oss/GLFS-Listers-Mobility-Trajectory/main/GLFS_27hh1_071126_EXCEL.csv";
+const REPO_API="https://api.github.com/repos/silkysingz94-oss/GLFS-Listers-Mobility-Trajectory/contents/";
 
-const GAMBIA_BOUNDS=[[-16.90,13.00],[-13.75,13.90]];
-const GAMBIA_CENTER=[-15.45,13.45];
+/*
+ Public OSM-based pedestrian routing service.
+ The OSRM-compatible URL uses "driving" as its API profile
+ path segment even though this host is the routed-foot service.
+ This is NOT the car-routing endpoint.
+*/
+const OSM_ROUTING_BASE="https://routing.openstreetmap.de/routed-foot/route/v1/driving/";
 
-const ARCGIS_BASE=
-"https://services1.arcgis.com/YmCK8KfESHdxUQgm/ArcGIS/rest/services/Gambia_Boundaries/FeatureServer";
+const DEFAULT_CENTER=[13.45,-15.45];
 
-const OVERPASS_ENDPOINTS=[
- "https://overpass-api.de/api/interpreter",
- "https://overpass.kumi.systems/api/interpreter"
-];
+/* =========================================================
+  2. GLOBAL VARIABLES
+========================================================= */
 
-let map;
-let nationalData={};
-let displayData={};
-let loading={};
-let allEA=null;
-let adminData={lga:null,districts:null};
-let selectedAOI=null;
-let measureMode=false;
-let measurePoints=[];
-let populationChart=null;
-let currentBasemap="streets";
+let compoundRaw=[],householdRaw=[];
+let compounds=[],households=[],filtered=[];
+let eaGeoJSON=null,eaLayer=null;
+let householdLookup=new Map();
 
-const csvData={};
+let tracks=[];
+let animationRunning=false;
+let animationFrame=null;
+let lastFrameTime=null;
+let animationProgress=0;
+let activeVisitIndex=0;
+let currentAnimationRecord=null;
+let refreshInProgress=false;
+let routeBuildToken=0;
+let routeCache=new Map();
+let animationEvents=[];
 
-/* ---------------------------------------------------------
-   DATA CATALOGUE
-   --------------------------------------------------------- */
+function $(id){return document.getElementById(id)}
 
-const catalogueGroups=[
- {title:"Census and Population",items:[
-  ["eas","Census Enumeration Areas","github"],
-  ["census","Census 2013–2023","github"],
-  ["settlements","Settlement directory","github"],
-  ["sexratio","District sex ratio table","github"]
- ]},
- {title:"Built-up Areas",items:[
-  ["built2013","Built-up area 2013","github"],
-  ["built2023","Built-up area 2023","github"]
- ]},
- {title:"Education and Infrastructure",items:[
-  ["education","Education facilities","github"],
-  ["majorroads","Major roads","github"],
-  ["minorroads","Minor roads","github"]
- ]},
- {title:"Administrative Boundaries",items:[
-  ["lga","Local Government Areas","arcgis"],
-  ["districts","District boundaries","arcgis"]
- ]},
- {title:"OpenStreetMap — Transport",items:[
-  ["osmroads","OSM road network","osm"],
-  ["buildings","3D buildings","osm"],
-  ["tracks","Tracks and paths","osm"],
-  ["bridges","Bridges","osm"],
-  ["railways","Railways","osm"],
-  ["busstops","Bus stops","osm"]
- ]},
- {title:"OpenStreetMap — Facilities",items:[
-  ["schools","Schools","osm"],
-  ["health","Health facilities","osm"],
-  ["markets","Markets and shops","osm"],
-  ["government","Government facilities","osm"],
-  ["religion","Places of worship","osm"],
-  ["tourism","Tourism and accommodation","osm"],
-  ["fire","Fire stations","osm"]
- ]},
- {title:"OpenStreetMap — Environment",items:[
-  ["waterways","Rivers and waterways","osm"],
-  ["water","Water bodies","osm"],
-  ["forest","Forests and woodland","osm"],
-  ["wetlands","Wetlands","osm"],
-  ["parks","Parks and green spaces","osm"],
-  ["landuse","Land use","osm"],
-  ["power","Power infrastructure","osm"]
- ]}
-];
+/* =========================================================
+  3. MAP AND BASEMAPS
+========================================================= */
 
-/* ---------------------------------------------------------
-   BASEMAPS
-   --------------------------------------------------------- */
+const map=L.map("map",{zoomControl:true,preferCanvas:true}).setView(DEFAULT_CENTER,8);
 
-function rasterStyle(tiles,attribution){
- return {
-  version:8,
-  sources:{base:{type:"raster",tiles,tileSize:256,attribution}},
-  layers:[{id:"base",type:"raster",source:"base"}]
- };
-}
+const baseLayers={
+ street:L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{
+  maxZoom:19,attribution:"© OpenStreetMap contributors"
+ }),
+ satellite:L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",{
+  maxZoom:19,attribution:"© Esri"
+ }),
+ hybrid:L.layerGroup([
+  L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",{maxZoom:19}),
+  L.tileLayer("https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}",{maxZoom:19})
+ ]),
+ terrain:L.tileLayer("https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",{
+  maxZoom:17,attribution:"© OpenTopoMap"
+ })
+};
 
-function baseStyle(kind){
- const osm="© OpenStreetMap contributors";
- const carto="© OpenStreetMap contributors © CARTO";
- const esri="Tiles © Esri";
+baseLayers.street.addTo(map);
 
- if(kind==="osm")
-  return rasterStyle(["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],osm);
+const pointLayer=L.layerGroup().addTo(map);
+const staticTrackLayer=L.layerGroup().addTo(map);
+const animatedTrailLayer=L.layerGroup().addTo(map);
+const movingLayer=L.layerGroup().addTo(map);
 
- if(kind==="streets")
-  return rasterStyle(["https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png"],carto);
+$("basemap").addEventListener("change",e=>{
+ Object.values(baseLayers).forEach(layer=>{
+  if(map.hasLayer(layer))map.removeLayer(layer);
+ });
+ (baseLayers[e.target.value]||baseLayers.street).addTo(map);
+});
 
- if(kind==="light")
-  return rasterStyle(["https://basemaps.cartocdn.com/rastertiles/positron/{z}/{x}/{y}.png"],carto);
+/* =========================================================
+  4. GENERAL HELPERS
+========================================================= */
 
- if(kind==="satellite")
-  return rasterStyle(["https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"],esri);
+function clean(v){return v===null||v===undefined?"":String(v).trim()}
 
- if(kind==="dark")
-  return rasterStyle(["https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png"],carto);
-
- if(kind==="hybrid"){
-  return {
-   version:8,
-   sources:{
-    imagery:{type:"raster",tiles:["https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"],tileSize:256,attribution:esri},
-    labels:{type:"raster",tiles:["https://basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}.png"],tileSize:256,attribution:carto}
-   },
-   layers:[
-    {id:"imagery",type:"raster",source:"imagery"},
-    {id:"labels",type:"raster",source:"labels"}
-   ]
-  };
- }
-
- if(kind==="terrain"){
-  return {
-   version:8,
-   sources:{
-    base:{type:"raster",tiles:["https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png"],tileSize:256,attribution:carto},
-    dem:{type:"raster-dem",tiles:["https://demotiles.maplibre.org/terrain-tiles/{z}/{x}/{y}.png"],tileSize:256,encoding:"terrarium",attribution:"MapLibre demo terrain"}
-   },
-   layers:[{id:"base",type:"raster",source:"base"}],
-   terrain:{source:"dem",exaggeration:1.25}
-  };
- }
- return rasterStyle(["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],osm);
-}
-
-/* ---------------------------------------------------------
-   GENERAL UTILITIES
-   --------------------------------------------------------- */
-
-function emptyFC(){
- return {type:"FeatureCollection",features:[]};
-}
-
-function setMessage(s){
- document.getElementById("map-message").textContent=s;
-}
-
-function log(message,type="info"){
- const d=document.createElement("div");
- d.textContent=new Date().toLocaleTimeString()+" — "+message;
- d.style.color=type==="error"?"#c03945":type==="warn"?"#b47a21":"#52677c";
- document.getElementById("log").prepend(d);
-}
-
-function escapeHTML(s){
- return String(s??"").replace(/[&<>"']/g,c=>({
-  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
- }[c]));
-}
-
-function propValue(feature,keys){
- const p=feature?.properties||{};
- const normalized=Object.keys(p).reduce((o,k)=>{
-  o[k.toLowerCase().replace(/[^a-z0-9]/g,"")]=p[k];
-  return o;
- },{});
- for(const key of keys){
-  const value=normalized[key.toLowerCase().replace(/[^a-z0-9]/g,"")];
-  if(value!==undefined&&value!==null&&String(value).trim()!=="")return String(value).trim();
+function firstValue(row,names){
+ const keys=Object.keys(row||{});
+ for(const n of names){
+  if(row[n]!==undefined&&clean(row[n])!=="")return row[n];
+  const k=keys.find(x=>x.trim().toLowerCase()===n.toLowerCase());
+  if(k&&clean(row[k])!=="")return row[k];
  }
  return "";
 }
 
-function uniqueSorted(values){
- return [...new Set(values.filter(Boolean))].sort((a,b)=>a.localeCompare(b));
+function num(v){
+ if(v===null||v===undefined||String(v).trim()==="")return null;
+ const n=Number(String(v).replace(/,/g,"").trim());
+ return Number.isFinite(n)?n:null;
 }
 
-function asFC(data){
- if(data?.type==="FeatureCollection")return data;
- if(data?.type==="Feature")return {type:"FeatureCollection",features:[data]};
- if(Array.isArray(data))return {type:"FeatureCollection",features:data};
- if(data?.features)return {type:"FeatureCollection",features:data.features};
- throw new Error("Unsupported GeoJSON structure.");
-}
-
-function fitData(data){
- try{
-  if(!data?.features?.length)return;
-  const b=turf.bbox(data);
-  if(b.every(Number.isFinite)){
-   map.fitBounds([[b[0],b[1]],[b[2],b[3]]],{
-    padding:65,maxZoom:14,duration:850
-   });
-  }
- }catch(e){log("Could not calculate map extent.","warn");}
-}
-
-function updateKPIs(){
- const ids=Object.keys(displayData);
- let n=0;
- ids.forEach(id=>n+=displayData[id]?.features?.length||0);
- document.getElementById("kpiLayers").textContent=ids.length;
- document.getElementById("kpiFeatures").textContent=n.toLocaleString();
- document.getElementById("kpiEAs").textContent=allEA?allEA.features.length.toLocaleString():"—";
- document.getElementById("kpiSelected").textContent=ids.filter(isLayerVisible).length;
-}
-
-function isLayerVisible(id){
- const l=map.getLayer("ly-"+id);
- return !!l&&map.getLayoutProperty("ly-"+id,"visibility")!=="none";
-}
-
-function layerStatus(id,state,message){
- const el=document.querySelector('[data-status="'+id+'"]');
- if(el){
-  el.textContent=message||state;
-  el.className="status "+state;
+function parseDate(v){
+ if(!v)return null;
+ if(typeof v==="number"){
+  if(v>1000000000000)return new Date(v);
+  if(v>1000000000)return new Date(v*1000);
+  if(v>20000&&v<100000)return new Date(Date.UTC(1899,11,30)+v*86400000);
  }
+ const s=String(v).trim();
+ if(/^\d{13}$/.test(s))return new Date(Number(s));
+ if(/^\d{10}$/.test(s))return new Date(Number(s)*1000);
+ if(/^\d{5}(\.\d+)?$/.test(s))return new Date(Date.UTC(1899,11,30)+Number(s)*86400000);
+ const d=new Date(s);
+ return Number.isNaN(d.getTime())?null:d;
 }
 
-function layerColor(id){
- const colors={
-  eas:"#15966c",census:"#1685d4",built2013:"#e99a32",
-  built2023:"#7656b5",education:"#d79b26",
-  majorroads:"#d94c54",minorroads:"#e6a23c",
-  osmroads:"#db553e",buildings:"#829bb3",
-  schools:"#d79b26",health:"#d84f64",
-  waterways:"#279dd0",water:"#168ac1",
-  forest:"#42a17b",parks:"#15966c"
- };
- return colors[id]||"#3187b8";
+function fmt(n){return Number(n||0).toLocaleString()}
+function fmtDate(d){return d?d.toLocaleDateString():"Unknown"}
+function fmtDateTime(d){return d?d.toLocaleString():"Unknown"}
+
+function esc(v){
+ return String(v??"").replace(/[&<>"']/g,c=>({
+  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+ }[c]));
 }
 
-/* ---------------------------------------------------------
-   MAP INITIALISATION
-   --------------------------------------------------------- */
-
-function initialiseMap(){
- map=new maplibregl.Map({
-  container:"map",
-  style:baseStyle("streets"),
-  center:GAMBIA_CENTER,
-  zoom:7.1,
-  pitch:45,
-  bearing:0,
-  maxPitch:75,
-  attributionControl:true
- });
-
- map.addControl(new maplibregl.NavigationControl({visualizePitch:true}),"bottom-right");
- map.addControl(new maplibregl.ScaleControl({maxWidth:120,unit:"metric"}),"bottom-left");
-
- map.on("load",()=>{
-  document.getElementById("connection-status").textContent="Map ready";
-  addSelectionLayers();
-  loadCoreData();
-  loadAdminBoundaries();
-  setMessage("Map ready. Loading national datasets…");
- });
-
- map.on("click",handleMapClick);
- map.on("error",e=>{
-  if(e?.error)log("Map error: "+e.error.message,"warn");
- });
+function unique(rows,key){
+ return [...new Set(rows.map(r=>clean(r[key])).filter(Boolean))]
+  .sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));
 }
 
-function addSelectionLayers(){
- if(map.getSource("selection-highlight"))return;
- map.addSource("selection-highlight",{type:"geojson",data:emptyFC()});
- map.addLayer({
-  id:"selection-fill",type:"fill",source:"selection-highlight",
-  paint:{"fill-color":"#f0a52b","fill-opacity":.12}
- });
- map.addLayer({
-  id:"selection-line",type:"line",source:"selection-highlight",
-  paint:{"line-color":"#e99a32","line-width":3}
- });
+function setStatus(message,type=""){
+ $("data-status").textContent=message;
+ $("data-status").className="status "+type;
 }
 
-function changeBasemap(kind){
- if(kind===currentBasemap)return;
- currentBasemap=kind;
- const center=map.getCenter();
- const zoom=map.getZoom();
- const pitch=map.getPitch();
- const bearing=map.getBearing();
-
- map.setStyle(baseStyle(kind));
- map.once("style.load",()=>{
-  map.setCenter(center);
-  map.setZoom(zoom);
-  map.setPitch(pitch);
-  map.setBearing(bearing);
-  addSelectionLayers();
-
-  Object.keys(displayData).forEach(id=>{
-   addGeoJSONLayer(id,displayData[id],false);
-  });
-
-  if(selectedAOI)map.getSource("selection-highlight").setData(selectedAOI);
-  if(measurePoints.length)addMeasureLayer();
-  updateOpacity();
-  setMessage("Basemap changed: "+kind.toUpperCase());
- });
+function mapMessage(message){
+ const el=$("map-message");
+ el.textContent=message;
+ el.style.display="block";
+ clearTimeout(mapMessage.timer);
+ mapMessage.timer=setTimeout(()=>el.style.display="none",4500);
 }
 
-/* ---------------------------------------------------------
-   GEOJSON DISPLAY
-   --------------------------------------------------------- */
-
-function addGeoJSONSource(id,data){
- const sourceId="src-"+id;
- if(map.getSource(sourceId))map.getSource(sourceId).setData(data);
- else map.addSource(sourceId,{type:"geojson",data});
+function haversine(a,b){
+ const R=6371008.8;
+ const p1=a[1]*Math.PI/180,p2=b[1]*Math.PI/180;
+ const dp=(b[1]-a[1])*Math.PI/180;
+ const dl=(b[0]-a[0])*Math.PI/180;
+ const x=Math.sin(dp/2)**2+Math.cos(p1)*Math.cos(p2)*Math.sin(dl/2)**2;
+ return 2*R*Math.atan2(Math.sqrt(x),Math.sqrt(1-x));
 }
 
-function removeLayer(id){
- ["ly-"+id,"ly-"+id+"-line"].forEach(l=>{
-  if(map.getLayer(l))map.removeLayer(l);
- });
- const s="src-"+id;
- if(map.getSource(s))map.removeSource(s);
- delete displayData[id];
+function formatDistance(m){
+ if(!Number.isFinite(m))return "—";
+ return (m/1000).toLocaleString(undefined,{maximumFractionDigits:2})+" km";
 }
 
-function addGeoJSONLayer(id,data,fit=false){
- if(!map||!map.isStyleLoaded())return;
- data=asFC(data);
- displayData[id]=data;
- addGeoJSONSource(id,data);
-
- const features=data.features||[];
- if(!features.length){
-  removeLayerOnly(id);
-  updateKPIs();
-  return;
- }
-
- const isPoint=features.some(f=>["Point","MultiPoint"].includes(f.geometry?.type));
- const isPolygon=features.some(f=>/Polygon/.test(f.geometry?.type||""));
- const color=layerColor(id);
-
- if(id==="buildings"){
-  if(!map.getLayer("ly-"+id)){
-   map.addLayer({
-    id:"ly-"+id,type:"fill-extrusion",source:"src-"+id,
-    paint:{
-     "fill-extrusion-color":"#b8c8d8",
-     "fill-extrusion-height":[
-      "coalesce",
-      ["to-number",["get","height"]],
-      ["*",["to-number",["get","building:levels"]],3],
-      6
-     ],
-     "fill-extrusion-base":0,
-     "fill-extrusion-opacity":.82
-    }
-   });
-  }
- }else if(isPoint){
-  if(!map.getLayer("ly-"+id)){
-   map.addLayer({
-    id:"ly-"+id,type:"circle",source:"src-"+id,
-    paint:{
-     "circle-radius":["interpolate",["linear"],["zoom"],5,2,12,5,16,7],
-     "circle-color":color,
-     "circle-stroke-color":"#fff",
-     "circle-stroke-width":1
-    }
-   });
-  }
- }else if(isPolygon){
-  if(!map.getLayer("ly-"+id)){
-   map.addLayer({
-    id:"ly-"+id,type:"fill",source:"src-"+id,
-    paint:{"fill-color":color,"fill-opacity":.28,"fill-outline-color":color}
-   });
-  }
-  if(!map.getLayer("ly-"+id+"-line")){
-   map.addLayer({
-    id:"ly-"+id+"-line",type:"line",source:"src-"+id,
-    paint:{"line-color":color,"line-width":1.2}
-   });
-  }
- }else{
-  if(!map.getLayer("ly-"+id)){
-   map.addLayer({
-    id:"ly-"+id,type:"line",source:"src-"+id,
-    paint:{"line-color":color,"line-width":["interpolate",["linear"],["zoom"],5,1,12,3]}
-   });
-  }
- }
-
- updateOpacity();
- updateKPIs();
- if(fit&&features.length)fitData(data);
+function formatDuration(minutes){
+ if(!Number.isFinite(minutes))return "—";
+ const total=Math.round(minutes);
+ const hours=Math.floor(total/60);
+ const mins=total%60;
+ return hours?hours+" h "+mins+" min":mins+" min";
 }
 
-function removeLayerOnly(id){
- ["ly-"+id,"ly-"+id+"-line"].forEach(l=>{
-  if(map.getLayer(l))map.removeLayer(l);
- });
-}
+function sleep(ms){return new Promise(resolve=>setTimeout(resolve,ms))}
 
-function updateOpacity(){
- const value=Number(document.getElementById("opacity").value)/100;
- document.getElementById("opacityValue").textContent=Math.round(value*100)+"%";
- Object.keys(displayData).forEach(id=>{
-  const l="ly-"+id;
-  if(!map.getLayer(l))return;
-  const type=map.getLayer(l).type;
-  const p=type==="fill"?"fill-opacity":
-   type==="circle"?"circle-opacity":
-   type==="line"?"line-opacity":"fill-extrusion-opacity";
-  try{map.setPaintProperty(l,p,value);}catch(e){}
- });
-}
+/* =========================================================
+  5. COMPOUND AND HOUSEHOLD NORMALIZATION
+========================================================= */
 
-/* ---------------------------------------------------------
-   GITHUB DATA LOADING
-   --------------------------------------------------------- */
-
-async function fetchJSON(filename){
- const response=await fetch(RAW+encodeURIComponent(filename));
- if(!response.ok)throw new Error(filename+" returned HTTP "+response.status);
- return response.json();
-}
-
-async function fetchCSV(filename){
- const response=await fetch(RAW+encodeURIComponent(filename));
- if(!response.ok)throw new Error(filename+" returned HTTP "+response.status);
- return parseCSV(await response.text());
-}
-
-function parseCSV(text){
- const rows=[];
- let row=[],field="",quoted=false;
- for(let i=0;i<text.length;i++){
-  const c=text[i],next=text[i+1];
-  if(c==='"'&&quoted&&next==='"'){field+='"';i++;}
-  else if(c==='"')quoted=!quoted;
-  else if(c===","&&!quoted){row.push(field);field="";}
-  else if((c==="\n"||c==="\r")&&!quoted){
-   if(c==="\r"&&next==="\n")i++;
-   row.push(field);field="";
-   if(row.some(v=>v.trim()!==""))rows.push(row);
-   row=[];
-  }else field+=c;
- }
- if(field.length||row.length){row.push(field);rows.push(row);}
- if(!rows.length)return [];
- const headers=rows.shift().map(h=>h.trim().replace(/^\uFEFF/,""));
- return rows.map(r=>{
-  const obj={};
-  headers.forEach((h,i)=>obj[h]=(r[i]??"").trim());
-  return obj;
- });
-}
-
-async function loadGitHubLayer(id,filename){
- if(nationalData[id]){
-  addGeoJSONLayer(id,filteredData(id),false);
-  return nationalData[id];
- }
- if(loading[id])return;
- loading[id]=true;
- layerStatus(id,"loading","Loading…");
- log("Fetching "+filename+" from GitHub.");
- try{
-  const raw=await fetchJSON(filename);
-  const data=asFC(raw);
-  nationalData[id]=data;
-  addGeoJSONLayer(id,filteredData(id),true);
-  layerStatus(id,"loaded",data.features.length.toLocaleString()+" features");
-  log(id+" loaded: "+data.features.length.toLocaleString()+" features.");
-  if(id==="eas"){
-   allEA=data;
-   updateAdminSelectors();
-   applyAdminSelection(false);
-  }
-  return data;
- }catch(e){
-  layerStatus(id,"error","Unavailable");
-  log(filename+": "+e.message,"error");
-  throw e;
- }finally{
-  delete loading[id];
-  updateKPIs();
- }
-}
-
-async function loadCSV(id,filename){
- if(csvData[id])return csvData[id];
- layerStatus(id,"loading","Loading…");
- try{
-  csvData[id]=await fetchCSV(filename);
-  layerStatus(id,"loaded",csvData[id].length+" records");
-  log(filename+" loaded: "+csvData[id].length+" records.");
-  return csvData[id];
- }catch(e){
-  layerStatus(id,"error","Unavailable");
-  log(filename+": "+e.message,"error");
-  throw e;
- }
-}
-
-async function loadCoreData(){
- try{
-  await loadGitHubLayer("eas","Census_EAs_Geo.json");
- }catch(e){}
- try{
-  await loadCSV("censusCSV","Census_2013_2023.csv");
- }catch(e){}
- try{
-  await loadCSV("settlementCSV","Directory of Settlement.csv");
- }catch(e){}
- try{
-  await loadCSV("sexratioCSV","District_Sex_Ratio.csv");
- }catch(e){}
- updateKPIs();
-}
-
-/* ---------------------------------------------------------
-   ARCGIS BOUNDARIES
-   --------------------------------------------------------- */
-
-async function loadArcGISLayer(layerId,localId){
- const url=ARCGIS_BASE+"/"+layerId+
- "/query?where=1%3D1&outFields=*&returnGeometry=true&outSR=4326&f=geojson";
- const r=await fetch(url);
- if(!r.ok)throw new Error("ArcGIS returned HTTP "+r.status);
- const data=asFC(await r.json());
- nationalData[localId]=data;
- addGeoJSONLayer(localId,filteredData(localId),false);
- return data;
-}
-
-async function loadAdminBoundaries(){
- for(const [id,layer] of [["lga",0],["districts",1]]){
-  layerStatus(id,"loading","Loading…");
-  try{
-   const d=await loadArcGISLayer(layer,id);
-   adminData[id]=d;
-   layerStatus(id,"loaded",d.features.length+" features");
-   updateAdminSelectors();
-  }catch(e){
-   layerStatus(id,"error","Unavailable");
-   log(id+" boundary error: "+e.message,"warn");
-  }
- }
-}
-
-/* ---------------------------------------------------------
-   OPENSTREETMAP
-   --------------------------------------------------------- */
-
-const osmDefinitions={
- osmroads:'way["highway"]',
- buildings:'way["building"]',
- tracks:'way["highway"~"track|path|footway|cycleway|bridleway"]',
- bridges:'way["bridge"]',
- railways:'way["railway"]',
- busstops:'nwr["highway"="bus_stop"];nwr["public_transport"="platform"]',
- schools:'nwr["amenity"~"school|college|university|kindergarten"]',
- health:'nwr["amenity"~"hospital|clinic|doctors|pharmacy|dentist"]',
- markets:'nwr["amenity"="marketplace"];nwr["shop"]',
- government:'nwr["office"="government"];nwr["amenity"="townhall"]',
- religion:'nwr["amenity"="place_of_worship"]',
- tourism:'nwr["tourism"~"hotel|guest_house|attraction|museum|viewpoint"]',
- fire:'nwr["amenity"="fire_station"]',
- waterways:'way["waterway"]',
- water:'way["natural"="water"];way["waterway"="riverbank"]',
- forest:'way["landuse"="forest"];way["natural"="wood"]',
- wetlands:'way["natural"="wetland"]',
- parks:'way["leisure"~"park|garden|nature_reserve"]',
- landuse:'way["landuse"]',
- power:'nwr["power"]'
-};
-
-function currentQueryBounds(){
- if(selectedAOI){
-  const b=turf.bbox(selectedAOI);
-  return [b[1],b[0],b[3],b[2]];
- }
- return [13.00,-16.90,13.90,-13.75];
-}
-
-function overpassQuery(id){
- const filter=osmDefinitions[id];
- if(!filter)throw new Error("No OSM query defined for "+id);
- const [s,w,n,e]=currentQueryBounds();
- const clauses=filter.split(";").map(x=>x.trim()).filter(Boolean)
-  .map(x=>x+`(${s},${w},${n},${e});`).join("\n");
- return `[out:json][timeout:90];(${clauses});out center tags geom;`;
-}
-
-function osmElementToFeature(el){
- const tags=el.tags||{};
- const properties={...tags,_osm_type:el.type,_osm_id:el.id};
-
- if(el.type==="node"&&Number.isFinite(el.lat)&&Number.isFinite(el.lon)){
-  return {type:"Feature",properties,geometry:{type:"Point",coordinates:[el.lon,el.lat]}};
- }
-
- if(el.type==="way"&&Array.isArray(el.geometry)&&el.geometry.length>1){
-  const coords=el.geometry.map(p=>[p.lon,p.lat]).filter(p=>p.every(Number.isFinite));
-  if(coords.length<2)return null;
-  const closed=coords.length>3&&coords[0][0]===coords.at(-1)[0]&&coords[0][1]===coords.at(-1)[1];
-  const area=!!(tags.building||tags.landuse||tags.leisure||tags.natural==="water"||tags.amenity==="parking");
-  return {
-   type:"Feature",properties,
-   geometry:closed&&area?{type:"Polygon",coordinates:[coords]}:{type:"LineString",coordinates:coords}
-  };
- }
-
- if(el.center&&Number.isFinite(el.center.lat)&&Number.isFinite(el.center.lon)){
-  return {type:"Feature",properties,geometry:{type:"Point",coordinates:[el.center.lon,el.center.lat]}};
- }
- return null;
-}
-
-async function fetchOverpass(id){
- const query=overpassQuery(id);
- let lastError;
- for(const endpoint of OVERPASS_ENDPOINTS){
-  const controller=new AbortController();
-  const timer=setTimeout(()=>controller.abort(),100000);
-  try{
-   const response=await fetch(endpoint,{
-    method:"POST",
-    headers:{"Content-Type":"application/x-www-form-urlencoded;charset=UTF-8"},
-    body:"data="+encodeURIComponent(query),
-    signal:controller.signal
-   });
-   if(!response.ok)throw new Error("Overpass HTTP "+response.status);
-   const json=await response.json();
-   const features=(json.elements||[]).map(osmElementToFeature).filter(Boolean);
-   if(!features.length)throw new Error("No OSM features returned.");
-   return {type:"FeatureCollection",features};
-  }catch(e){
-   lastError=e;
-   log("OSM endpoint failed: "+e.message,"warn");
-  }finally{
-   clearTimeout(timer);
-  }
- }
- throw lastError||new Error("All Overpass endpoints failed.");
-}
-
-/* ---------------------------------------------------------
-   LAYER LOADING
-   --------------------------------------------------------- */
-
-const githubLayers={
- eas:"Census_EAs_Geo.json",
- census:"Census2013_2023.geojson",
- built2013:"BuiltUp_Area2013.json",
- built2023:"BuiltUp_Area2023.json",
- education:"Education_Facility.geojson",
- majorroads:"Major_Road.geojson",
- minorroads:"Minor_Road.geojson"
-};
-
-const csvLayers={
- settlements:"Directory of Settlement.csv",
- sexratio:"District_Sex_Ratio.csv"
-};
-
-async function loadLayer(id){
- if(loading[id])return;
-
- if(nationalData[id]){
-  addGeoJSONLayer(id,filteredData(id),true);
-  return;
- }
-
- loading[id]=true;
- layerStatus(id,"loading","Loading…");
- setMessage("Loading "+id+"…");
-
- try{
-  if(githubLayers[id]){
-   await loadGitHubLayer(id,githubLayers[id]);
-  }else if(csvLayers[id]){
-   const data=await loadCSV(id,csvLayers[id]);
-   log(id+" is a tabular dataset with "+data.length+" records; it is available for analysis.");
-  }else if(id==="lga"){
-   await loadArcGISLayer(0,id);
-  }else if(id==="districts"){
-   await loadArcGISLayer(1,id);
-  }else if(osmDefinitions[id]){
-   const data=await fetchOverpass(id);
-   nationalData[id]=data;
-   addGeoJSONLayer(id,filteredData(id),true);
-   layerStatus(id,"loaded",data.features.length.toLocaleString()+" features");
-  }else{
-   throw new Error("No data source configured.");
-  }
-  setMessage(id+" loaded.");
- }catch(e){
-  layerStatus(id,"error","Load failed");
-  log(id+" failed: "+e.message,"error");
-  setMessage("Could not load "+id+": "+e.message);
-  const cb=document.querySelector('[data-layer="'+id+'"]');
-  if(cb)cb.checked=false;
- }finally{
-  delete loading[id];
-  updateKPIs();
- }
-}
-
-function toggleLayer(id,checked){
- if(checked){
-  loadLayer(id);
- }else{
-  removeLayer(id);
-  layerStatus(id,"","Not loaded");
-  updateKPIs();
- }
-}
-
-/* ---------------------------------------------------------
-   ADMINISTRATIVE SELECTORS
-   --------------------------------------------------------- */
-
-function fillSelect(id,placeholder,values){
- const el=document.getElementById(id);
- const old=el.value;
- el.innerHTML="";
- const first=document.createElement("option");
- first.value="";
- first.textContent=placeholder;
- el.append(first);
- values.forEach(v=>{
-  const o=document.createElement("option");
-  o.value=v;o.textContent=v;el.append(o);
- });
- if(values.includes(old))el.value=old;
-}
-
-function getEALga(f){
- return propValue(f,["lganame","lga_name","lga","region","lg_name"]);
-}
-function getEADistrict(f){
- return propValue(f,["distname","district","district_name","dist_name","hdistrict"]);
-}
-function getEAWard(f){
- return propValue(f,["wardname","ward","ward_name","hward"]);
-}
-
-function updateAdminSelectors(){
- if(!allEA)return;
- const lgas=uniqueSorted(allEA.features.map(getEALga));
- fillSelect("lgaSelect","All LGAs",lgas);
- updateDistrictOptions();
- updateWardOptions();
-}
-
-function updateDistrictOptions(){
- if(!allEA)return;
- const lga=document.getElementById("lgaSelect").value;
- const features=allEA.features.filter(f=>!lga||getEALga(f)===lga);
- fillSelect("districtSelect","All districts",uniqueSorted(features.map(getEADistrict)));
-}
-
-function updateWardOptions(){
- if(!allEA)return;
- const lga=document.getElementById("lgaSelect").value;
- const district=document.getElementById("districtSelect").value;
- const features=allEA.features.filter(f=>
-  (!lga||getEALga(f)===lga)&&(!district||getEADistrict(f)===district)
- );
- fillSelect("wardSelect","All wards",uniqueSorted(features.map(getEAWard)));
-}
-
-function getSelectedEAs(){
- if(!allEA)return emptyFC();
- const lga=document.getElementById("lgaSelect").value;
- const district=document.getElementById("districtSelect").value;
- const ward=document.getElementById("wardSelect").value;
+function normalizeCompound(row,index){
+ const x=num(firstValue(row,["x","X","longitude","Longitude","lon"]));
+ const y=num(firstValue(row,["y","Y","latitude","Latitude","lat"]));
+ const created=parseDate(firstValue(row,["CreationDate","creationdate","CreatedDate","created_at","Created At"]));
 
  return {
-  type:"FeatureCollection",
-  features:allEA.features.filter(f=>
-   (!lga||getEALga(f)===lga)&&
-   (!district||getEADistrict(f)===district)&&
-   (!ward||getEAWard(f)===ward)
-  )
+  ...row,_index:index,
+  globalID:clean(firstValue(row,["GlobalID","globalid"])),
+  x,y,
+  hasGPS:x!==null&&y!==null&&x>=-180&&x<=180&&y>=-90&&y<=90,
+  created,
+  date:created?created.toISOString().slice(0,10):"Unknown",
+  interviewer:clean(firstValue(row,["EDF_interviewer","Interviewer","interviewer","Enumerator"]))||"Unknown enumerator",
+  team:clean(firstValue(row,["EDF_team","Team","team"]))||"Unknown team",
+  lga:clean(firstValue(row,["EDF_LGA","LGA","lga","Region"])),
+  district:clean(firstValue(row,["EDF_district","District","district"])),
+  ward:clean(firstValue(row,["EDF_wards","Ward","ward","Wards"])),
+  settlement:clean(firstValue(row,["EDF_settlement","Settlement","settlement"])),
+  ea:clean(firstValue(row,["EDF_enum_areacode","Enumeration Area","EA","feacode","enum_areacode"])),
+  compoundNo:clean(firstValue(row,["Q1. Compound/Structure Number","Compound Actual Number","Compound Number","Q1"])),
+  address:clean(firstValue(row,["Q2. Compound/Structure Physical Address","Physical Address","Address"]))
  };
 }
 
-/* ---------------------------------------------------------
-   FILTER ALL LOADED VECTOR DATA TO SELECTED AOI
-   --------------------------------------------------------- */
+function normalizeHousehold(row,index){
+ return {
+  ...row,_index:index,
+  globalID:clean(firstValue(row,["GlobalID","globalid"])),
+  parentGlobalID:clean(firstValue(row,["ParentGlobalID","parentglobalid"])),
+  householdNo:clean(firstValue(row,["Q4. Household Number","Household Number","Q4"])),
+  head:clean(firstValue(row,["Q5. Name of Household Head","Name of Household Head","Household Head"])),
+  members:num(firstValue(row,["Q6. Total Members in The Household","Total Members in The Household"]))||0,
+  phone:clean(firstValue(row,["Q7. Contact Number of Household Head","Contact Number of Household Head"]))
+ };
+}
 
-function featureIntersectsAOI(feature,aoi,bbox){
+function buildHouseholdLookup(){
+ householdLookup=new Map();
+ households.forEach(h=>{
+  if(!h.parentGlobalID)return;
+  if(!householdLookup.has(h.parentGlobalID))householdLookup.set(h.parentGlobalID,[]);
+  householdLookup.get(h.parentGlobalID).push(h);
+ });
+}
+
+/* =========================================================
+  6. GITHUB DATA LOADING
+========================================================= */
+
+async function fetchText(url){
+ const response=await fetch(url+(url.includes("?")?"&":"?")+"t="+Date.now(),{cache:"no-store"});
+ if(!response.ok)throw new Error("HTTP "+response.status);
+ return await response.text();
+}
+
+async function fetchCSV(url,name){
+ const txt=await fetchText(url);
+ const parsed=Papa.parse(txt,{header:true,skipEmptyLines:true,dynamicTyping:false});
+ if(!parsed.data||!parsed.data.length)throw new Error(name+" has no data rows.");
+ return parsed.data;
+}
+
+async function fetchJSON(url){return JSON.parse(await fetchText(url))}
+
+async function discoverHouseholdFile(){
+ const response=await fetch(REPO_API+"?t="+Date.now(),{cache:"no-store"});
+ if(!response.ok)return null;
+ const files=await response.json();
+ const candidates=files.filter(f=>f.type==="file"&&/\.csv$/i.test(f.name)&&/(household|hh)/i.test(f.name));
+ if(!candidates.length)return null;
+ return candidates.find(f=>f.name.toLowerCase()==="glfs_27hh1_071126_excel.csv")||candidates[0];
+}
+
+async function loadAllGitHubFiles(){
+ if(refreshInProgress)return;
+ refreshInProgress=true;
+ $("refresh-github").disabled=true;
+ $("refresh-github").innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Updating...';
+
+ const errors=[];
+ let compoundOK=false,householdOK=false,eaOK=false;
+
  try{
-  if(!feature?.geometry)return false;
-  const fb=turf.bbox(feature);
-  if(fb[2]<bbox[0]||fb[0]>bbox[2]||fb[3]<bbox[1]||fb[1]>bbox[3])return false;
+  stopAnimation();
+  routeBuildToken++;
+  setStatus("Loading GitHub datasets...");
 
-  // Point and multipoint features
-  if(feature.geometry.type==="Point"){
-   return turf.booleanPointInPolygon(feature,aoi);
+  try{
+   $("compound-source-state").textContent="Loading...";
+   compoundRaw=await fetchCSV(COMPOUND_CSV_URL,"Compound CSV");
+   compounds=compoundRaw.map(normalizeCompound);
+   compoundOK=true;
+   $("compound-source-state").textContent=fmt(compounds.length)+" loaded";
+  }catch(e){
+   errors.push("Compound CSV: "+e.message);
+   $("compound-source-state").textContent="Unavailable";
   }
-  if(feature.geometry.type==="MultiPoint"){
-   return feature.geometry.coordinates.some(c=>
-    turf.booleanPointInPolygon(turf.point(c),aoi)
-   );
+
+  try{
+   $("household-source-state").textContent="Checking...";
+   let data;
+   try{data=await fetchCSV(HOUSEHOLD_CSV_URL,"Household CSV")}
+   catch(e){
+    const candidate=await discoverHouseholdFile();
+    if(!candidate)throw new Error("Household CSV not found in repository.");
+    data=await fetchCSV(candidate.download_url,candidate.name);
+   }
+   householdRaw=data;
+   households=data.map(normalizeHousehold);
+   buildHouseholdLookup();
+   householdOK=true;
+   $("household-source-state").textContent=fmt(households.length)+" loaded";
+  }catch(e){
+   householdRaw=[];households=[];buildHouseholdLookup();
+   errors.push("Household CSV: "+e.message);
+   $("household-source-state").textContent="Not uploaded";
   }
-  // Lines and polygons are tested against EA polygons.
-  return turf.booleanIntersects(feature,aoi);
- }catch(e){
-  return false;
+
+  try{
+   $("ea-source-state").textContent="Loading...";
+   addEABoundaries(await fetchJSON(EA_JSON_URL));
+   eaOK=true;
+   $("ea-source-state").textContent="Loaded";
+  }catch(e){
+   errors.push("EA JSON: "+e.message);
+   $("ea-source-state").textContent="Unavailable";
+  }
+
+  $("road-source-state").textContent="OSM service";
+  $("route-status").textContent="OSM routing service selected. Routes will be requested for the filtered GPS visits.";
+
+  populateFilters();
+  await applyFilters();
+  $("last-update").textContent=new Date().toLocaleString();
+
+  if(compoundOK||eaOK){
+   $("header-state").textContent="GitHub data loaded";
+   setStatus(errors.length?"Available datasets loaded. "+errors.join(" | "):"GitHub datasets loaded successfully.",""+(errors.length?"warn":"ok"));
+  }else{
+   $("header-state").textContent="Loading failed";
+   setStatus(errors.join(" | "),"error");
+  }
+ }finally{
+  refreshInProgress=false;
+  $("refresh-github").disabled=false;
+  $("refresh-github").innerHTML='<i class="fa-solid fa-rotate"></i> Update GitHub datasets';
  }
 }
 
-function filteredData(id){
- const source=nationalData[id];
- if(!source)return emptyFC();
- if(!selectedAOI)return source;
+$("refresh-github").addEventListener("click",loadAllGitHubFiles);
 
- const bbox=turf.bbox(selectedAOI);
- const selected=source.features.filter(f=>featureIntersectsAOI(f,selectedAOI,bbox));
- return {type:"FeatureCollection",features:selected};
-}
+/* =========================================================
+  7. MANUAL FILE UPLOADS
+========================================================= */
 
-function refreshAllDisplayedLayers(){
- Object.keys(nationalData).forEach(id=>{
-  if(!map.getLayer("ly-"+id))return;
-  const filtered=filteredData(id);
-  addGeoJSONLayer(id,filtered,false);
-  const count=filtered.features.length;
-  layerStatus(id,"loaded",count.toLocaleString()+" selected");
+function parseUploadedCSV(file,callback){
+ Papa.parse(file,{
+  header:true,skipEmptyLines:true,dynamicTyping:false,
+  complete:r=>callback(r.data||[]),
+  error:e=>setStatus(e.message,"error")
  });
- updateKPIs();
 }
 
-/* ---------------------------------------------------------
-   APPLY SELECTION AND RESET
-   --------------------------------------------------------- */
-
-function applyAdminSelection(zoom=true){
- if(!allEA){
-  setMessage("Census EA dataset is still loading.");
-  return;
- }
-
- const lga=document.getElementById("lgaSelect").value;
- const district=document.getElementById("districtSelect").value;
- const ward=document.getElementById("wardSelect").value;
-
- const selected=getSelectedEAs();
-
- document.getElementById("statLga").textContent=lga||"All";
- document.getElementById("statDistrict").textContent=district||"All";
- document.getElementById("statWard").textContent=ward||"All";
- document.getElementById("statEAs").textContent=selected.features.length.toLocaleString();
-
- if(!lga&&!district&&!ward){
-  selectedAOI=null;
-  selectedAOI=null;
-  map.getSource("selection-highlight").setData(emptyFC());
-  refreshAllDisplayedLayers();
-  if(zoom)map.fitBounds(GAMBIA_BOUNDS,{padding:45,duration:850});
-  updatePopulationSummary();
-  setMessage("National view restored.");
-  return;
- }
-
- if(!selected.features.length){
-  selectedAOI=null;
-  map.getSource("selection-highlight").setData(emptyFC());
-  setMessage("No EAs matched the selected administrative geography.");
-  return;
- }
-
- // Use selected EA features as the selected geography collection.
- // Each loaded feature is spatially checked against these EA polygons.
- selectedAOI=selected;
-
- map.getSource("selection-highlight").setData(selectedAOI);
- refreshAllDisplayedLayers();
-
- if(zoom)fitData(selectedAOI);
-
- updatePopulationSummary();
- setMessage(
-  "Selected area: "+selected.features.length.toLocaleString()+
-  " EAs. Loaded vector layers filtered to this geography."
- );
-}
-
-function resetSelection(){
- ["lgaSelect","districtSelect","wardSelect"].forEach(id=>{
-  document.getElementById(id).value="";
+$("compound-file").addEventListener("change",e=>{
+ const file=e.target.files[0];if(!file)return;
+ parseUploadedCSV(file,async data=>{
+  stopAnimation();routeBuildToken++;
+  compoundRaw=data;compounds=data.map(normalizeCompound);
+  populateFilters();await applyFilters();
+  $("compound-source-state").textContent="Manual upload";
+  setStatus("Manual compound CSV loaded.","ok");
  });
- updateDistrictOptions();
- updateWardOptions();
- applyAdminSelection(true);
-}
-
-document.getElementById("lgaSelect").addEventListener("change",()=>{
- updateDistrictOptions();
- updateWardOptions();
- applyAdminSelection(true);
 });
-document.getElementById("districtSelect").addEventListener("change",()=>{
- updateWardOptions();
- applyAdminSelection(true);
+
+$("household-file").addEventListener("change",e=>{
+ const file=e.target.files[0];if(!file)return;
+ parseUploadedCSV(file,data=>{
+  householdRaw=data;households=data.map(normalizeHousehold);
+  buildHouseholdLookup();updateAnalytics();updateVisitList();renderMap();
+  $("household-source-state").textContent=fmt(households.length)+" manual records";
+  setStatus("Manual household CSV loaded.","ok");
+ });
 });
-document.getElementById("wardSelect").addEventListener("change",()=>applyAdminSelection(true));
-document.getElementById("zoomSelection").addEventListener("click",()=>applyAdminSelection(true));
-document.getElementById("clearSelection").addEventListener("click",resetSelection);
 
-/* ---------------------------------------------------------
-   POPULATION SUMMARY
-   --------------------------------------------------------- */
+$("ea-file").addEventListener("change",e=>{
+ const file=e.target.files[0];if(!file)return;
+ const reader=new FileReader();
+ reader.onload=()=>{
+  try{
+   addEABoundaries(JSON.parse(reader.result));
+   $("ea-source-state").textContent="Manual upload";
+   setStatus("Manual EA JSON loaded.","ok");
+  }catch(error){setStatus("Invalid EA JSON: "+error.message,"error")}
+ };
+ reader.readAsText(file);
+});
 
-function findPopulationValue(properties,keys){
- for(const k of keys){
-  const v=propValue({properties},[k]);
-  if(v!==""){
-   const n=Number(String(v).replace(/,/g,""));
-   if(Number.isFinite(n))return n;
-  }
- }
- return null;
+/* =========================================================
+  8. OPENSTREETMAP ROUTING
+========================================================= */
+
+/*
+ Each consecutive GPS pair is routed independently.
+ The response includes:
+ - GeoJSON route coordinates
+ - route distance in metres
+ - routing-provider duration in seconds
+
+ The dashboard uses returned route distance and the selected
+ walking-speed assumption to calculate its displayed ETA.
+
+ Requests are throttled and cached to reduce service load.
+*/
+
+function routeCacheKey(a,b){
+ return [
+  Number(a[0]).toFixed(5),Number(a[1]).toFixed(5),
+  Number(b[0]).toFixed(5),Number(b[1]).toFixed(5)
+ ].join(",");
 }
 
-function updatePopulationSummary(){
- const fc=getSelectedEAs();
- let p13=0,p23=0,has13=false,has23=false;
+async function requestOSMRoute(start,end){
+ const key=routeCacheKey(start,end);
+ if(routeCache.has(key))return routeCache.get(key);
 
- fc.features.forEach(f=>{
-  const p=f.properties||{};
-  const a=findPopulationValue(p,["pop2013","population2013","pop_2013","population_2013","pop13"]);
-  const b=findPopulationValue(p,["pop2023","population2023","pop_2023","population_2023","pop23","sum_pop"]);
-  if(a!==null){p13+=a;has13=true;}
-  if(b!==null){p23+=b;has23=true;}
- });
+ const coordinates=[
+  Number(start[0])+","+Number(start[1]),
+  Number(end[0])+","+Number(end[1])
+ ].join(";");
 
- document.getElementById("pop2013").textContent=has13?Math.round(p13).toLocaleString():"Not available in EA fields";
- document.getElementById("pop2023").textContent=has23?Math.round(p23).toLocaleString():"Not available in EA fields";
+ const url=OSM_ROUTING_BASE+coordinates+
+  "?overview=full&geometries=geojson&steps=false";
 
- const change=has13&&has23&&p13!==0?((p23-p13)/p13)*100:null;
- document.getElementById("popChange").textContent=change===null?"—":change.toFixed(1)+"%";
+ const controller=new AbortController();
+ const timeout=setTimeout(()=>controller.abort(),25000);
 
- if(populationChart)populationChart.destroy();
- const ctx=document.getElementById("populationChart");
- populationChart=new Chart(ctx,{
-  type:"bar",
-  data:{
-   labels:["2013","2023"],
-   datasets:[{
-    label:"Population",
-    data:[has13?p13:0,has23?p23:0],
-    backgroundColor:["#1685d4","#15966c"]
-   }]
-  },
-  options:{
-   responsive:true,maintainAspectRatio:false,
-   plugins:{legend:{display:false}},
-   scales:{y:{beginAtZero:true}}
-  }
- });
-}
-
-/* ---------------------------------------------------------
-   CATALOGUE
-   --------------------------------------------------------- */
-
-function renderCatalogue(){
- const root=document.getElementById("catalogue");
- root.innerHTML="";
-
- catalogueGroups.forEach(group=>{
-  const wrapper=document.createElement("div");
-  wrapper.className="layer-group";
-
-  const title=document.createElement("div");
-  title.className="group-title";
-  title.innerHTML="<span>"+escapeHTML(group.title)+"</span><span>⌄</span>";
-
-  const list=document.createElement("div");
-  list.className="layer-list";
-
-  group.items.forEach(([id,name,source])=>{
-   const row=document.createElement("label");
-   row.className="layer-row";
-
-   const cb=document.createElement("input");
-   cb.type="checkbox";
-   cb.dataset.layer=id;
-   cb.addEventListener("change",()=>toggleLayer(id,cb.checked));
-
-   const text=document.createElement("span");
-   text.className="layer-name";
-   text.textContent=name;
-
-   const status=document.createElement("span");
-   status.className="status";
-   status.dataset.status=id;
-   status.textContent=source.toUpperCase();
-
-   row.append(cb,text,status);
-   list.append(row);
+ try{
+  const response=await fetch(url,{
+   method:"GET",
+   headers:{"Accept":"application/json"},
+   signal:controller.signal
   });
 
-  title.addEventListener("click",()=>list.hidden=!list.hidden);
-  wrapper.append(title,list);
-  root.append(wrapper);
- });
-}
+  if(!response.ok)throw new Error("OSM routing HTTP "+response.status);
 
-/* ---------------------------------------------------------
-   FEATURE INSPECTION
-   --------------------------------------------------------- */
+  const data=await response.json();
 
-function handleMapClick(e){
- if(measureMode){
-  addMeasurePoint([e.lngLat.lng,e.lngLat.lat]);
-  return;
- }
+  if(data.code!=="Ok"||!data.routes||!data.routes.length){
+   throw new Error(data.message||data.code||"No route returned");
+  }
 
- const layers=Object.keys(displayData)
-  .map(id=>"ly-"+id)
-  .filter(id=>map.getLayer(id));
+  const route=data.routes[0];
+  const coordinatesOut=route.geometry&&route.geometry.coordinates;
 
- if(!layers.length)return;
+  if(!coordinatesOut||coordinatesOut.length<2){
+   throw new Error("OSM returned no usable route geometry");
+  }
 
- const features=map.queryRenderedFeatures(e.point,{layers});
- if(!features.length)return;
-
- const feature=features[0];
- const layer=feature.layer.id.replace("ly-","");
- const props=feature.properties||{};
- const rows=Object.entries(props).slice(0,35).map(([k,v])=>
-  "<tr><td>"+escapeHTML(k)+"</td><td>"+escapeHTML(v)+"</td></tr>"
- ).join("");
-
- document.getElementById("feature-info").innerHTML=
-  "<b>"+escapeHTML(layer)+"</b><table>"+rows+"</table>";
-}
-
-/* ---------------------------------------------------------
-   MEASUREMENT
-   --------------------------------------------------------- */
-
-function addMeasurePoint(point){
- measurePoints.push(point);
- const features=measurePoints.map((p,i)=>({
-  type:"Feature",properties:{point:i+1},
-  geometry:{type:"Point",coordinates:p}
- }));
-
- if(measurePoints.length>=2){
-  const line={
-   type:"Feature",properties:{},
-   geometry:{type:"LineString",coordinates:measurePoints}
+  const result={
+   ok:true,
+   coordinates:coordinatesOut.map(c=>[Number(c[0]),Number(c[1])]),
+   distance:Number(route.distance)||0,
+   providerDuration:Number(route.duration)||0,
+   provider:"OpenStreetMap pedestrian routing"
   };
-  features.push(line);
-  const km=turf.length(line,{units:"kilometers"});
-  document.getElementById("measureResult").textContent="Distance: "+km.toFixed(3)+" km";
- }
 
- const fc={type:"FeatureCollection",features};
- if(!map.getSource("measure-source")){
-  map.addSource("measure-source",{type:"geojson",data:fc});
-  map.addLayer({
-   id:"measure-line",type:"line",source:"measure-source",
-   filter:["==",["geometry-type"],"LineString"],
-   paint:{"line-color":"#e74c3c","line-width":3,"line-dasharray":[2,1]}
-  });
-  map.addLayer({
-   id:"measure-points",type:"circle",source:"measure-source",
-   filter:["==",["geometry-type"],"Point"],
-   paint:{"circle-radius":5,"circle-color":"#e74c3c","circle-stroke-color":"#fff","circle-stroke-width":2}
-  });
+  routeCache.set(key,result);
+  return result;
+ }catch(error){
+  const result={ok:false,reason:error.name==="AbortError"?"Routing request timed out":error.message};
+  routeCache.set(key,result);
+  return result;
+ }finally{
+  clearTimeout(timeout);
+ }
+}
+
+/* =========================================================
+  9. FILTERS
+========================================================= */
+
+function setOptions(id,values,label){
+ const select=$(id),old=select.value;
+ select.innerHTML="";
+ const first=document.createElement("option");
+ first.value="";first.textContent=label;select.appendChild(first);
+ values.forEach(value=>{
+  const option=document.createElement("option");
+  option.value=value;option.textContent=value;select.appendChild(option);
+ });
+ if(values.includes(old))select.value=old;
+}
+
+function populateFilters(){
+ setOptions("lga-filter",unique(compounds,"lga"),"All LGAs");
+ setOptions("district-filter",unique(compounds,"district"),"All districts");
+ setOptions("ward-filter",unique(compounds,"ward"),"All wards");
+ setOptions("settlement-filter",unique(compounds,"settlement"),"All settlements");
+ setOptions("ea-filter",unique(compounds,"ea"),"All EAs");
+ setOptions("interviewer-filter",unique(compounds,"interviewer"),"All enumerators");
+ setOptions("team-filter",unique(compounds,"team"),"All teams");
+ setOptions("date-filter",unique(compounds,"date"),"All dates");
+}
+
+async function applyFilters(){
+ stopAnimation();
+ const token=++routeBuildToken;
+
+ const f={
+  lga:$("lga-filter").value,district:$("district-filter").value,
+  ward:$("ward-filter").value,settlement:$("settlement-filter").value,
+  ea:$("ea-filter").value,interviewer:$("interviewer-filter").value,
+  team:$("team-filter").value,date:$("date-filter").value
+ };
+
+ filtered=compounds.filter(c=>
+  (!f.lga||c.lga===f.lga)&&(!f.district||c.district===f.district)&&
+  (!f.ward||c.ward===f.ward)&&(!f.settlement||c.settlement===f.settlement)&&
+  (!f.ea||c.ea===f.ea)&&(!f.interviewer||c.interviewer===f.interviewer)&&
+  (!f.team||c.team===f.team)&&(!f.date||c.date===f.date)
+ );
+
+ filtered.sort((a,b)=>(a.created?.getTime()||0)-(b.created?.getTime()||0));
+
+ $("header-records").textContent=fmt(filtered.length);
+ $("header-state").textContent=fmt(filtered.length)+" filtered compound records";
+ $("movement-status").textContent="Preparing movement sequences...";
+ $("route-status").textContent="Requesting OSM routes for filtered GPS observations...";
+
+ renderMap();
+ updateAnalytics();
+
+ await buildTracks(token);
+ if(token!==routeBuildToken)return;
+
+ renderMap();
+ updateAnalytics();
+ updateVisitList();
+ resetAnimation();
+
+ if($("fit-map").checked)fitFilteredMap();
+
+ if(!tracks.length){
+  $("movement-status").textContent="No movement sequence available. Check GPS coordinates and CreationDate.";
  }else{
-  map.getSource("measure-source").setData(fc);
+  const count=tracks.reduce((s,t)=>s+t.records.length,0);
+  $("movement-status").textContent=tracks.length+" movement sequence(s) ready, containing "+fmt(count)+" GPS visits.";
  }
 }
 
-function addMeasureLayer(){
- if(!measurePoints.length)return;
- const features=measurePoints.map(p=>({
-  type:"Feature",properties:{},
-  geometry:{type:"Point",coordinates:p}
+$("apply-filter").addEventListener("click",applyFilters);
+
+$("reset-filter").addEventListener("click",async()=>{
+ ["lga-filter","district-filter","ward-filter","settlement-filter","ea-filter","interviewer-filter","team-filter","date-filter"].forEach(id=>$(id).value="");
+ await applyFilters();
+});
+
+/* =========================================================
+  10. BUILD TRACKS USING OSM ROUTING
+========================================================= */
+
+async function buildTracks(token){
+ tracks=[];
+ animationEvents=[];
+
+ const valid=filtered.filter(c=>c.hasGPS&&c.created);
+ const groups=new Map();
+
+ valid.forEach(c=>{
+  const key=c.interviewer+"||"+c.date;
+  if(!groups.has(key))groups.set(key,[]);
+  groups.get(key).push(c);
+ });
+
+ const groupEntries=[...groups.entries()];
+ let completedLegs=0;
+ let totalLegs=groupEntries.reduce((s,[,records])=>s+Math.max(0,records.length-1),0);
+
+ $("route-status").textContent="Preparing "+fmt(totalLegs)+" consecutive visit routes using OSM.";
+
+ for(const [key,records] of groupEntries){
+  if(token!==routeBuildToken)return;
+
+  records.sort((a,b)=>a.created.getTime()-b.created.getTime());
+
+  const track={
+   key,
+   interviewer:records[0].interviewer,
+   date:records[0].date,
+   records,
+   legs:[],
+   routedDistance:0,
+   estimatedMinutes:0,
+   routedLegs:0,
+   unroutedLegs:0,
+   marker:null,
+   trail:null
+  };
+
+  for(let i=1;i<records.length;i++){
+   if(token!==routeBuildToken)return;
+
+   const a=records[i-1],b=records[i];
+   const result=await requestOSMRoute([a.x,a.y],[b.x,b.y]);
+
+   if(token!==routeBuildToken)return;
+
+   if(result.ok){
+    track.legs.push({
+     from:a,to:b,ok:true,
+     distance:result.distance,
+     providerDuration:result.providerDuration,
+     coordinates:result.coordinates,
+     reason:""
+    });
+    track.routedDistance+=result.distance;
+    track.routedLegs++;
+   }else{
+    track.legs.push({
+     from:a,to:b,ok:false,
+     distance:0,
+     providerDuration:0,
+     coordinates:[],
+     reason:result.reason
+    });
+    track.unroutedLegs++;
+   }
+
+   completedLegs++;
+   $("route-status").textContent=
+    "OSM routing progress: "+fmt(completedLegs)+" / "+fmt(totalLegs)+
+    " legs processed. "+fmt(track.routedLegs)+" successful in current sequence.";
+
+   // Brief pause between route requests to reduce pressure on the public service.
+   await sleep(180);
+  }
+
+  const speed=Number($("travel-speed").value)||4;
+  track.estimatedMinutes=(track.routedDistance/1000)/speed*60;
+  tracks.push(track);
+ }
+
+ tracks.sort((a,b)=>a.records[0].created.getTime()-b.records[0].created.getTime());
+
+ const all=tracks.flatMap(t=>t.records.map((record,index)=>({
+  record,track:t,trackIndex:index
+ })));
+
+ all.sort((a,b)=>a.record.created.getTime()-b.record.created.getTime());
+ animationEvents=all;
+
+ tracks.forEach(t=>{
+  t.startIndex=all.findIndex(x=>x.track===t);
+  t.endIndex=all.map(x=>x.track).lastIndexOf(t);
+ });
+
+ updateRouteSummary();
+}
+
+/* =========================================================
+  11. ROUTE GEOMETRY HELPERS
+========================================================= */
+
+function measureCoordinates(coords){
+ const cumulative=[0];
+ let total=0;
+ for(let i=1;i<coords.length;i++){
+  total+=haversine(coords[i-1],coords[i]);
+  cumulative.push(total);
+ }
+ return {cumulative,total};
+}
+
+function interpolateAlongCoordinates(coords,cumulative,distance){
+ if(!coords.length)return null;
+ if(coords.length===1)return coords[0];
+
+ if(distance<=0)return coords[0];
+ const total=cumulative[cumulative.length-1];
+ if(distance>=total)return coords[coords.length-1];
+
+ let i=1;
+ while(i<cumulative.length&&cumulative[i]<distance)i++;
+
+ const segment=cumulative[i]-cumulative[i-1];
+ const fraction=segment>0?(distance-cumulative[i-1])/segment:0;
+
+ return [
+  coords[i-1][0]+(coords[i][0]-coords[i-1][0])*fraction,
+  coords[i-1][1]+(coords[i][1]-coords[i-1][1])*fraction
+ ];
+}
+
+function coordinatesToLatLng(coords){
+ return coords.map(c=>[c[1],c[0]]);
+}
+
+function routeTrailToDistance(coords,cumulative,distance){
+ if(!coords.length)return [];
+ if(coords.length===1)return coords.slice();
+
+ const output=[coords[0]];
+ for(let i=1;i<coords.length;i++){
+  if(cumulative[i]<distance){
+   output.push(coords[i]);
+  }else{
+   const p=interpolateAlongCoordinates(coords,cumulative,distance);
+   if(p)output.push(p);
+   break;
+  }
+ }
+ return output;
+}
+
+/* =========================================================
+  12. ROUTE SUMMARY
+========================================================= */
+
+function updateRouteSummary(){
+ const routed=tracks.reduce((s,t)=>s+t.routedDistance,0);
+ const successful=tracks.reduce((s,t)=>s+t.routedLegs,0);
+ const failed=tracks.reduce((s,t)=>s+t.unroutedLegs,0);
+ const speed=Number($("travel-speed").value)||4;
+ const minutes=(routed/1000)/speed*60;
+
+ $("stat-distance").textContent=formatDistance(routed);
+ $("stat-travel-time").textContent=formatDuration(minutes);
+ $("stat-routed-legs").textContent=fmt(successful);
+ $("stat-unrouted-legs").textContent=fmt(failed);
+ $("stat-speed").textContent=speed+" km/h";
+
+ $("route-status").textContent=
+  "OSM routing completed: "+fmt(successful)+" successful legs; "+
+  fmt(failed)+" unrouted legs. Total OSM route distance: "+
+  formatDistance(routed)+". Estimated walking time: "+
+  formatDuration(minutes)+" at "+speed+" km/h.";
+}
+
+/* =========================================================
+  13. EA BOUNDARIES
+========================================================= */
+
+function addEABoundaries(data){
+ if(eaLayer)map.removeLayer(eaLayer);
+ eaGeoJSON=data;
+
+ eaLayer=L.geoJSON(data,{
+  style:{color:"#15803d",weight:1.1,opacity:.85,fillColor:"#22c55e",fillOpacity:.025},
+  onEachFeature:(feature,layer)=>{
+   const p=feature.properties||{};
+   const code=firstValue(p,["feacode","FEACODE","EA_CODE","enum_areacode","ea_code"]);
+   const ward=firstValue(p,["wardname","WARDNAME","ward"]);
+   const district=firstValue(p,["distname","DISTNAME","district"]);
+   layer.bindPopup("<b>Enumeration Area</b><br>EA: "+esc(code||"Not available")+
+    "<br>Ward: "+esc(ward||"Not available")+"<br>District: "+esc(district||"Not available"));
+  }
+ });
+
+ if($("show-ea").checked)eaLayer.addTo(map);
+}
+
+/* =========================================================
+  14. MAP MARKERS AND POPUPS
+========================================================= */
+
+function pointIcon(n){
+ return L.divIcon({
+  className:"",
+  html:$("show-labels").checked?
+   `<div style="width:21px;height:21px;border-radius:50%;background:#2563eb;color:white;border:2px solid white;display:grid;place-items:center;font-size:9px;font-weight:bold">${n}</div>`:
+   '<div style="width:10px;height:10px;background:#2563eb;border:2px solid white;border-radius:50%;box-shadow:0 1px 5px #0008"></div>',
+  iconSize:$("show-labels").checked?[21,21]:[10,10],
+  iconAnchor:$("show-labels").checked?[10,10]:[5,5]
+ });
+}
+
+function movingIcon(){
+ return L.divIcon({
+  className:"",
+  html:'<div style="width:38px;height:38px;border-radius:50%;background:#f97316;border:3px solid white;box-shadow:0 0 0 6px #f9731640;display:grid;place-items:center;color:white;font-size:16px"><i class="fa-solid fa-person-walking"></i></div>',
+  iconSize:[38,38],iconAnchor:[19,19]
+ });
+}
+
+function compoundPopup(c){
+ const linked=householdLookup.get(c.globalID)||[];
+ const hhHTML=linked.length?linked.map(h=>`
+  <div style="border-top:1px solid #ddd;padding:5px 0">
+   <b>Household ${esc(h.householdNo||"—")}</b><br>
+   Head: ${esc(h.head||"—")}<br>Members: ${fmt(h.members)}
+  </div>`).join(""):"<i>No linked household records.</i>";
+
+ return `<div style="min-width:220px;max-width:290px;font-size:11px;line-height:1.55">
+ <b style="font-size:13px;color:#14532d">Compound visit</b><br>
+ <b>Compound:</b> ${esc(c.compoundNo||"—")}<br>
+ <b>Enumerator:</b> ${esc(c.interviewer)}<br>
+ <b>Team:</b> ${esc(c.team)}<br>
+ <b>LGA:</b> ${esc(c.lga||"—")}<br>
+ <b>District:</b> ${esc(c.district||"—")}<br>
+ <b>Ward:</b> ${esc(c.ward||"—")}<br>
+ <b>Settlement:</b> ${esc(c.settlement||"—")}<br>
+ <b>EA:</b> ${esc(c.ea||"—")}<br>
+ <b>Recorded:</b> ${esc(fmtDateTime(c.created))}<br>
+ <b>GPS:</b> ${c.y}, ${c.x}<hr>
+ <b>Linked households: ${linked.length}</b>${hhHTML}</div>`;
+}
+
+function renderMap(){
+ pointLayer.clearLayers();
+ staticTrackLayer.clearLayers();
+ animatedTrailLayer.clearLayers();
+ movingLayer.clearLayers();
+
+ if($("show-points").checked){
+  let n=0;
+  filtered.forEach(c=>{
+   if(!c.hasGPS)return;
+   n++;
+   L.marker([c.y,c.x],{icon:pointIcon(n),title:"Compound "+(c.compoundNo||n)})
+    .bindPopup(compoundPopup(c)).addTo(pointLayer);
+  });
+ }
+
+ tracks.forEach(t=>{
+  t.legs.forEach(leg=>{
+   if(leg.ok&&$("show-track").checked){
+    L.polyline(coordinatesToLatLng(leg.coordinates),{
+     color:"#94a3b8",weight:3,opacity:.7
+    }).addTo(staticTrackLayer);
+   }
+  });
+
+  t.trail=L.polyline([],{
+   color:"#f97316",weight:5,opacity:.98,lineCap:"round"
+  }).addTo(animatedTrailLayer);
+
+  const first=t.records[0];
+  t.marker=L.marker([first.y,first.x],{
+   icon:movingIcon(),zIndexOffset:1500
+  }).bindPopup("<b>Enumerator:</b> "+esc(t.interviewer)+"<br><b>Date:</b> "+esc(t.date))
+   .addTo(movingLayer);
+ });
+
+ if(eaLayer){
+  if($("show-ea").checked&&!map.hasLayer(eaLayer))eaLayer.addTo(map);
+  if(!$("show-ea").checked&&map.hasLayer(eaLayer))map.removeLayer(eaLayer);
+ }
+}
+
+/* =========================================================
+  15. ANIMATION POSITION
+========================================================= */
+
+function getEvents(){return animationEvents}
+
+function getAnimationDuration(){
+ const events=getEvents();
+ const segments=Math.max(1,events.length-1);
+ return Math.max(1500,segments*(Number($("interval").value)||2)*1000);
+}
+
+function getTrackProgress(track,eventPosition){
+ if(!getEvents().length)return 0;
+ if(track.startIndex===track.endIndex)return eventPosition>=track.startIndex?1:0;
+ if(eventPosition<track.startIndex)return 0;
+ if(eventPosition>=track.endIndex)return 1;
+ return (eventPosition-track.startIndex)/(track.endIndex-track.startIndex);
+}
+
+function getTrackPosition(track,progress){
+ const records=track.records;
+
+ if(records.length===1){
+  return {
+   coord:[records[0].x,records[0].y],
+   record:records[0],trail:[],distance:0,legIndex:0
+  };
+ }
+
+ const scaled=Math.max(0,Math.min(1,progress))*(records.length-1);
+ const legIndex=Math.min(records.length-2,Math.floor(scaled));
+ const fraction=progress>=1?1:scaled-legIndex;
+ const leg=track.legs[legIndex];
+
+ if(!leg||!leg.ok){
+  const a=records[legIndex],b=records[legIndex+1];
+  return {
+   coord:fraction<1?[a.x,a.y]:[b.x,b.y],
+   record:fraction<1?a:b,
+   trail:[],
+   distance:0,
+   legIndex,
+   unrouted:true
+  };
+ }
+
+ const measured=measureCoordinates(leg.coordinates);
+ const distance=measured.total*fraction;
+ const coord=interpolateAlongCoordinates(
+  leg.coordinates,measured.cumulative,distance
+ );
+ const trail=routeTrailToDistance(
+  leg.coordinates,measured.cumulative,distance
+ );
+
+ return {
+  coord,
+  record:fraction>=1?records[legIndex+1]:records[legIndex],
+  trail,
+  distance:leg.distance*fraction,
+  legIndex,
+  unrouted:false
+ };
+}
+
+function updateAnimationAt(progress){
+ const events=getEvents();
+ if(!events.length)return;
+
+ const bounded=Math.max(0,Math.min(1,progress));
+ const eventPosition=bounded*(events.length-1);
+ const nearestIndex=Math.min(events.length-1,Math.floor(eventPosition));
+ const event=events[nearestIndex];
+
+ currentAnimationRecord=event.record;
+ activeVisitIndex=nearestIndex;
+
+ tracks.forEach(track=>{
+  const localProgress=getTrackProgress(track,eventPosition);
+  if(!track.marker)return;
+
+  const pos=getTrackPosition(track,localProgress);
+  track.marker.setLatLng([pos.coord[1],pos.coord[0]]);
+
+  if($("show-track").checked&&pos.trail&&pos.trail.length>1){
+   track.trail.setLatLngs(coordinatesToLatLng(pos.trail));
+  }else{
+   track.trail.setLatLngs([]);
+  }
+ });
+
+ const c=event.record;
+ const currentTrack=event.track;
+ const localIndex=event.trackIndex;
+ const leg=currentTrack.legs[localIndex]||null;
+ const speed=Number($("travel-speed").value)||4;
+
+ let currentDistance=0,currentETA=0;
+ if(leg&&leg.ok){
+  currentDistance=leg.distance/1000;
+  currentETA=(currentDistance/speed)*60;
+ }
+
+ $("current-enumerator").textContent=c.interviewer;
+ $("current-compound").textContent=c.compoundNo||"Not recorded";
+ $("current-time").textContent=fmtDateTime(c.created);
+ $("current-sequence").textContent=(nearestIndex+1)+" / "+events.length;
+ $("current-distance").textContent=leg&&leg.ok?formatDistance(leg.distance):"Not routed";
+ $("current-eta").textContent=leg&&leg.ok?formatDuration(currentETA):"Not available";
+ $("current-progress").textContent=Math.round(bounded*100)+"%";
+
+ $("timeline-current").textContent=(nearestIndex+1)+" / "+events.length;
+ $("progress").style.width=(bounded*100)+"%";
+ $("timeline").value=Math.round(bounded*1000);
+
+ const routeLabel=leg?(leg.ok?"OSM pedestrian route":"Unrouted leg"):"First visit";
+ $("movement-status").textContent=
+  "Visit "+(nearestIndex+1)+" of "+events.length+
+  " • "+c.interviewer+" • "+routeLabel;
+
+ updateVisitHighlight(c);
+}
+
+/* =========================================================
+  16. PLAYBACK CONTROLS
+========================================================= */
+
+function animationLoop(timestamp){
+ if(!animationRunning)return;
+ if(lastFrameTime===null)lastFrameTime=timestamp;
+
+ const delta=Math.min(100,timestamp-lastFrameTime);
+ lastFrameTime=timestamp;
+
+ const speed=Number($("speed").value)||1;
+ const duration=getAnimationDuration();
+
+ animationProgress+=delta*speed/duration;
+
+ if(animationProgress>=1){
+  animationProgress=1;
+  updateAnimationAt(1);
+  stopAnimation();
+  $("movement-status").textContent="Animation completed. Press RESTART to replay.";
+  return;
+ }
+
+ updateAnimationAt(animationProgress);
+ animationFrame=requestAnimationFrame(animationLoop);
+}
+
+function playAnimation(){
+ const events=getEvents();
+ if(!events.length){mapMessage("No valid GPS records with timestamps.");return}
+ if(events.length<2){mapMessage("At least two GPS records are needed for movement animation.");return}
+
+ if(!animationRunning){
+  if(animationProgress>=1){animationProgress=0;updateAnimationAt(0)}
+  animationRunning=true;
+  lastFrameTime=null;
+  animationFrame=requestAnimationFrame(animationLoop);
+ }
+}
+
+function stopAnimation(){
+ animationRunning=false;
+ if(animationFrame!==null){
+  cancelAnimationFrame(animationFrame);
+  animationFrame=null;
+ }
+ lastFrameTime=null;
+}
+
+function pauseAnimation(){
+ stopAnimation();
+ if(getEvents().length)$("movement-status").textContent="Animation paused. Press PLAY to continue.";
+}
+
+function restartAnimation(){
+ stopAnimation();
+ animationProgress=0;
+ updateAnimationAt(0);
+ $("movement-status").textContent="Animation reset. Press PLAY to begin.";
+}
+
+function nextVisit(){
+ const events=getEvents();if(!events.length)return;
+ stopAnimation();
+ const nextIndex=Math.min(events.length-1,activeVisitIndex+1);
+ animationProgress=events.length>1?nextIndex/(events.length-1):0;
+ updateAnimationAt(animationProgress);
+}
+
+$("play").addEventListener("click",playAnimation);
+$("pause").addEventListener("click",pauseAnimation);
+$("restart").addEventListener("click",restartAnimation);
+$("next").addEventListener("click",nextVisit);
+
+$("timeline").addEventListener("input",e=>{
+ stopAnimation();
+ animationProgress=Number(e.target.value)/1000;
+ updateAnimationAt(animationProgress);
+});
+
+/* =========================================================
+  17. RESET AND VISIT HIGHLIGHT
+========================================================= */
+
+function resetAnimation(){
+ stopAnimation();
+ animationProgress=0;
+ activeVisitIndex=0;
+ const events=getEvents();
+
+ $("timeline").value=0;
+ $("progress").style.width="0%";
+
+ if(events.length){
+  $("timeline-start").textContent=fmtDate(events[0].record.created);
+  $("timeline-end").textContent=fmtDate(events[events.length-1].record.created);
+  $("timeline-current").textContent="0 / "+events.length;
+  $("stat-sequences").textContent=fmt(tracks.length);
+  $("stat-animation-points").textContent=fmt(events.length);
+  updateAnimationAt(0);
+ }else{
+  $("timeline-start").textContent="Start";
+  $("timeline-end").textContent="End";
+  $("timeline-current").textContent="0 / 0";
+  $("current-enumerator").textContent="—";
+  $("current-compound").textContent="—";
+  $("current-time").textContent="—";
+  $("current-sequence").textContent="—";
+  $("current-distance").textContent="—";
+  $("current-eta").textContent="—";
+  $("current-progress").textContent="0%";
+  $("stat-sequences").textContent="0";
+  $("stat-animation-points").textContent="0";
+ }
+}
+
+function updateVisitHighlight(record){
+ document.querySelectorAll(".record").forEach(el=>el.classList.remove("active"));
+ const el=document.querySelector('[data-record-index="'+record._index+'"]');
+ if(el){
+  el.classList.add("active");
+  el.scrollIntoView({block:"nearest",behavior:"smooth"});
+ }
+}
+
+/* =========================================================
+  18. ANALYTICS
+========================================================= */
+
+function updateAnalytics(){
+ const gps=filtered.filter(c=>c.hasGPS);
+ const enumerators=unique(filtered,"interviewer");
+ const teams=unique(filtered,"team");
+ let linked=0,members=0;
+
+ filtered.forEach(c=>{
+  const hh=householdLookup.get(c.globalID)||[];
+  linked+=hh.length;
+  hh.forEach(h=>members+=h.members||0);
+ });
+
+ const uniqueCompounds=new Set(filtered.map(c=>c.globalID||c.compoundNo||c._index)).size;
+
+ $("kpi-compounds").textContent=fmt(filtered.length);
+ $("kpi-households").textContent=fmt(linked);
+ $("kpi-enumerators").textContent=fmt(enumerators.length);
+ $("kpi-teams").textContent=fmt(teams.length);
+ $("kpi-members").textContent=fmt(members);
+ $("kpi-gps").textContent=filtered.length?Math.round(gps.length/filtered.length*100)+"%":"0%";
+
+ $("stat-lga").textContent=$("lga-filter").value||"All";
+ $("stat-interviewer").textContent=$("interviewer-filter").value||"All";
+ $("stat-date").textContent=$("date-filter").value||"All";
+ $("stat-valid").textContent=fmt(gps.length);
+ $("stat-unique").textContent=fmt(uniqueCompounds);
+ $("stat-average").textContent=filtered.length?(linked/filtered.length).toLocaleString(undefined,{maximumFractionDigits:2}):"0";
+
+ updateRouteSummary();
+}
+
+/* =========================================================
+  19. VISIT LIST
+========================================================= */
+
+function updateVisitList(){
+ const container=$("visit-list");
+ container.innerHTML="";
+ const events=getEvents();
+
+ if(!events.length){
+  container.innerHTML='<div class="hint">No valid GPS records with timestamps.</div>';
+  return;
+ }
+
+ events.slice(0,500).forEach((event,i)=>{
+  const c=event.record;
+  const div=document.createElement("div");
+  const leg=event.track.legs[event.trackIndex];
+
+  div.className="record";
+  div.dataset.recordIndex=c._index;
+
+  div.innerHTML=`
+   <strong>${i+1}. Compound ${esc(c.compoundNo||"—")}</strong><br>
+   ${esc(c.interviewer)} • ${esc(c.date)}<br>
+   ${esc(fmtDateTime(c.created))}<br>
+   <span style="color:#64748b">${c.y}, ${c.x}</span><br>
+   <span style="color:${leg&&leg.ok?"#166534":"#b45309"}">
+    ${leg&&leg.ok?"OSM route distance: "+formatDistance(leg.distance):"No incoming OSM route"}
+   </span>`;
+
+  div.addEventListener("click",()=>{
+   stopAnimation();
+   animationProgress=events.length>1?i/(events.length-1):0;
+   updateAnimationAt(animationProgress);
+   map.setView([c.y,c.x],17);
+   mapMessage("Selected visit "+(i+1)+" of "+events.length);
+  });
+
+  container.appendChild(div);
+ });
+
+ if(events.length>500){
+  const note=document.createElement("div");
+  note.className="hint";
+  note.textContent="Showing first 500 visits. All records remain available to animation.";
+  container.appendChild(note);
+ }
+}
+
+/* =========================================================
+  20. MAP SWITCHES AND FITTING
+========================================================= */
+
+["show-points","show-track","show-labels"].forEach(id=>{
+ $(id).addEventListener("change",()=>{
+  const previous=animationProgress;
+  renderMap();
+  updateAnimationAt(previous);
+ });
+});
+
+$("show-ea").addEventListener("change",()=>{
+ if(!eaLayer)return;
+ if($("show-ea").checked)eaLayer.addTo(map);
+ else map.removeLayer(eaLayer);
+});
+
+$("fit-map").addEventListener("change",()=>{
+ if($("fit-map").checked)fitFilteredMap();
+});
+
+function fitFilteredMap(){
+ const coords=filtered.filter(c=>c.hasGPS).map(c=>[c.y,c.x]);
+ if(coords.length){
+  const bounds=L.latLngBounds(coords);
+  if(bounds.isValid())map.fitBounds(bounds.pad(.12),{maxZoom:16});
+ }else map.setView(DEFAULT_CENTER,8);
+}
+
+/* =========================================================
+  21. SPEED CHANGE
+========================================================= */
+
+$("travel-speed").addEventListener("change",()=>{
+ updateRouteSummary();
+ updateAnimationAt(animationProgress);
+});
+
+/* =========================================================
+  22. EXPORT FILTERED CSV
+========================================================= */
+
+$("export-csv").addEventListener("click",()=>{
+ if(!filtered.length){mapMessage("No filtered records to export.");return}
+
+ const csv=Papa.unparse(filtered.map(c=>{
+  const linked=householdLookup.get(c.globalID)||[];
+  return {
+   Compound_Number:c.compoundNo,
+   Enumerator:c.interviewer,
+   Team:c.team,
+   LGA:c.lga,
+   District:c.district,
+   Ward:c.ward,
+   Settlement:c.settlement,
+   Enumeration_Area:c.ea,
+   CreationDate:c.created?c.created.toISOString():"",
+   Longitude:c.x,
+   Latitude:c.y,
+   GPS_Available:c.hasGPS,
+   Linked_Households:linked.length,
+   Household_Members:linked.reduce((s,h)=>s+(h.members||0),0),
+   GlobalID:c.globalID
+  };
  }));
- if(measurePoints.length>1){
-  features.push({
-   type:"Feature",properties:{},
-   geometry:{type:"LineString",coordinates:measurePoints}
-  });
- }
- const fc={type:"FeatureCollection",features};
- if(!map.getSource("measure-source")){
-  map.addSource("measure-source",{type:"geojson",data:fc});
- }
- if(!map.getLayer("measure-line")){
-  map.addLayer({
-   id:"measure-line",type:"line",source:"measure-source",
-   filter:["==",["geometry-type"],"LineString"],
-   paint:{"line-color":"#e74c3c","line-width":3}
-  });
- }
- if(!map.getLayer("measure-points")){
-  map.addLayer({
-   id:"measure-points",type:"circle",source:"measure-source",
-   filter:["==",["geometry-type"],"Point"],
-   paint:{"circle-radius":5,"circle-color":"#e74c3c"}
-  });
- }
-}
 
-document.getElementById("measureBtn").addEventListener("click",()=>{
- measureMode=!measureMode;
- document.getElementById("measureBtn").textContent=measureMode?"FINISH MEASURE":"START MEASURE";
- map.getCanvas().style.cursor=measureMode?"crosshair":"";
- setMessage(measureMode?"Click map to add measurement points.":"Measurement stopped.");
+ downloadFile(csv,"GLFS_Filtered_Compound_Records.csv","text/csv;charset=utf-8");
 });
 
-document.getElementById("clearMeasure").addEventListener("click",()=>{
- measurePoints=[];
- if(map.getLayer("measure-line"))map.removeLayer("measure-line");
- if(map.getLayer("measure-points"))map.removeLayer("measure-points");
- if(map.getSource("measure-source"))map.removeSource("measure-source");
- document.getElementById("measureResult").textContent="No measurement.";
+/* =========================================================
+  23. EXPORT OSM ROUTES AND COMPOUND VISITS
+========================================================= */
+
+$("export-track").addEventListener("click",()=>{
+ const features=[];
+ const speed=Number($("travel-speed").value)||4;
+
+ tracks.forEach(t=>{
+  t.legs.forEach(leg=>{
+   if(leg.ok){
+    features.push({
+     type:"Feature",
+     properties:{
+      type:"OSM pedestrian route",
+      routing_provider:"OpenStreetMap-based OSRM routing service",
+      routing_profile:"Pedestrian",
+      enumerator:t.interviewer,
+      date:t.date,
+      from_compound:leg.from.compoundNo,
+      to_compound:leg.to.compoundNo,
+      route_distance_m:leg.distance,
+      route_distance_km:leg.distance/1000,
+      provider_duration_seconds:leg.providerDuration,
+      assumed_walking_speed_kmh:speed,
+      estimated_walking_minutes:(leg.distance/1000)/speed*60,
+      estimated_time_method:"Route distance divided by selected assumed walking speed",
+      geometry_source:"OSM routing response"
+     },
+     geometry:{type:"LineString",coordinates:leg.coordinates}
+    });
+   }else{
+    features.push({
+     type:"Feature",
+     properties:{
+      type:"Unrouted journey",
+      routing_provider:"OpenStreetMap-based pedestrian routing service",
+      enumerator:t.interviewer,
+      date:t.date,
+      from_compound:leg.from.compoundNo,
+      to_compound:leg.to.compoundNo,
+      route_status:"No route returned",
+      reason:leg.reason
+     },
+     geometry:null
+    });
+   }
+  });
+
+  t.records.forEach((c,i)=>{
+   features.push({
+    type:"Feature",
+    properties:{
+     type:"Recorded compound visit",
+     sequence:i+1,
+     compound_number:c.compoundNo,
+     enumerator:c.interviewer,
+     team:c.team,
+     creation_date:c.created?c.created.toISOString():"",
+     lga:c.lga,
+     district:c.district,
+     ward:c.ward,
+     settlement:c.settlement,
+     enumeration_area:c.ea,
+     global_id:c.globalID
+    },
+    geometry:{type:"Point",coordinates:[c.x,c.y]}
+   });
+  });
+ });
+
+ downloadFile(JSON.stringify({
+  type:"FeatureCollection",
+  name:"GLFS_OSM_Enumerator_Movement",
+  attribution:"© OpenStreetMap contributors",
+  routing_provider:"OpenStreetMap-based pedestrian routing service",
+  features
+ },null,2),"GLFS_OSM_Routed_Enumerator_Movement.geojson","application/geo+json");
 });
 
-/* ---------------------------------------------------------
-   EXPORTS
-   --------------------------------------------------------- */
-
-function downloadJSON(data,name){
- const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/geo+json"});
+function downloadFile(content,filename,type){
+ const blob=new Blob([content],{type});
  const url=URL.createObjectURL(blob);
  const a=document.createElement("a");
- a.href=url;a.download=name;a.click();
+ a.href=url;a.download=filename;
+ document.body.appendChild(a);a.click();a.remove();
  setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 
-document.getElementById("exportVisible").addEventListener("click",()=>{
- const visible=Object.keys(displayData).filter(isLayerVisible);
- if(!visible.length){setMessage("No loaded visible layers.");return;}
- visible.forEach(id=>{
-  downloadJSON(displayData[id],"GBoS_GEOAI_"+id+"_selected.geojson");
- });
-});
+/* =========================================================
+  24. STARTUP
+========================================================= */
 
-document.getElementById("exportEAs").addEventListener("click",()=>{
- if(!allEA){setMessage("Census EAs are not loaded.");return;}
- downloadJSON(selectedAOI||allEA,"Gambia_Census_EAs.geojson");
-});
-
-document.getElementById("exportView").addEventListener("click",()=>{
- try{
-  const a=document.createElement("a");
-  a.href=map.getCanvas().toDataURL("image/png");
-  a.download="GBoS_GEOAI_Map_View.png";
-  a.click();
- }catch(e){setMessage("Map export blocked by browser restrictions.");}
-});
-
-/* ---------------------------------------------------------
-   MAP ACTIONS
-   --------------------------------------------------------- */
-
-document.getElementById("basemap").addEventListener("change",e=>changeBasemap(e.target.value));
-document.getElementById("opacity").addEventListener("input",updateOpacity);
-
-document.getElementById("tiltBtn").addEventListener("click",()=>{
- map.easeTo({pitch:map.getPitch()>10?0:55,duration:700});
-});
-document.getElementById("northBtn").addEventListener("click",()=>{
- map.easeTo({bearing:0,duration:600});
-});
-document.getElementById("locateBtn").addEventListener("click",()=>{
- if(!navigator.geolocation){
-  setMessage("Geolocation is not supported.");
-  return;
- }
- navigator.geolocation.getCurrentPosition(pos=>{
-  map.flyTo({center:[pos.coords.longitude,pos.coords.latitude],zoom:15});
-  setMessage("Map centred on your device location.");
- },err=>{
-  setMessage("Location unavailable: "+err.message);
- },{enableHighAccuracy:true,timeout:12000});
-});
-
-document.getElementById("selectAll").addEventListener("click",()=>{
- document.querySelectorAll("[data-layer]").forEach(cb=>{
-  if(!cb.checked){cb.checked=true;toggleLayer(cb.dataset.layer,true);}
- });
-});
-
-document.getElementById("closeAll").addEventListener("click",()=>{
- document.querySelectorAll("[data-layer]").forEach(cb=>{
-  if(cb.checked){cb.checked=false;toggleLayer(cb.dataset.layer,false);}
- });
-});
-
-/* ---------------------------------------------------------
-   STARTUP
-   --------------------------------------------------------- */
-
-renderCatalogue();
-initialiseMap();
+map.whenReady(()=>setTimeout(()=>map.invalidateSize(),250));
+updateAnalytics();
+loadAllGitHubFiles();
 
 </script>
 </body>
-</html>
-
 </html>
