@@ -4,123 +4,61 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GBoS GEOAI | Gambia 3D EA & GPS Spatial Intelligence</title>
+<title>SILKYSINGZ GEOAI | GAMBIA 3D & GOBAL POSITIONING SYSTEM (GPS) SPATIAL INTELLIGENCE</title>
 
 <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet">
 <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 
 <style>
-:root{
---navy:#10243a;--navy2:#173653;--blue:#2476b9;--cyan:#20a5bd;
---green:#299b73;--orange:#e99a32;--red:#d65d5d;
---ink:#243447;--muted:#718096;--line:#e1e8ef;
---panel:#fff;--bg:#edf2f7;--soft:#f5f8fb
-}
+:root{--navy:#10243a;--blue:#2476b9;--cyan:#20a5bd;--green:#299b73;--orange:#e99a32;--red:#d65d5d;--ink:#243447;--muted:#718096;--line:#e1e8ef;--bg:#edf2f7}
 *{box-sizing:border-box}
 html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--ink);background:var(--bg)}
-body{overflow:hidden}
-button,select,input{font:inherit}
-button{cursor:pointer}
-.topbar{height:62px;background:linear-gradient(110deg,var(--navy),#1d4867);color:white;display:flex;align-items:center;justify-content:space-between;padding:0 20px;gap:15px;box-shadow:0 2px 9px #10243a30;position:relative;z-index:5}
-.brand{display:flex;align-items:center;gap:12px;min-width:0}
-.brand-mark{width:38px;height:38px;border-radius:10px;background:#ffffff18;display:grid;place-items:center;font-size:21px;border:1px solid #ffffff30}
-.brand-title{font-size:15px;font-weight:800;letter-spacing:.35px}
-.brand-sub{font-size:10px;color:#c5d7e6;margin-top:3px;letter-spacing:.5px}
-.top-actions{display:flex;align-items:center;gap:8px}
-.top-pill{font-size:10px;padding:6px 10px;border-radius:20px;background:#ffffff18;border:1px solid #ffffff25;color:#eaf5fc}
+body{overflow:hidden}button,select,input{font:inherit}button{cursor:pointer}
+.topbar{height:62px;background:linear-gradient(110deg,var(--navy),#1d4867);color:white;display:flex;align-items:center;justify-content:space-between;padding:0 20px;gap:15px;position:relative;z-index:5}
+.brand{display:flex;align-items:center;gap:12px;min-width:0}.brand-mark{width:38px;height:38px;border-radius:10px;background:#ffffff18;display:grid;place-items:center;font-size:21px;border:1px solid #ffffff30}
+.brand-title{font-size:15px;font-weight:800;letter-spacing:.35px}.brand-sub{font-size:10px;color:#c5d7e6;margin-top:3px;letter-spacing:.5px}
+.top-actions{display:flex;align-items:center;gap:8px}.top-pill{font-size:10px;padding:6px 10px;border-radius:20px;background:#ffffff18;border:1px solid #ffffff25;color:#eaf5fc}
 .top-button{border:1px solid #ffffff45;background:#ffffff12;color:white;padding:8px 11px;border-radius:7px;font-size:11px}
-.top-button:hover{background:#ffffff25}
 .dashboard{height:calc(100vh - 62px);padding:10px;display:grid;grid-template-columns:minmax(270px,.92fr) minmax(420px,1.6fr) minmax(285px,1fr);gap:10px;min-height:0}
-.panel{min-width:0;min-height:0;background:var(--panel);border:1px solid var(--line);border-radius:10px;box-shadow:0 2px 8px #14283b0a;display:flex;flex-direction:column;overflow:hidden}
-.panel-head{padding:13px 14px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:8px;background:#fff;flex-shrink:0}
-.panel-head h2{font-size:12px;margin:0;color:var(--navy);letter-spacing:.65px;text-transform:uppercase}
-.panel-head small{font-size:10px;color:var(--muted)}
+.panel{min-width:0;min-height:0;background:white;border:1px solid var(--line);border-radius:10px;display:flex;flex-direction:column;overflow:hidden}
+.panel-head{padding:13px 14px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:8px;flex-shrink:0}
+.panel-head h2{font-size:12px;margin:0;color:var(--navy);letter-spacing:.65px;text-transform:uppercase}.panel-head small{font-size:10px;color:var(--muted)}
 .panel-body,.analytics-body{padding:13px;overflow-y:auto;min-height:0;flex:1}
 .section-label{font-size:10px;font-weight:800;color:#60758a;text-transform:uppercase;letter-spacing:.65px;margin:3px 0 9px}
-.field{margin-bottom:12px}
-.field label{display:block;font-size:11px;font-weight:700;margin-bottom:5px;color:#43566a}
-.field select,.field input[type=file],.field input[type=number],.field input[type=text],.field textarea{width:100%;border:1px solid #d7e0e8;border-radius:6px;padding:9px;font-size:11px;color:#26394c;background:#fff;outline:none}
-.field textarea{resize:vertical;min-height:55px}
-.field select:focus,.field input:focus,.field textarea:focus{border-color:#55a1d2;box-shadow:0 0 0 2px #55a1d21c}
+.field{margin-bottom:12px}.field label{display:block;font-size:11px;font-weight:700;margin-bottom:5px;color:#43566a}
+.field select,.field input[type=file],.field input[type=number],.field input[type=text]{width:100%;border:1px solid #d7e0e8;border-radius:6px;padding:9px;font-size:11px;color:#26394c;background:white;outline:none}
 .help{font-size:10px;color:#8795a4;line-height:1.5;margin-top:5px}
 .button-row{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:12px 0}
-.btn{border:0;border-radius:6px;padding:10px 9px;font-size:11px;font-weight:700}
-.btn-primary{background:var(--blue);color:#fff}.btn-primary:hover{background:#185e98}
-.btn-light{background:#edf3f8;color:#29445e;border:1px solid #dce5ed}
-.btn-green{background:#238a68;color:#fff}.btn-orange{background:#e99a32;color:#fff}
-.btn-red{background:#c94d4d;color:#fff}.btn-small{padding:7px 9px;font-size:10px;border-radius:5px}
+.btn{border:0;border-radius:6px;padding:10px 9px;font-size:11px;font-weight:700}.btn-primary{background:var(--blue);color:white}.btn-light{background:#edf3f8;color:#29445e;border:1px solid #dce5ed}.btn-green{background:#238a68;color:white}.btn-red{background:#c94d4d;color:white}.btn-small{padding:6px 8px;font-size:10px}
 .divider{height:1px;background:var(--line);margin:13px 0}
-.check-row{display:flex;align-items:center;gap:8px;margin:8px 0;font-size:11px;color:#42566a}
-.check-row input{accent-color:var(--blue)}
+.check-row{display:flex;align-items:center;gap:8px;margin:8px 0;font-size:11px;color:#42566a}.check-row input{accent-color:var(--blue)}
 .status{padding:9px 10px;border-radius:6px;background:#f1f6fa;color:#53697d;font-size:10px;line-height:1.5;border:1px solid #e1eaf1;overflow-wrap:anywhere}
-.status.good{background:#edf8f3;color:#287553;border-color:#d5eee1}
-.status.warn{background:#fff8ec;color:#916321;border-color:#f3e3c5}
-.status.error{background:#fff1f0;color:#a3433d;border-color:#f2d6d3}
-.map-panel{position:relative}
-.map-toolbar{display:flex;align-items:center;gap:7px;flex-wrap:wrap;padding:9px 11px;border-bottom:1px solid var(--line);background:#fff;z-index:2}
-.map-toolbar label{font-size:10px;color:#66798c;font-weight:700}
-.map-toolbar select{border:1px solid #dbe3ea;border-radius:5px;padding:6px 7px;font-size:10px;background:#fff;color:#33495d}
-.map-toolbar button{border:1px solid #dbe3ea;background:#f7fafc;color:#40566a;padding:6px 8px;border-radius:5px;font-size:10px}
-.map-wrap{position:relative;flex:1;min-height:0;display:flex}
-#map{width:100%;height:100%;min-height:0;flex:1;background:#dce6ec}
-.map-overlay{position:absolute;z-index:3;left:11px;top:11px;background:#ffffffed;border:1px solid #dce5ed;border-radius:7px;padding:9px 11px;box-shadow:0 2px 9px #152b3e20;max-width:240px;pointer-events:none}
-.map-overlay strong{display:block;font-size:11px;color:var(--navy);margin-bottom:3px}
-.map-overlay span{font-size:10px;color:#60758a;line-height:1.4}
-.map-legend{position:absolute;right:12px;bottom:14px;z-index:3;background:#ffffffed;border:1px solid #dce5ed;border-radius:7px;padding:10px 11px;width:190px;box-shadow:0 2px 9px #152b3e20}
-.legend-title{font-size:10px;font-weight:800;color:#263e55;margin-bottom:8px}
-.legend-gradient{height:10px;border-radius:3px;background:linear-gradient(90deg,#fff2a8,#f5a64b,#e35d42,#922b58);border:1px solid #ddd}
+.status.good{background:#edf8f3;color:#287553;border-color:#d5eee1}.status.warn{background:#fff8ec;color:#916321;border-color:#f3e3c5}.status.error{background:#fff1f0;color:#a3433d;border-color:#f2d6d3}
+.map-panel{position:relative}.map-toolbar{display:flex;align-items:center;gap:7px;flex-wrap:wrap;padding:9px 11px;border-bottom:1px solid var(--line);background:white;z-index:2}
+.map-toolbar label{font-size:10px;color:#66798c;font-weight:700}.map-toolbar select,.map-toolbar button{border:1px solid #dbe3ea;border-radius:5px;padding:6px 7px;font-size:10px;background:white;color:#33495d}
+.map-wrap{position:relative;flex:1;min-height:0;display:flex}#map{width:100%;height:100%;min-height:0;flex:1;background:#dce6ec}
+.map-overlay{position:absolute;z-index:3;left:11px;top:11px;background:#ffffffed;border:1px solid #dce5ed;border-radius:7px;padding:9px 11px;max-width:240px;pointer-events:none}
+.map-overlay strong{display:block;font-size:11px;color:var(--navy);margin-bottom:3px}.map-overlay span{font-size:10px;color:#60758a;line-height:1.4}
+.map-legend{position:absolute;right:12px;bottom:14px;z-index:3;background:#ffffffed;border:1px solid #dce5ed;border-radius:7px;padding:10px 11px;width:190px}
+.legend-title{font-size:10px;font-weight:800;color:#263e55;margin-bottom:8px}.legend-gradient{height:10px;border-radius:3px;background:linear-gradient(90deg,#fff2a8,#f5a64b,#e35d42,#922b58);border:1px solid #ddd}
 .legend-labels{display:flex;justify-content:space-between;font-size:9px;color:#63778a;margin-top:5px}
-.map-foot{background:#fff;border-top:1px solid var(--line);padding:6px 10px;font-size:9px;color:#8090a0;display:flex;justify-content:space-between;gap:10px}
-.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.kpi{border:1px solid var(--line);border-radius:8px;padding:10px;background:linear-gradient(145deg,#fff,#f9fbfd);min-width:0}
-.kpi-label{font-size:9px;color:#75879a;font-weight:800;text-transform:uppercase;letter-spacing:.45px}
-.kpi-value{font-size:19px;font-weight:800;color:#193b58;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.kpi-unit{font-size:9px;color:#8291a0;margin-top:3px}
-.chart-card{border:1px solid var(--line);border-radius:8px;padding:10px;margin-top:10px;background:#fff}
-.chart-title{font-size:10px;font-weight:800;color:#354c62;margin-bottom:8px}
+.map-foot{background:white;border-top:1px solid var(--line);padding:6px 10px;font-size:9px;color:#8090a0;display:flex;justify-content:space-between;gap:10px}
+.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.kpi{border:1px solid var(--line);border-radius:8px;padding:10px;background:linear-gradient(145deg,#fff,#f9fbfd);min-width:0}
+.kpi-label{font-size:9px;color:#75879a;font-weight:800;text-transform:uppercase;letter-spacing:.45px}.kpi-value{font-size:19px;font-weight:800;color:#193b58;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.kpi-unit{font-size:9px;color:#8291a0;margin-top:3px}
+.chart-card{border:1px solid var(--line);border-radius:8px;padding:10px;margin-top:10px;background:white}.chart-title{font-size:10px;font-weight:800;color:#354c62;margin-bottom:8px}
 .chart-holder{height:175px;position:relative}.chart-holder.tall{height:205px}
-.no-chart{font-size:10px;color:#8a98a7;padding:20px 5px;text-align:center}
-.data-table{width:100%;border-collapse:collapse;font-size:10px}
-.data-table th,.data-table td{padding:7px 5px;border-bottom:1px solid #edf1f4;text-align:left}
-.data-table th{color:#728397;font-size:9px;text-transform:uppercase}
-.data-table td:last-child,.data-table th:last-child{text-align:right}
-.detected{font-size:10px;line-height:1.65;color:#5e7184;overflow-wrap:anywhere}
-.detected b{color:#344c63}
+.data-table{width:100%;border-collapse:collapse;font-size:10px}.data-table td{padding:7px 5px;border-bottom:1px solid #edf1f4}.data-table td:last-child{text-align:right}
 .footer{padding:10px 12px;background:#f8fafc;border-top:1px solid var(--line);font-size:9px;color:#8290a0;line-height:1.6;flex-shrink:0}
-.footer strong{color:#52677c}
 .loading-screen{position:absolute;inset:0;background:#f6f9fc;z-index:10;display:flex;align-items:center;justify-content:center;text-align:center;padding:25px}
-.loading-box{max-width:310px}
-.spinner{width:29px;height:29px;border:3px solid #dce8f0;border-top-color:#267bb6;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px}
-@keyframes spin{to{transform:rotate(360deg)}}
-.popup-title{font-size:12px;font-weight:800;color:#193b58;margin-bottom:6px}
-.popup-line{font-size:10px;line-height:1.6;color:#52677a}
+.spinner{width:29px;height:29px;border:3px solid #dce8f0;border-top-color:#267bb6;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px}@keyframes spin{to{transform:rotate(360deg)}}
 .gps-widget{border:1px solid #d8e8e2;background:#f5fbf8;border-radius:8px;padding:10px;margin-bottom:10px}
-.gps-widget-title{font-size:11px;font-weight:800;color:#20694f;margin-bottom:7px}
-.gps-coordinate{font-size:10px;color:#345d4d;line-height:1.7;overflow-wrap:anywhere}
-.gps-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
-.gps-actions button{font-size:10px;padding:8px 5px}
-.gps-list{max-height:190px;overflow-y:auto}
-.gps-record{padding:8px;border:1px solid #e5ecef;border-radius:6px;margin:6px 0;background:#fff;font-size:10px;line-height:1.55}
-.gps-record strong{color:#24445e}
-.gps-record button{float:right}
-.badge{display:inline-block;border-radius:10px;padding:2px 6px;font-size:9px;background:#eaf3f8;color:#32617e}
-.badge.good{background:#e6f5ed;color:#26734f}
-@media(max-width:1050px){
-body{overflow:auto}
-.dashboard{height:auto;min-height:calc(100vh - 62px);grid-template-columns:1fr 1fr;grid-template-rows:minmax(520px,65vh) auto}
-.map-panel{grid-column:1/-1;grid-row:1}
-.panel{min-height:400px}
-}
-@media(max-width:650px){
-.topbar{height:auto;min-height:60px;padding:9px 11px}
-.top-pill{display:none}
-.dashboard{display:flex;flex-direction:column;height:auto;padding:7px}
-.map-panel{height:65vh;min-height:430px;order:1}
-.controls-panel{order:2;min-height:400px}
-.analytics-panel{order:3;min-height:500px}
-.top-actions{gap:4px}.top-button{font-size:9px;padding:7px}
-}
+.gps-widget-title{font-size:11px;font-weight:800;color:#20694f;margin-bottom:7px}.gps-coordinate{font-size:10px;color:#345d4d;line-height:1.7;overflow-wrap:anywhere}
+.gps-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}.gps-actions button{font-size:10px;padding:8px 5px}
+.gps-list{max-height:190px;overflow-y:auto}.gps-record{padding:8px;border:1px solid #e5ecef;border-radius:6px;margin:6px 0;background:white;font-size:10px;line-height:1.55}
+.gps-record strong{color:#24445e}.gps-record button{float:right}.badge{display:inline-block;border-radius:10px;padding:2px 6px;font-size:9px;background:#eaf3f8;color:#32617e}.badge.good{background:#e6f5ed;color:#26734f}
+@media(max-width:1050px){body{overflow:auto}.dashboard{height:auto;min-height:calc(100vh - 62px);grid-template-columns:1fr 1fr;grid-template-rows:minmax(520px,65vh) auto}.map-panel{grid-column:1/-1;grid-row:1}.panel{min-height:400px}}
+@media(max-width:650px){.topbar{height:auto;min-height:60px;padding:9px 11px}.top-pill{display:none}.dashboard{display:flex;flex-direction:column;height:auto;padding:7px}.map-panel{height:65vh;min-height:430px;order:1}.controls-panel{order:2;min-height:400px}.analytics-panel{order:3;min-height:500px}.top-actions{gap:4px}.top-button{font-size:9px;padding:7px}}
 </style>
 </head>
 
@@ -129,7 +67,7 @@ body{overflow:auto}
  <div class="brand">
   <div class="brand-mark">🌍</div>
   <div>
-   <div class="brand-title">GBoS GEOAI | 3D EA & GPS SPATIAL INTELLIGENCE</div>
+   <div class="brand-title">SILKYSINGZ GEOAI | 3D EA & GPS SPATIAL INTELLIGENCE</div>
    <div class="brand-sub">THE GAMBIA • ENUMERATION AREA STATISTICS • GPS FIELD CAPTURE</div>
   </div>
  </div>
@@ -141,168 +79,76 @@ body{overflow:auto}
 </header>
 
 <main class="dashboard">
-
-<!-- LEFT PANEL -->
 <section class="panel controls-panel">
  <div class="panel-head"><h2>Controls & Field Data</h2><small id="recordCount">0 EAs</small></div>
  <div class="panel-body">
-
   <div class="section-label">01 / EA data source</div>
-  <div class="field">
-   <label for="geoFile">Upload EA GeoJSON</label>
-   <input type="file" id="geoFile" accept=".json,.geojson,application/geo+json,application/json">
-   <div class="help">Upload Census_EAs_Geo.json if the GitHub source is unavailable.</div>
-  </div>
-  <div class="button-row">
-   <button class="btn btn-primary" id="loadGitHub">Load GitHub Data</button>
-   <button class="btn btn-light" id="retryLoad">Retry Loading</button>
-  </div>
+  <div class="field"><label for="geoFile">Upload EA GeoJSON</label><input type="file" id="geoFile" accept=".json,.geojson,application/geo+json,application/json"><div class="help">Upload Census_EAs_Geo.json if the GitHub source is unavailable.</div></div>
+  <div class="button-row"><button class="btn btn-primary" id="loadGitHub">Load GitHub Data</button><button class="btn btn-light" id="retryLoad">Retry Loading</button></div>
   <div id="dataStatus" class="status">Waiting for EA GeoJSON data.</div>
 
-  <div class="divider"></div>
-  <div class="section-label">02 / Administrative selection</div>
+  <div class="divider"></div><div class="section-label">02 / Administrative selection</div>
   <div class="field"><label for="lgaSelect">Local Government Area</label><select id="lgaSelect"><option value="">All LGAs</option></select></div>
   <div class="field"><label for="districtSelect">District</label><select id="districtSelect"><option value="">All districts</option></select></div>
   <div class="field"><label for="wardSelect">Ward</label><select id="wardSelect"><option value="">All wards</option></select></div>
-  <div class="button-row">
-   <button class="btn btn-primary" id="applySelection">Apply & Zoom</button>
-   <button class="btn btn-light" id="resetSelection">Reset National View</button>
-  </div>
+  <div class="button-row"><button class="btn btn-primary" id="applySelection">Apply & Zoom</button><button class="btn btn-light" id="resetSelection">Reset National View</button></div>
   <div id="selectionStatus" class="status">National view selected.</div>
 
-  <div class="divider"></div>
-  <div class="section-label">03 / GPS field capture</div>
+  <div class="divider"></div><div class="section-label">03 / GPS field capture</div>
   <div class="gps-widget">
    <div class="gps-widget-title">📍 Capture device GPS location</div>
    <div class="gps-coordinate" id="gpsLiveStatus">GPS is waiting for a location request.</div>
-   <div class="gps-actions">
-    <button class="btn btn-green" id="captureGPS">Capture GPS</button>
-    <button class="btn btn-light" id="locateGPS">Locate on Map</button>
-   </div>
-   <div class="help">Uses the browser/device location service. Allow location permission when prompted. HTTPS or localhost is normally required.</div>
+   <div class="gps-actions"><button class="btn btn-green" id="captureGPS">Capture GPS</button><button class="btn btn-light" id="locateGPS">Locate on Map</button></div>
+   <div class="help">Browser location permission is required. HTTPS or localhost is normally required.</div>
   </div>
-
-  <div class="field">
-   <label for="gpsLabel">GPS point description / location name</label>
-   <input type="text" id="gpsLabel" placeholder="e.g. Field office, household, compound">
-  </div>
-  <div class="field">
-   <label for="gpsCategory">GPS point category</label>
-   <select id="gpsCategory">
-    <option value="EA verification">EA verification</option>
-    <option value="Household">Household</option>
-    <option value="Compound">Compound</option>
-    <option value="Building">Building</option>
-    <option value="Settlement">Settlement</option>
-    <option value="Field team location">Field team location</option>
-    <option value="Other">Other</option>
-   </select>
-  </div>
-  <div class="button-row">
-   <button class="btn btn-primary" id="saveGPS" disabled>Save captured point</button>
-   <button class="btn btn-light" id="clearPendingGPS">Clear pending</button>
-  </div>
+  <div class="field"><label for="gpsLabel">GPS point description / location name</label><input type="text" id="gpsLabel" placeholder="e.g. Field office, household, compound"></div>
+  <div class="field"><label for="gpsCategory">GPS point category</label><select id="gpsCategory"><option>EA verification</option><option>Household</option><option>Compound</option><option>Building</option><option>Settlement</option><option>Field team location</option><option>Other</option></select></div>
+  <div class="button-row"><button class="btn btn-primary" id="saveGPS" disabled>Save captured point</button><button class="btn btn-light" id="clearPendingGPS">Clear pending</button></div>
   <div id="gpsCaptureStatus" class="status">No GPS point captured yet.</div>
 
-  <div class="divider"></div>
-  <div class="section-label">04 / Import existing GPS records</div>
-  <div class="field">
-   <label for="gpsFile">Upload GPS GeoJSON or CSV</label>
-   <input type="file" id="gpsFile" accept=".json,.geojson,.csv,application/json,text/csv">
-   <div class="help">GeoJSON Point features or CSV with longitude/lon/x and latitude/lat/y columns. Optional columns: name, category, accuracy, timestamp.</div>
-  </div>
-  <div class="button-row">
-   <button class="btn btn-light" id="exportGPS">Export GPS CSV</button>
-   <button class="btn btn-light" id="exportGPSGeo">Export GPS GeoJSON</button>
-  </div>
+  <div class="divider"></div><div class="section-label">04 / Import existing GPS records</div>
+  <div class="field"><label for="gpsFile">Upload GPS GeoJSON or CSV</label><input type="file" id="gpsFile" accept=".json,.geojson,.csv,application/json,text/csv"><div class="help">GeoJSON Point features or CSV with longitude/lon/x and latitude/lat/y columns. Optional accuracy, name, category and timestamp.</div></div>
+  <div class="button-row"><button class="btn btn-light" id="exportGPS">Export GPS CSV</button><button class="btn btn-light" id="exportGPSGeo">Export GPS GeoJSON</button></div>
   <div id="gpsImportStatus" class="status">No external GPS records imported.</div>
 
-  <div class="divider"></div>
-  <div class="section-label">05 / GPS records in this session</div>
+  <div class="divider"></div><div class="section-label">05 / GPS records in this session</div>
   <div class="gps-list" id="gpsRecordsList"><div class="help">No GPS records have been saved.</div></div>
-  <div class="button-row">
-   <button class="btn btn-red" id="clearAllGPS">Clear all GPS records</button>
-   <button class="btn btn-light" id="zoomGPS">Zoom to GPS points</button>
-  </div>
+  <div class="button-row"><button class="btn btn-red" id="clearAllGPS">Clear all GPS records</button><button class="btn btn-light" id="zoomGPS">Zoom to GPS points</button></div>
 
-  <div class="divider"></div>
-  <div class="section-label">06 / 3D thematic display</div>
-  <div class="field">
-   <label for="metricSelect">3D extrusion metric</label>
-   <select id="metricSelect">
-    <option value="population">Enumerated population</option>
-    <option value="households">Enumerated households</option>
-    <option value="buildings">Listed buildings</option>
-    <option value="compounds">Listed compounds</option>
-    <option value="density">Population density (people/km²)</option>
-    <option value="area">EA area (km²)</option>
-   </select>
-  </div>
-  <div class="field">
-   <label for="heightScale">3D height exaggeration</label>
-   <select id="heightScale">
-    <option value="0.15">Low</option>
-    <option value="0.30" selected>Medium</option>
-    <option value="0.55">High</option>
-    <option value="0.85">Very high</option>
-   </select>
-  </div>
+  <div class="divider"></div><div class="section-label">06 / 3D thematic display</div>
+  <div class="field"><label for="metricSelect">3D extrusion metric</label><select id="metricSelect">
+   <option value="population">Enumerated population</option><option value="households">Enumerated households</option><option value="buildings">Listed buildings</option><option value="compounds">Listed compounds</option><option value="density">Population density (people/km²)</option><option value="area">EA area (km²)</option>
+  </select></div>
+  <div class="field"><label for="heightScale">3D height exaggeration</label><select id="heightScale"><option value="0.15">Low</option><option value="0.30" selected>Medium</option><option value="0.55">High</option><option value="0.85">Very high</option></select></div>
   <div class="check-row"><input type="checkbox" id="showLabels" checked><label for="showLabels">Show EA labels</label></div>
   <div class="check-row"><input type="checkbox" id="showExtrusion" checked><label for="showExtrusion">Enable 3D extrusion</label></div>
   <div class="check-row"><input type="checkbox" id="showBoundaries" checked><label for="showBoundaries">Show EA boundaries</label></div>
   <div class="check-row"><input type="checkbox" id="showGPS" checked><label for="showGPS">Show GPS points on map</label></div>
 
-  <div class="divider"></div>
-  <div class="section-label">07 / Map and exports</div>
-  <div class="field">
-   <label for="baseSelect">Basemap</label>
-   <select id="baseSelect">
-    <option value="light">Light</option><option value="streets">Streets</option>
-    <option value="satellite">Satellite</option><option value="hybrid">Hybrid imagery</option>
-    <option value="dark">Dark</option>
-   </select>
-  </div>
-  <div class="button-row">
-   <button class="btn btn-light" id="exportCsv">Download EA CSV</button>
-   <button class="btn btn-light" id="exportGeo">Download EA GeoJSON</button>
-  </div>
-  <div class="divider"></div>
-  <div class="section-label">08 / Data field diagnostics</div>
+  <div class="divider"></div><div class="section-label">07 / Map and exports</div>
+  <div class="field"><label for="baseSelect">Basemap</label><select id="baseSelect"><option value="light">Light</option><option value="streets">Streets</option><option value="satellite">Satellite</option><option value="hybrid">Hybrid imagery</option><option value="dark">Dark</option></select></div>
+  <div class="button-row"><button class="btn btn-light" id="exportCsv">Download EA CSV</button><button class="btn btn-light" id="exportGeo">Download EA GeoJSON</button></div>
+  <div class="divider"></div><div class="section-label">08 / Data field diagnostics</div>
   <div id="fieldDiagnostics" class="status">Detected fields will appear here after loading.</div>
  </div>
  <div class="footer"><strong>Interpretation:</strong> EA extrusion represents thematic values, not measured building heights. GPS accuracy is supplied by the device and is not a guarantee of survey-grade positioning.</div>
 </section>
 
-<!-- MAP PANEL -->
 <section class="panel map-panel">
  <div class="panel-head"><h2>Interactive 3D EA & GPS Map</h2><small id="mapCount">0 displayed EAs</small></div>
- <div class="map-toolbar">
-  <label for="mapView">View</label>
-  <select id="mapView"><option value="3d">3D perspective</option><option value="2d">2D top-down</option></select>
-  <button id="zoomGambia">Zoom to The Gambia</button>
-  <button id="mapReset">Reset bearing</button>
- </div>
+ <div class="map-toolbar"><label for="mapView">View</label><select id="mapView"><option value="3d">3D perspective</option><option value="2d">2D top-down</option></select><button id="zoomGambia">Zoom to The Gambia</button><button id="mapReset">Reset bearing</button></div>
  <div class="map-wrap">
   <div id="map"></div>
   <div class="map-overlay"><strong id="mapTitle">The Gambia | National EA Coverage</strong><span id="mapSubtitle">Load the EA GeoJSON to begin.</span></div>
-  <div class="map-legend">
-   <div class="legend-title" id="legendTitle">Enumerated population</div>
-   <div class="legend-gradient"></div>
-   <div class="legend-labels"><span id="legendMin">Low</span><span id="legendMax">High</span></div>
-   <div style="margin-top:9px;font-size:9px;color:#50677b"><span style="color:#e34c4c">●</span> Captured GPS point</div>
-  </div>
-  <div class="loading-screen" id="mapLoading">
-   <div class="loading-box"><div class="spinner"></div><strong>Preparing the 3D EA map</strong><p>Initialising MapLibre. EA data will load from the configured GitHub GeoJSON source.</p></div>
-  </div>
+  <div class="map-legend"><div class="legend-title" id="legendTitle">Enumerated population</div><div class="legend-gradient"></div><div class="legend-labels"><span id="legendMin">Low</span><span id="legendMax">High</span></div><div style="margin-top:9px;font-size:9px;color:#50677b"><span style="color:#e34c4c">●</span> GPS point</div></div>
+  <div class="loading-screen" id="mapLoading"><div><div class="spinner"></div><strong>Preparing the 3D EA map</strong><p>Initialising MapLibre and loading the EA GeoJSON source.</p></div></div>
  </div>
  <div class="map-foot"><span id="mapAttribution">Map tiles © CARTO / Esri / OpenStreetMap contributors, as applicable</span><span id="coordinateText">WGS 84 | EPSG:4326</span></div>
 </section>
 
-<!-- ANALYTICS PANEL -->
 <section class="panel analytics-panel">
  <div class="panel-head"><h2>Spatial Analytics & Widgets</h2><small id="analyticsScope">National</small></div>
  <div class="analytics-body">
-
   <div class="section-label">EA statistics</div>
   <div class="kpi-grid">
    <div class="kpi"><div class="kpi-label">Enumeration Areas</div><div class="kpi-value" id="kpiEAs">—</div><div class="kpi-unit">Displayed EA features</div></div>
@@ -314,31 +160,21 @@ body{overflow:auto}
    <div class="kpi"><div class="kpi-label">Population Density</div><div class="kpi-value" id="kpiDensity">—</div><div class="kpi-unit">People per km²</div></div>
    <div class="kpi"><div class="kpi-label">Household Size</div><div class="kpi-value" id="kpiHHSize">—</div><div class="kpi-unit">People per household</div></div>
   </div>
-
-  <div class="divider"></div>
-  <div class="section-label">GPS field collection widgets</div>
+  <div class="divider"></div><div class="section-label">GPS field collection widgets</div>
   <div class="kpi-grid">
    <div class="kpi"><div class="kpi-label">GPS Points</div><div class="kpi-value" id="kpiGPS">0</div><div class="kpi-unit">Saved and imported points</div></div>
    <div class="kpi"><div class="kpi-label">EA-Assigned GPS</div><div class="kpi-value" id="kpiGPSAssigned">0</div><div class="kpi-unit">Points inside EA polygons</div></div>
    <div class="kpi"><div class="kpi-label">Outside EA</div><div class="kpi-value" id="kpiGPSOutside">0</div><div class="kpi-unit">No containing EA found</div></div>
-   <div class="kpi"><div class="kpi-label">Average Accuracy</div><div class="kpi-value" id="kpiGPSAccuracy">N/A</div><div class="kpi-unit">Metres; reported by device</div></div>
+   <div class="kpi"><div class="kpi-label">Average Accuracy</div><div class="kpi-value" id="kpiGPSAccuracy">N/A</div><div class="kpi-unit">Reported metres</div></div>
   </div>
-
   <div class="chart-card"><div class="chart-title">Population, households, buildings and compounds</div><div class="chart-holder tall"><canvas id="comparisonChart"></canvas></div></div>
   <div class="chart-card"><div class="chart-title">Top 10 districts by population</div><div class="chart-holder"><canvas id="districtChart"></canvas></div></div>
   <div class="chart-card"><div class="chart-title">EA distribution by administrative area</div><div class="chart-holder"><canvas id="eaChart"></canvas></div></div>
   <div class="chart-card"><div class="chart-title">GPS points captured by district</div><div class="chart-holder"><canvas id="gpsDistrictChart"></canvas></div></div>
   <div class="chart-card"><div class="chart-title">GPS positional accuracy distribution</div><div class="chart-holder"><canvas id="gpsAccuracyChart"></canvas></div></div>
-
-  <div class="chart-card">
-   <div class="chart-title">Selected area summary</div>
-   <table class="data-table"><tbody id="summaryTable"><tr><td colspan="2">Load EA data to calculate summary.</td></tr></tbody></table>
-  </div>
-  <div class="chart-card">
-   <div class="chart-title">GPS collection summary</div>
-   <table class="data-table"><tbody id="gpsSummaryTable"><tr><td colspan="2">No GPS records.</td></tr></tbody></table>
-  </div>
-  <div class="chart-card"><div class="chart-title">Data availability and field mapping</div><div class="detected" id="analyticsDiagnostics">Waiting for data.</div></div>
+  <div class="chart-card"><div class="chart-title">Selected area summary</div><table class="data-table"><tbody id="summaryTable"><tr><td>Load EA data to calculate summary.</td></tr></tbody></table></div>
+  <div class="chart-card"><div class="chart-title">GPS collection summary</div><table class="data-table"><tbody id="gpsSummaryTable"><tr><td>No GPS records.</td></tr></tbody></table></div>
+  <div class="chart-card"><div class="chart-title">Data availability and field mapping</div><div id="analyticsDiagnostics" style="font-size:10px;line-height:1.65;color:#5e7184">Waiting for data.</div></div>
  </div>
  <div class="footer"><strong>Produced by Ansu Singhateh</strong><br>GIS Analyst | GIS / Cartography Unit | Gambia Bureau of Statistics<br>GBoS GEOAI • Research and educational use</div>
 </section>
@@ -346,14 +182,6 @@ body{overflow:auto}
 
 <script>
 "use strict";
-
-/* ==========================================================
-   GBoS GEOAI — GAMBIA EA & GPS SPATIAL INTELLIGENCE
-   EA source: Census_EAs_Geo.json
-   Primary fields: enum_pop, enum_hhs, build_ls, comp_ls, Area_sqkm
-   GPS records are stored in browser memory for this session.
-   Export GPS records to retain them.
-   ========================================================== */
 
 const DATA_URL="https://raw.githubusercontent.com/silkysingz94-oss/Urban-Planning-Intelligence/main/Census_EAs_Geo.json";
 const GAMBIA_CENTER=[-15.45,13.45];
@@ -372,227 +200,168 @@ const FIELD_ALIASES={
  area:["Area_sqkm","area_sqkm","area_km2","area_sq_km","Shape_Area","shape_area"]
 };
 
-let allFeatures=[];
-let displayedFeatures=[];
-let geojsonData=null;
-let map=null;
-let mapReady=false;
-let mapLayersAdded=false;
-let charts={};
-let currentMetric="population";
-let gpsRecords=[];
-let pendingGPS=null;
-let lastGPS=null;
-let sourceLoadController=null;
+let allFeatures=[],displayedFeatures=[],geojsonData=null;
+let map=null,mapReady=false,mapLayersAdded=false;
+let charts={},currentMetric="population";
+let gpsRecords=[],pendingGPS=null,lastGPS=null,sourceLoadController=null;
+let styleChangeToken=0;
 
 const $=id=>document.getElementById(id);
-
-function escapeHTML(value){
- return String(value??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[ch]);
-}
-function normalizeKey(value){return String(value??"").toLowerCase().replace(/[^a-z0-9]/g,"")}
-function numberValue(value){
- if(value===null||value===undefined||value==="")return null;
- if(typeof value==="string")value=value.replace(/,/g,"").trim();
- const n=Number(value);return Number.isFinite(n)?n:null;
-}
-function formatNumber(value,decimals=0){
- if(value===null||value===undefined||!Number.isFinite(Number(value)))return "N/A";
- return Number(value).toLocaleString("en-US",{maximumFractionDigits:decimals,minimumFractionDigits:decimals});
-}
-function getProperty(feature,aliases){
- const props=feature&&feature.properties?feature.properties:{};
- const keys=Object.keys(props);
- for(const alias of aliases){
-  const actual=keys.find(k=>normalizeKey(k)===normalizeKey(alias));
-  if(actual!==undefined&&props[actual]!==null&&props[actual]!==undefined&&String(props[actual]).trim()!==""){
-   return {value:props[actual],field:actual};
-  }
- }
+function escapeHTML(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function normalizeKey(v){return String(v??"").toLowerCase().replace(/[^a-z0-9]/g,"")}
+function numberValue(v){if(v===null||v===undefined||v==="")return null;if(typeof v==="string")v=v.replace(/,/g,"").trim();const n=Number(v);return Number.isFinite(n)?n:null}
+function formatNumber(v,d=0){if(v===null||v===undefined||!Number.isFinite(Number(v)))return "N/A";return Number(v).toLocaleString("en-US",{maximumFractionDigits:d,minimumFractionDigits:d})}
+function getProperty(f,aliases){
+ const p=f&&f.properties?f.properties:{},keys=Object.keys(p);
+ for(const a of aliases){const k=keys.find(x=>normalizeKey(x)===normalizeKey(a));if(k!==undefined&&p[k]!==null&&p[k]!==undefined&&String(p[k]).trim()!=="")return {value:p[k],field:k}}
  return {value:null,field:null};
 }
-function readNumber(feature,aliases){
- const r=getProperty(feature,aliases);return {value:numberValue(r.value),field:r.field};
-}
-function setStatus(message,type=""){
- $("dataStatus").className="status"+(type?" "+type:"");
- $("dataStatus").textContent=message;
-}
-function setConnection(message){$("connectionPill").textContent=message}
-function featureName(feature,kind){
- const r=getProperty(feature,FIELD_ALIASES[kind]||[]);
- return r.value===null?"Unknown":String(r.value).trim();
-}
+function readNumber(f,a){const r=getProperty(f,a);return {value:numberValue(r.value),field:r.field}}
+function setStatus(m,t=""){$("dataStatus").className="status"+(t?" "+t:"");$("dataStatus").textContent=m}
+function setConnection(m){$("connectionPill").textContent=m}
+function featureName(f,k){const r=getProperty(f,FIELD_ALIASES[k]||[]);return r.value===null?"Unknown":String(r.value).trim()}
 
-/* Geodesic polygon area fallback. */
 function ringAreaKm2(ring){
  if(!Array.isArray(ring)||ring.length<3)return 0;
  const R=6371.0088;let sum=0;
- for(let i=0;i<ring.length;i++){
-  const a=ring[i],b=ring[(i+1)%ring.length];
-  if(!a||!b)continue;
-  const lon1=Number(a[0])*Math.PI/180,lon2=Number(b[0])*Math.PI/180;
-  const lat1=Number(a[1])*Math.PI/180,lat2=Number(b[1])*Math.PI/180;
+ for(let i=0;i<ring.length;i++){const a=ring[i],b=ring[(i+1)%ring.length];if(!a||!b)continue;
+  const lon1=a[0]*Math.PI/180,lon2=b[0]*Math.PI/180,lat1=a[1]*Math.PI/180,lat2=b[1]*Math.PI/180;
   sum+=(lon2-lon1)*(2+Math.sin(lat1)+Math.sin(lat2));
  }
  return Math.abs(sum*R*R/2);
 }
-function geometryAreaKm2(geometry){
- if(!geometry)return null;
- let total=0;
+function geometryAreaKm2(g){
+ if(!g)return null;let total=0;
  try{
-  if(geometry.type==="Polygon"){
-   const rings=geometry.coordinates||[];if(!rings.length)return null;
-   total+=ringAreaKm2(rings[0]);
-   for(let i=1;i<rings.length;i++)total-=ringAreaKm2(rings[i]);
-  }else if(geometry.type==="MultiPolygon"){
-   for(const polygon of geometry.coordinates||[]){
-    if(!polygon.length)continue;
-    total+=ringAreaKm2(polygon[0]);
-    for(let i=1;i<polygon.length;i++)total-=ringAreaKm2(polygon[i]);
-   }
-  }else return null;
+  if(g.type==="Polygon"){if(!g.coordinates.length)return null;total=ringAreaKm2(g.coordinates[0]);for(let i=1;i<g.coordinates.length;i++)total-=ringAreaKm2(g.coordinates[i])}
+  else if(g.type==="MultiPolygon"){for(const p of g.coordinates){if(!p.length)continue;total+=ringAreaKm2(p[0]);for(let i=1;i<p.length;i++)total-=ringAreaKm2(p[i])}}
+  else return null;
   return Math.max(0,total);
  }catch(e){return null}
 }
-function enrichFeature(feature,index){
- const copy=JSON.parse(JSON.stringify(feature));copy.properties=copy.properties||{};
- const p=copy.properties;
- const pop=readNumber(copy,FIELD_ALIASES.population);
- const hhs=readNumber(copy,FIELD_ALIASES.households);
- const buildings=readNumber(copy,FIELD_ALIASES.buildings);
- const compounds=readNumber(copy,FIELD_ALIASES.compounds);
- const areaField=readNumber(copy,FIELD_ALIASES.area);
- let area=areaField.value,areaSource=areaField.field;
- if(area!==null&&areaSource&&normalizeKey(areaSource)==="shapearea")area=area/1000000;
- if(area===null||area<=0){area=geometryAreaKm2(copy.geometry);areaSource=area===null?null:"Calculated from geometry"}
- p._lga=featureName(copy,"lga");p._district=featureName(copy,"district");
- p._ward=featureName(copy,"ward");p._ea=featureName(copy,"ea");
- p._code=featureName(copy,"code");if(p._code==="Unknown")p._code=String(index+1);
- p._pop=pop.value;p._hhs=hhs.value;p._buildings=buildings.value;
- p._compounds=compounds.value;p._area=area;
+function enrichFeature(f,index){
+ const c=JSON.parse(JSON.stringify(f));c.properties=c.properties||{};
+ const p=c.properties;
+ const pop=readNumber(c,FIELD_ALIASES.population),hhs=readNumber(c,FIELD_ALIASES.households);
+ const b=readNumber(c,FIELD_ALIASES.buildings),co=readNumber(c,FIELD_ALIASES.compounds);
+ const ar=readNumber(c,FIELD_ALIASES.area);
+ let area=ar.value,areaSource=ar.field;
+ if(area!==null&&areaSource&&normalizeKey(areaSource)==="shapearea")area/=1000000;
+ if(area===null||area<=0){area=geometryAreaKm2(c.geometry);areaSource=area===null?null:"Calculated from geometry"}
+ p._lga=featureName(c,"lga");p._district=featureName(c,"district");p._ward=featureName(c,"ward");
+ p._ea=featureName(c,"ea");p._code=featureName(c,"code");if(p._code==="Unknown")p._code=String(index+1);
+ p._pop=pop.value;p._hhs=hhs.value;p._buildings=b.value;p._compounds=co.value;p._area=area;
  p._density=pop.value!==null&&area!==null&&area>0?pop.value/area:null;
- p._field_pop=pop.field;p._field_hhs=hhs.field;p._field_buildings=buildings.field;
- p._field_compounds=compounds.field;p._field_area=areaSource;
- return copy;
+ p._field_pop=pop.field;p._field_hhs=hhs.field;p._field_buildings=b.field;p._field_compounds=co.field;p._field_area=areaSource;
+ return c;
 }
-function validPolygonFeature(f){return f&&f.geometry&&["Polygon","MultiPolygon"].includes(f.geometry.type)}
 function normalizeGeoJSON(input){
- let features=[];
- if(input&&input.type==="FeatureCollection"&&Array.isArray(input.features))features=input.features;
- else if(input&&input.type==="Feature")features=[input];
- else if(Array.isArray(input))features=input.filter(x=>x&&x.type==="Feature");
+ let fs=[];
+ if(input&&input.type==="FeatureCollection"&&Array.isArray(input.features))fs=input.features;
+ else if(input&&input.type==="Feature")fs=[input];
+ else if(Array.isArray(input))fs=input.filter(x=>x&&x.type==="Feature");
  else throw new Error("Invalid GeoJSON FeatureCollection or Feature.");
- const cleaned=features.filter(validPolygonFeature).map(enrichFeature);
- if(!cleaned.length)throw new Error("No Polygon or MultiPolygon EA features found.");
- return {type:"FeatureCollection",features:cleaned};
+ const clean=fs.filter(f=>f&&f.geometry&&["Polygon","MultiPolygon"].includes(f.geometry.type)).map(enrichFeature);
+ if(!clean.length)throw new Error("No Polygon or MultiPolygon EA features found.");
+ return {type:"FeatureCollection",features:clean};
 }
 function detectFields(){
  if(!allFeatures.length)return;
  const f=allFeatures[0],keys=Object.keys(f.properties).filter(k=>!k.startsWith("_"));
- const found={
-  LGA:getProperty(f,FIELD_ALIASES.lga).field,
-  District:getProperty(f,FIELD_ALIASES.district).field,
-  Ward:getProperty(f,FIELD_ALIASES.ward).field,
-  Population:getProperty(f,FIELD_ALIASES.population).field,
-  Households:getProperty(f,FIELD_ALIASES.households).field,
-  Buildings:getProperty(f,FIELD_ALIASES.buildings).field,
-  Compounds:getProperty(f,FIELD_ALIASES.compounds).field,
-  Area:getProperty(f,FIELD_ALIASES.area).field
- };
- const rows=Object.entries(found).map(([k,v])=>`<div><b>${escapeHTML(k)}:</b> ${v?escapeHTML(v):"Not detected"}</div>`).join("");
+ const fields={LGA:getProperty(f,FIELD_ALIASES.lga).field,District:getProperty(f,FIELD_ALIASES.district).field,Ward:getProperty(f,FIELD_ALIASES.ward).field,
+ Population:getProperty(f,FIELD_ALIASES.population).field,Households:getProperty(f,FIELD_ALIASES.households).field,
+ Buildings:getProperty(f,FIELD_ALIASES.buildings).field,Compounds:getProperty(f,FIELD_ALIASES.compounds).field,Area:getProperty(f,FIELD_ALIASES.area).field};
+ const rows=Object.entries(fields).map(([k,v])=>`<div><b>${escapeHTML(k)}:</b> ${v?escapeHTML(v):"Not detected"}</div>`).join("");
  $("fieldDiagnostics").innerHTML=rows;
  $("analyticsDiagnostics").innerHTML="<b>Detected source properties:</b><br>"+rows+`<br><b>Raw properties:</b> ${keys.length}`;
 }
 
-/* Map base styles */
+/* Basemap styles. A style switch removes custom layers; they are restored by style.load. */
 function rasterStyle(type){
  let tiles,attribution;
- if(type==="satellite"||type==="hybrid"){
-  tiles=["https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"];
-  attribution="Tiles © Esri";
- }else if(type==="streets"){
-  tiles=["https://a.tile.openstreetmap.org/{z}/{x}/{y}.png"];attribution="© OpenStreetMap contributors";
- }else if(type==="dark"){
-  tiles=["https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png"];attribution="© CARTO";
- }else{
-  tiles=["https://basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"];attribution="© CARTO";
- }
+ if(type==="satellite"||type==="hybrid"){tiles=["https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"];attribution="Tiles © Esri"}
+ else if(type==="streets"){tiles=["https://a.tile.openstreetmap.org/{z}/{x}/{y}.png"];attribution="© OpenStreetMap contributors"}
+ else if(type==="dark"){tiles=["https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png"];attribution="© CARTO"}
+ else{tiles=["https://basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"];attribution="© CARTO"}
  const style={version:8,sources:{"base-raster":{type:"raster",tiles,tileSize:256,attribution}},layers:[{id:"base-raster-layer",type:"raster",source:"base-raster",paint:{"raster-opacity":1}}]};
  if(type==="hybrid"){
   style.sources["hybrid-labels"]={type:"raster",tiles:["https://a.tile.openstreetmap.org/{z}/{x}/{y}.png"],tileSize:256,attribution:"© OpenStreetMap contributors"};
-  style.layers.push({id:"hybrid-label-layer",type:"raster",source:"hybrid-labels",paint:{"raster-opacity":0.65}});
+  style.layers.push({id:"hybrid-label-layer",type:"raster",source:"hybrid-labels",paint:{"raster-opacity":.75}});
  }
+ $("mapAttribution").textContent=attribution;
  return style;
 }
 function createMap(){
- if(typeof maplibregl==="undefined"){
-  $("mapLoading").innerHTML='<div class="loading-box"><strong>MapLibre unavailable</strong><p>Check internet/CDN access. You can still inspect and export the EA data after loading it.</p></div>';
-  setStatus("MapLibre could not load. Check internet access.","error");return;
- }
+ if(typeof maplibregl==="undefined"){$("mapLoading").innerHTML="<div><strong>MapLibre unavailable</strong><p>Check internet/CDN access.</p></div>";setStatus("MapLibre could not load. Check internet access.","error");return}
  try{
   map=new maplibregl.Map({container:"map",style:rasterStyle("light"),center:GAMBIA_CENTER,zoom:7.1,pitch:48,bearing:0,maxPitch:75,attributionControl:true});
   map.addControl(new maplibregl.NavigationControl({visualizePitch:true}),"top-right");
   map.addControl(new maplibregl.ScaleControl({maxWidth:100,unit:"metric"}),"bottom-left");
+
+  /*
+   * IMPORTANT FIX:
+   * This persistent listener runs after the initial style load AND every
+   * subsequent map.setStyle() call. Custom EA/GPS layers are rebuilt here.
+   */
+  map.on("style.load",()=>{
+   mapReady=true;
+   mapLayersAdded=false;
+   restoreDashboardLayers();
+  });
+
   map.on("load",()=>{
-   mapReady=true;addEALayers();addGPSLayers();
-   $("mapLoading").style.display="none";map.resize();
-   if(geojsonData)updateMapData();
-   updateGPSMap();
+   $("mapLoading").style.display="none";
+   map.resize();
   });
   map.on("error",e=>console.warn("Map rendering notice:",e&&e.error?e.error.message:"Map tile error"));
-  map.on("mousemove",e=>{
-   if(e.lngLat)$("coordinateText").textContent=`WGS 84 | ${e.lngLat.lng.toFixed(5)}, ${e.lngLat.lat.toFixed(5)}`;
-  });
- }catch(error){
-  $("mapLoading").innerHTML=`<div class="loading-box"><strong>Map initialisation failed</strong><p>${escapeHTML(error.message)}</p></div>`;
- }
+  map.on("mousemove",e=>{if(e.lngLat)$("coordinateText").textContent=`WGS 84 | ${e.lngLat.lng.toLocaleString("en-US",{maximumFractionDigits:5})}, ${e.lngLat.lat.toLocaleString("en-US",{maximumFractionDigits:5})}`});
+ }catch(e){$("mapLoading").innerHTML=`<div><strong>Map initialisation failed</strong><p>${escapeHTML(e.message)}</p></div>`}
+}
+function restoreDashboardLayers(){
+ if(!map||!mapReady)return;
+ try{
+  addEALayers();
+  addGPSLayers();
+  if(geojsonData)updateMapData();
+  updateGPSMap();
+  applyLayerVisibility();
+  $("mapLoading").style.display="none";
+ }catch(e){console.error("Could not restore map layers:",e);setStatus("Basemap loaded, but EA layer restoration failed: "+e.message,"error")}
 }
 function metricColorExpression(){
- const v=["coalesce",["get","_metric"],0];
- return ["interpolate",["linear"],v,0,"#fff2a8",0.2,"#f6bd59",0.45,"#ed8746",0.7,"#d94e4e",1,"#922b58"];
+ return ["interpolate",["linear"],["coalesce",["get","_metric"],0],
+  0,"#fff2a8",.2,"#f6bd59",.45,"#ed8746",.7,"#d94e4e",1,"#922b58"];
 }
 function addEALayers(){
  if(!mapReady||mapLayersAdded)return;
+ if(map.getSource("ea-source"))map.removeSource("ea-source");
  map.addSource("ea-source",{type:"geojson",data:{type:"FeatureCollection",features:[]}});
- map.addLayer({
-  id:"ea-extrusion",type:"fill-extrusion",source:"ea-source",
-  paint:{"fill-extrusion-color":metricColorExpression(),"fill-extrusion-height":["coalesce",["get","_height"],0],"fill-extrusion-base":0,"fill-extrusion-opacity":0.86,"fill-extrusion-vertical-gradient":true}
- });
- map.addLayer({
-  id:"ea-fill",type:"fill",source:"ea-source",
-  paint:{"fill-color":metricColorExpression(),"fill-opacity":0.48}
- });
- map.addLayer({
-  id:"ea-outline",type:"line",source:"ea-source",
-  paint:{"line-color":"#ffffff","line-width":["interpolate",["linear"],["zoom"],5,.25,9,.7,13,1.25],"line-opacity":.9}
- });
- map.addLayer({
-  id:"ea-labels",type:"symbol",source:"ea-source",
+ map.addLayer({id:"ea-extrusion",type:"fill-extrusion",source:"ea-source",
+  paint:{"fill-extrusion-color":metricColorExpression(),"fill-extrusion-height":["coalesce",["get","_height"],0],
+  "fill-extrusion-base":0,"fill-extrusion-opacity":.86,"fill-extrusion-vertical-gradient":true}});
+ map.addLayer({id:"ea-fill",type:"fill",source:"ea-source",paint:{"fill-color":metricColorExpression(),"fill-opacity":.48}});
+ map.addLayer({id:"ea-outline",type:"line",source:"ea-source",paint:{"line-color":"#ffffff","line-width":["interpolate",["linear"],["zoom"],5,.25,9,.7,13,1.25],"line-opacity":.9}});
+ map.addLayer({id:"ea-labels",type:"symbol",source:"ea-source",
   layout:{"text-field":["coalesce",["get","_code"],["get","_ea"]],"text-size":["interpolate",["linear"],["zoom"],7,8,11,10,14,12],"text-allow-overlap":false},
-  paint:{"text-color":"#17324a","text-halo-color":"#ffffff","text-halo-width":1.2}
- });
- map.on("click","ea-fill",showFeaturePopup);
- map.on("click","ea-extrusion",showFeaturePopup);
+  paint:{"text-color":"#17324a","text-halo-color":"#ffffff","text-halo-width":1.2}});
+ map.on("click","ea-fill",showFeaturePopup);map.on("click","ea-extrusion",showFeaturePopup);
  ["ea-fill","ea-extrusion"].forEach(id=>{
   map.on("mouseenter",id,()=>map.getCanvas().style.cursor="pointer");
   map.on("mouseleave",id,()=>map.getCanvas().style.cursor="");
  });
- mapLayersAdded=true;applyLayerVisibility();
+ mapLayersAdded=true;
+ applyLayerVisibility();
 }
 function addGPSLayers(){
  if(!mapReady)return;
  if(!map.getSource("gps-source")){
   map.addSource("gps-source",{type:"geojson",data:{type:"FeatureCollection",features:[]}});
-  map.addLayer({
-   id:"gps-points",type:"circle",source:"gps-source",
-   paint:{"circle-radius":["interpolate",["linear"],["zoom"],5,4,12,7,16,10],"circle-color":"#e23d3d","circle-stroke-color":"#ffffff","circle-stroke-width":1.8,"circle-opacity":.95}
-  });
-  map.addLayer({
-   id:"gps-labels",type:"symbol",source:"gps-source",
+  map.addLayer({id:"gps-points",type:"circle",source:"gps-source",
+   paint:{"circle-radius":["interpolate",["linear"],["zoom"],5,4,12,7,16,10],
+   "circle-color":"#e23d3d","circle-stroke-color":"#ffffff","circle-stroke-width":1.8,"circle-opacity":.95}});
+  map.addLayer({id:"gps-labels",type:"symbol",source:"gps-source",
    layout:{"text-field":["get","name"],"text-size":10,"text-offset":[0,1.2],"text-anchor":"top","text-allow-overlap":false},
-   paint:{"text-color":"#8f2020","text-halo-color":"#ffffff","text-halo-width":1.2}
-  });
+   paint:{"text-color":"#8f2020","text-halo-color":"#ffffff","text-halo-width":1.2}});
   map.on("click","gps-points",showGPSPopup);
   map.on("mouseenter","gps-points",()=>map.getCanvas().style.cursor="pointer");
   map.on("mouseleave","gps-points",()=>map.getCanvas().style.cursor="");
@@ -600,57 +369,46 @@ function addGPSLayers(){
 }
 function showFeaturePopup(e){
  const f=e.features&&e.features[0];if(!f)return;const p=f.properties||{};
- const html=`<div class="popup-title">Enumeration Area ${escapeHTML(p._code||p._ea)}</div>
- <div class="popup-line"><b>LGA:</b> ${escapeHTML(p._lga)}</div>
- <div class="popup-line"><b>District:</b> ${escapeHTML(p._district)}</div>
- <div class="popup-line"><b>Ward:</b> ${escapeHTML(p._ward)}</div>
- <div class="popup-line"><b>Population:</b> ${formatNumber(numberValue(p._pop))}</div>
- <div class="popup-line"><b>Households:</b> ${formatNumber(numberValue(p._hhs))}</div>
- <div class="popup-line"><b>Buildings:</b> ${formatNumber(numberValue(p._buildings))}</div>
- <div class="popup-line"><b>Compounds:</b> ${formatNumber(numberValue(p._compounds))}</div>
- <div class="popup-line"><b>Area:</b> ${formatNumber(numberValue(p._area),3)} km²</div>
- <div class="popup-line"><b>Density:</b> ${formatNumber(numberValue(p._density),1)} people/km²</div>`;
+ const html=`<div class="popup-title"><b>Enumeration Area ${escapeHTML(p._code||p._ea)}</b></div>
+ <div>LGA: ${escapeHTML(p._lga)}</div><div>District: ${escapeHTML(p._district)}</div><div>Ward: ${escapeHTML(p._ward)}</div>
+ <div>Population: ${formatNumber(numberValue(p._pop))}</div><div>Households: ${formatNumber(numberValue(p._hhs))}</div>
+ <div>Buildings: ${formatNumber(numberValue(p._buildings))}</div><div>Compounds: ${formatNumber(numberValue(p._compounds))}</div>
+ <div>Area: ${formatNumber(numberValue(p._area),3)} km²</div><div>Density: ${formatNumber(numberValue(p._density),1)} people/km²</div>`;
  new maplibregl.Popup({maxWidth:"260px"}).setLngLat(e.lngLat).setHTML(html).addTo(map);
 }
 function showGPSPopup(e){
  const f=e.features&&e.features[0];if(!f)return;const p=f.properties||{};
- const html=`<div class="popup-title">${escapeHTML(p.name||"GPS point")}</div>
- <div class="popup-line"><b>Category:</b> ${escapeHTML(p.category)}</div>
- <div class="popup-line"><b>Longitude:</b> ${formatNumber(Number(p.longitude),6)}</div>
- <div class="popup-line"><b>Latitude:</b> ${formatNumber(Number(p.latitude),6)}</div>
- <div class="popup-line"><b>Accuracy:</b> ${p.accuracy?formatNumber(Number(p.accuracy),1)+" m":"Not supplied"}</div>
- <div class="popup-line"><b>EA:</b> ${escapeHTML(p.ea_code||"Not assigned")}</div>
- <div class="popup-line"><b>Captured:</b> ${escapeHTML(p.timestamp||"Unknown")}</div>`;
+ const html=`<div><b>${escapeHTML(p.name||"GPS point")}</b></div><div>Category: ${escapeHTML(p.category)}</div>
+ <div>Longitude: ${formatNumber(Number(p.longitude),6)}</div><div>Latitude: ${formatNumber(Number(p.latitude),6)}</div>
+ <div>Accuracy: ${p.accuracy!==null&&p.accuracy!==""?formatNumber(Number(p.accuracy),1)+" m":"Not supplied"}</div>
+ <div>EA: ${escapeHTML(p.ea_code||"Not assigned")}</div><div>Source: ${escapeHTML(p.source||"Unknown")}</div>
+ <div>Captured: ${escapeHTML(p.timestamp||"Unknown")}</div>`;
  new maplibregl.Popup({maxWidth:"260px"}).setLngLat(e.lngLat).setHTML(html).addTo(map);
 }
-function getMetricValue(f){
- const p=f.properties;
- return ({population:p._pop,households:p._hhs,buildings:p._buildings,compounds:p._compounds,area:p._area,density:p._density})[currentMetric];
-}
+function getMetricValue(f){const p=f.properties;return ({population:p._pop,households:p._hhs,buildings:p._buildings,compounds:p._compounds,density:p._density,area:p._area})[currentMetric]}
 function updateMapData(){
  if(!mapReady||!mapLayersAdded||!map.getSource("ea-source"))return;
- const values=displayedFeatures.map(getMetricValue).filter(v=>v!==null&&Number.isFinite(v));
- const maxValue=Math.max(1,...values);
+ let maxValue=0,minValue=Infinity;
+ displayedFeatures.forEach(f=>{const v=getMetricValue(f);if(v!==null&&Number.isFinite(v)){maxValue=Math.max(maxValue,v);minValue=Math.min(minValue,v)}});
+ if(maxValue<=0)maxValue=1;
  const scale=Number($("heightScale").value)||.3;
- const prepared=displayedFeatures.map(feature=>{
-  const f=JSON.parse(JSON.stringify(feature));
-  const v=getMetricValue(f);
+ const prepared=displayedFeatures.map(f=>{
+  const c=JSON.parse(JSON.stringify(f)),v=getMetricValue(c);
   const ratio=v===null?0:Math.max(0,v)/maxValue;
-  f.properties._height=Math.sqrt(ratio)*1800*scale;
-  f.properties._metric=ratio;
-  return f;
+  c.properties._height=Math.sqrt(ratio)*1800*scale;
+  c.properties._metric=ratio;
+  return c;
  });
  map.getSource("ea-source").setData({type:"FeatureCollection",features:prepared});
  applyLayerVisibility();
- updateLegend(values);
+ updateLegend(minValue===Infinity?[]:[minValue,maxValue]);
  $("mapCount").textContent=`${displayedFeatures.length.toLocaleString()} displayed EAs`;
 }
 function updateLegend(values){
  const names={population:"Enumerated population",households:"Enumerated households",buildings:"Listed buildings",compounds:"Listed compounds",density:"Population density (people/km²)",area:"EA area (km²)"};
  $("legendTitle").textContent=names[currentMetric]||"EA thematic distribution";
- const v=values.filter(Number.isFinite);
- $("legendMin").textContent=formatNumber(v.length?Math.min(...v):0,currentMetric==="area"?2:0);
- $("legendMax").textContent=formatNumber(v.length?Math.max(...v):0,currentMetric==="area"?2:0);
+ $("legendMin").textContent=formatNumber(values.length?values[0]:0,currentMetric==="area"?2:0);
+ $("legendMax").textContent=formatNumber(values.length?values[1]:0,currentMetric==="area"?2:0);
 }
 function applyLayerVisibility(){
  if(!mapReady||!mapLayersAdded)return;
@@ -662,30 +420,20 @@ function applyLayerVisibility(){
 }
 function updateGPSMap(){
  if(!mapReady||!map.getSource("gps-source"))return;
- const features=gpsRecords.map(r=>({
-  type:"Feature",geometry:{type:"Point",coordinates:[r.longitude,r.latitude]},
-  properties:{id:r.id,name:r.name,category:r.category,longitude:r.longitude,latitude:r.latitude,accuracy:r.accuracy,ea_code:r.ea_code,timestamp:r.timestamp}
- }));
- map.getSource("gps-source").setData({type:"FeatureCollection",features});
- const visible=$("showGPS").checked;
- if(map.getLayer("gps-points"))map.setLayoutProperty("gps-points","visibility",visible?"visible":"none");
- if(map.getLayer("gps-labels"))map.setLayoutProperty("gps-labels","visibility",visible?"visible":"none");
+ const fs=gpsRecords.map(r=>({type:"Feature",geometry:{type:"Point",coordinates:[r.longitude,r.latitude]},
+ properties:{id:r.id,name:r.name,category:r.category,longitude:r.longitude,latitude:r.latitude,accuracy:r.accuracy,ea_code:r.ea_code,timestamp:r.timestamp,source:r.source}}));
+ map.getSource("gps-source").setData({type:"FeatureCollection",features:fs});
+ const v=$("showGPS").checked?"visible":"none";
+ if(map.getLayer("gps-points"))map.setLayoutProperty("gps-points","visibility",v);
+ if(map.getLayer("gps-labels"))map.setLayoutProperty("gps-labels","visibility",v);
 }
 
-/* Map bounds */
-function zoomToFeatures(features){
- if(!map||!features.length)return;
+function zoomToFeatures(fs){
+ if(!map||!fs.length)return;
  let minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
- function visit(c){
-  if(!Array.isArray(c))return;
-  if(c.length>=2&&typeof c[0]==="number"&&typeof c[1]==="number"){
-   minX=Math.min(minX,c[0]);minY=Math.min(minY,c[1]);maxX=Math.max(maxX,c[0]);maxY=Math.max(maxY,c[1]);
-  }else c.forEach(visit);
- }
- features.forEach(f=>visit(f.geometry&&f.geometry.coordinates));
- if(!Number.isFinite(minX))return;
- if(Math.abs(maxX-minX)<.001){minX-=.005;maxX+=.005}
- if(Math.abs(maxY-minY)<.001){minY-=.005;maxY+=.005}
+ function visit(c){if(!Array.isArray(c))return;if(c.length>=2&&typeof c[0]==="number"&&typeof c[1]==="number"){minX=Math.min(minX,c[0]);minY=Math.min(minY,c[1]);maxX=Math.max(maxX,c[0]);maxY=Math.max(maxY,c[1])}else c.forEach(visit)}
+ fs.forEach(f=>visit(f.geometry&&f.geometry.coordinates));if(!Number.isFinite(minX))return;
+ if(Math.abs(maxX-minX)<.001){minX-=.005;maxX+=.005}if(Math.abs(maxY-minY)<.001){minY-=.005;maxY+=.005}
  map.fitBounds([[minX,minY],[maxX,maxY]],{padding:{top:65,bottom:65,left:55,right:55},maxZoom:13.5,duration:900});
 }
 function zoomToGPS(){
@@ -696,371 +444,254 @@ function zoomToGPS(){
  map.fitBounds([[minX,minY],[maxX,maxY]],{padding:70,maxZoom:16,duration:800});
 }
 
-/* Administrative selectors */
+/* Administrative filtering */
 function uniqueSorted(v){return [...new Set(v.filter(x=>x&&x!=="Unknown").map(String))].sort((a,b)=>a.localeCompare(b))}
 function fillSelect(el,values,label){
- const current=el.value;el.innerHTML="";
- const first=document.createElement("option");first.value="";first.textContent=label;el.appendChild(first);
+ const current=el.value;el.innerHTML="";const first=document.createElement("option");first.value="";first.textContent=label;el.appendChild(first);
  values.forEach(v=>{const o=document.createElement("option");o.value=v;o.textContent=v;el.appendChild(o)});
  if(values.includes(current))el.value=current;
 }
 function populateLGA(){fillSelect($("lgaSelect"),uniqueSorted(allFeatures.map(f=>f.properties._lga)),"All LGAs");populateDistrict()}
 function populateDistrict(){
- const lga=$("lgaSelect").value;
- const src=lga?allFeatures.filter(f=>f.properties._lga===lga):allFeatures;
- fillSelect($("districtSelect"),uniqueSorted(src.map(f=>f.properties._district)),"All districts");populateWard();
+ const l=$("lgaSelect").value,fs=l?allFeatures.filter(f=>f.properties._lga===l):allFeatures;
+ fillSelect($("districtSelect"),uniqueSorted(fs.map(f=>f.properties._district)),"All districts");populateWard();
 }
 function populateWard(){
- const lga=$("lgaSelect").value,d=$("districtSelect").value;
- let src=allFeatures;if(lga)src=src.filter(f=>f.properties._lga===lga);if(d)src=src.filter(f=>f.properties._district===d);
- fillSelect($("wardSelect"),uniqueSorted(src.map(f=>f.properties._ward)),"All wards");
+ const l=$("lgaSelect").value,d=$("districtSelect").value;
+ let fs=allFeatures;if(l)fs=fs.filter(f=>f.properties._lga===l);if(d)fs=fs.filter(f=>f.properties._district===d);
+ fillSelect($("wardSelect"),uniqueSorted(fs.map(f=>f.properties._ward)),"All wards");
 }
 function filterFeatures(){
- const lga=$("lgaSelect").value,d=$("districtSelect").value,w=$("wardSelect").value;
- return allFeatures.filter(f=>{const p=f.properties;return(!lga||p._lga===lga)&&(!d||p._district===d)&&(!w||p._ward===w)});
+ const l=$("lgaSelect").value,d=$("districtSelect").value,w=$("wardSelect").value;
+ return allFeatures.filter(f=>{const p=f.properties;return(!l||p._lga===l)&&(!d||p._district===d)&&(!w||p._ward===w)});
 }
 function selectionLabel(){return [$("lgaSelect").value,$("districtSelect").value,$("wardSelect").value].filter(Boolean).join(" / ")||"National"}
-function applySelection(shouldZoom=true){
+function applySelection(zoom=true){
  if(!allFeatures.length)return;
  displayedFeatures=filterFeatures();updateMapData();updateAnalytics();updateGPSAnalytics();
- const label=selectionLabel();
- $("analyticsScope").textContent=label;
+ const label=selectionLabel();$("analyticsScope").textContent=label;
  $("mapTitle").textContent=label==="National"?"The Gambia | National EA Coverage":label;
  $("mapSubtitle").textContent=`${displayedFeatures.length.toLocaleString()} of ${allFeatures.length.toLocaleString()} EAs displayed`;
  $("selectionStatus").textContent=`${displayedFeatures.length.toLocaleString()} EA features match the selected administrative area.`;
  $("selectionStatus").className="status good";
- if(shouldZoom)zoomToFeatures(displayedFeatures);
+ if(zoom)zoomToFeatures(displayedFeatures);
 }
 function resetSelection(){
  $("lgaSelect").value="";populateDistrict();$("districtSelect").value="";populateWard();$("wardSelect").value="";
- applySelection(true);
- if(map)map.easeTo({center:GAMBIA_CENTER,zoom:7.1,pitch:48,bearing:0,duration:900});
+ applySelection(true);if(map)map.easeTo({center:GAMBIA_CENTER,zoom:7.1,pitch:48,bearing:0,duration:900});
 }
 
-/* Analytics */
-function sumMetric(features,key){
- let sum=0,found=false;
- features.forEach(f=>{const v=numberValue(f.properties[key]);if(v!==null){sum+=v;found=true}});
- return found?sum:null;
-}
-function summarize(features){
- const pop=sumMetric(features,"_pop"),hhs=sumMetric(features,"_hhs");
- const buildings=sumMetric(features,"_buildings"),compounds=sumMetric(features,"_compounds");
- const area=sumMetric(features,"_area");
- return {count:features.length,pop,hhs,buildings,compounds,area,density:pop!==null&&area>0?pop/area:null,hhSize:pop!==null&&hhs>0?pop/hhs:null};
+/* EA analytics */
+function sumMetric(fs,k){let s=0,found=false;fs.forEach(f=>{const v=numberValue(f.properties[k]);if(v!==null){s+=v;found=true}});return found?s:null}
+function summarize(fs){
+ const pop=sumMetric(fs,"_pop"),hhs=sumMetric(fs,"_hhs"),buildings=sumMetric(fs,"_buildings"),compounds=sumMetric(fs,"_compounds"),area=sumMetric(fs,"_area");
+ return {count:fs.length,pop,hhs,buildings,compounds,area,density:pop!==null&&area>0?pop/area:null,hhSize:pop!==null&&hhs>0?pop/hhs:null};
 }
 function setKpi(id,v,d=0){$(id).textContent=v===null||v===undefined?"N/A":formatNumber(v,d)}
 function updateAnalytics(){
  const s=summarize(displayedFeatures);
- setKpi("kpiEAs",s.count);setKpi("kpiPopulation",s.pop);setKpi("kpiHouseholds",s.hhs);
- setKpi("kpiBuildings",s.buildings);setKpi("kpiCompounds",s.compounds);
- setKpi("kpiArea",s.area,2);setKpi("kpiDensity",s.density,1);setKpi("kpiHHSize",s.hhSize,2);
+ setKpi("kpiEAs",s.count);setKpi("kpiPopulation",s.pop);setKpi("kpiHouseholds",s.hhs);setKpi("kpiBuildings",s.buildings);
+ setKpi("kpiCompounds",s.compounds);setKpi("kpiArea",s.area,2);setKpi("kpiDensity",s.density,1);setKpi("kpiHHSize",s.hhSize,2);
  $("recordCount").textContent=`${allFeatures.length.toLocaleString()} EAs loaded`;
- $("summaryTable").innerHTML=`
- <tr><td>Displayed enumeration areas</td><td>${formatNumber(s.count)}</td></tr>
- <tr><td>Population</td><td>${formatNumber(s.pop)}</td></tr>
- <tr><td>Households</td><td>${formatNumber(s.hhs)}</td></tr>
- <tr><td>Buildings</td><td>${formatNumber(s.buildings)}</td></tr>
- <tr><td>Compounds</td><td>${formatNumber(s.compounds)}</td></tr>
- <tr><td>Total EA area (km²)</td><td>${formatNumber(s.area,3)}</td></tr>
- <tr><td>Population density (people/km²)</td><td>${formatNumber(s.density,2)}</td></tr>
+ $("summaryTable").innerHTML=`<tr><td>Displayed enumeration areas</td><td>${formatNumber(s.count)}</td></tr>
+ <tr><td>Population</td><td>${formatNumber(s.pop)}</td></tr><tr><td>Households</td><td>${formatNumber(s.hhs)}</td></tr>
+ <tr><td>Buildings</td><td>${formatNumber(s.buildings)}</td></tr><tr><td>Compounds</td><td>${formatNumber(s.compounds)}</td></tr>
+ <tr><td>Total EA area (km²)</td><td>${formatNumber(s.area,3)}</td></tr><tr><td>Population density (people/km²)</td><td>${formatNumber(s.density,2)}</td></tr>
  <tr><td>Average household size</td><td>${formatNumber(s.hhSize,2)}</td></tr>`;
  updateCharts();
 }
-function makeChart(id,type,data,options){
+function makeChart(id,type,data,options={}){
  if(typeof Chart==="undefined")return;
  if(charts[id])charts[id].destroy();
  charts[id]=new Chart($(id),{type,data,options:{responsive:true,maintainAspectRatio:false,...options}});
 }
-function chartOptions(){
- return {plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:9}},grid:{display:false}},y:{beginAtZero:true,ticks:{font:{size:9},callback:v=>Number(v).toLocaleString()}}}};
-}
 function updateCharts(){
- if(typeof Chart==="undefined"){
-  document.querySelectorAll(".chart-holder").forEach(el=>el.innerHTML='<div class="no-chart">Chart.js unavailable. Check CDN/network access.</div>');return;
- }
+ if(typeof Chart==="undefined"){document.querySelectorAll(".chart-holder").forEach(e=>e.innerHTML='<div style="font-size:10px;color:#8a98a7;padding:20px;text-align:center">Chart.js unavailable. Check CDN/network access.</div>');return}
  const s=summarize(displayedFeatures);
- makeChart("comparisonChart","bar",{
-  labels:["Population","Households","Buildings","Compounds"],
-  datasets:[{data:[s.pop||0,s.hhs||0,s.buildings||0,s.compounds||0],backgroundColor:["#287bb5","#20a5bd","#e99a32","#299b73"],borderRadius:4}]
- },chartOptions());
-
- const groups={};
- displayedFeatures.forEach(f=>{const n=f.properties._district||"Unknown";groups[n]=(groups[n]||0)+(numberValue(f.properties._pop)||0)});
+ makeChart("comparisonChart","bar",{labels:["Population","Households","Buildings","Compounds"],datasets:[{data:[s.pop??0,s.hhs??0,s.buildings??0,s.compounds??0],backgroundColor:["#287bb5","#20a5bd","#e99a32","#299b73"],borderRadius:4}]},
+ {plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:9}},grid:{display:false}},y:{beginAtZero:true,ticks:{font:{size:9},callback:v=>Number(v).toLocaleString()}}}});
+ const groups={};displayedFeatures.forEach(f=>{const n=f.properties._district||"Unknown";groups[n]=(groups[n]||0)+(numberValue(f.properties._pop)||0)});
  const top=Object.entries(groups).sort((a,b)=>b[1]-a[1]).slice(0,10);
- makeChart("districtChart","bar",{labels:top.map(x=>x[0]),datasets:[{data:top.map(x=>x[1]),backgroundColor:"#287bb5",borderRadius:3}]},{
-  indexAxis:"y",responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
-  scales:{x:{beginAtZero:true,ticks:{font:{size:8},callback:v=>Number(v).toLocaleString()}},y:{ticks:{font:{size:9}},grid:{display:false}}}
- });
- const wardCounts={};
- displayedFeatures.forEach(f=>{const n=f.properties._ward!=="Unknown"?f.properties._ward:(f.properties._district||"Unknown");wardCounts[n]=(wardCounts[n]||0)+1});
- const wardTop=Object.entries(wardCounts).sort((a,b)=>b[1]-a[1]).slice(0,8);
- makeChart("eaChart","doughnut",{labels:wardTop.map(x=>x[0]),datasets:[{data:wardTop.map(x=>x[1]),backgroundColor:["#287bb5","#20a5bd","#299b73","#e99a32","#d65d5d","#8165b5","#6f9d9c","#a6aeb8"],borderWidth:1,borderColor:"#fff"}]},{
-  plugins:{legend:{position:"bottom",labels:{boxWidth:9,font:{size:8},padding:8}}}
- });
+ makeChart("districtChart","bar",{labels:top.map(x=>x[0]),datasets:[{data:top.map(x=>x[1]),backgroundColor:"#287bb5",borderRadius:3}]},
+ {indexAxis:"y",plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,ticks:{font:{size:8},callback:v=>Number(v).toLocaleString()}},y:{ticks:{font:{size:9}},grid:{display:false}}}});
+ const counts={};displayedFeatures.forEach(f=>{const n=f.properties._ward!=="Unknown"?f.properties._ward:(f.properties._district||"Unknown");counts[n]=(counts[n]||0)+1});
+ const wt=Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,8);
+ makeChart("eaChart","doughnut",{labels:wt.map(x=>x[0]),datasets:[{data:wt.map(x=>x[1]),backgroundColor:["#287bb5","#20a5bd","#299b73","#e99a32","#d65d5d","#8165b5","#6f9d9c","#a6aeb8"],borderWidth:1,borderColor:"#fff"}]},
+ {plugins:{legend:{position:"bottom",labels:{boxWidth:9,font:{size:8},padding:8}}}});
 }
 
-/* GPS point-in-polygon. Uses ray casting on GeoJSON longitude/latitude coordinates. */
-function pointInRing(point,ring){
+/* GPS point-in-polygon and EA assignment */
+function pointInRing(pt,ring){
  let inside=false;
  for(let i=0,j=ring.length-1;i<ring.length;j=i++){
   const xi=ring[i][0],yi=ring[i][1],xj=ring[j][0],yj=ring[j][1];
-  const intersect=((yi>point[1])!==(yj>point[1]))&&(point[0]<(xj-xi)*(point[1]-yi)/(yj-yi+0.000000000001)+xi);
-  if(intersect)inside=!inside;
+  const cross=((yi>pt[1])!==(yj>pt[1]))&&(pt[0]<(xj-xi)*(pt[1]-yi)/(yj-yi+1e-12)+xi);
+  if(cross)inside=!inside;
  }
  return inside;
 }
-function pointInPolygon(point,coordinates){
- if(!coordinates||!coordinates.length||!pointInRing(point,coordinates[0]))return false;
- for(let i=1;i<coordinates.length;i++)if(pointInRing(point,coordinates[i]))return false;
+function pointInPolygon(pt,coords){
+ if(!coords||!coords.length||!pointInRing(pt,coords[0]))return false;
+ for(let i=1;i<coords.length;i++)if(pointInRing(pt,coords[i]))return false;
  return true;
 }
-function pointInGeometry(point,geometry){
- if(!geometry)return false;
- if(geometry.type==="Polygon")return pointInPolygon(point,geometry.coordinates);
- if(geometry.type==="MultiPolygon")return geometry.coordinates.some(poly=>pointInPolygon(point,poly));
+function pointInGeometry(pt,g){
+ if(!g)return false;
+ if(g.type==="Polygon")return pointInPolygon(pt,g.coordinates);
+ if(g.type==="MultiPolygon")return g.coordinates.some(p=>pointInPolygon(pt,p));
  return false;
 }
 function assignEA(lon,lat){
- const point=[lon,lat];
- const candidates=allFeatures.filter(f=>pointInGeometry(point,f.geometry));
- if(!candidates.length)return null;
- // If overlapping EA boundaries exist, use the smallest polygon area as a tie-breaker.
- candidates.sort((a,b)=>(a.properties._area||Infinity)-(b.properties._area||Infinity));
- const p=candidates[0].properties;
- return {code:p._code,ea:p._ea,lga:p._lga,district:p._district,ward:p._ward};
+ const pt=[lon,lat];let match=null,smallest=Infinity;
+ for(const f of allFeatures){if(pointInGeometry(pt,f.geometry)){const a=f.properties._area||Infinity;if(a<smallest){smallest=a;match=f}}}
+ if(!match)return null;
+ const p=match.properties;return {code:p._code,ea:p._ea,lga:p._lga,district:p._district,ward:p._ward};
 }
-function makeGPSRecord(obj){
- const lon=numberValue(obj.longitude),lat=numberValue(obj.latitude);
+function makeGPSRecord(o){
+ const lon=numberValue(o.longitude),lat=numberValue(o.latitude);
  if(lon===null||lat===null||lon < -180||lon > 180||lat < -90||lat > 90)throw new Error("Invalid longitude or latitude.");
  const ea=assignEA(lon,lat);
- return {
-  id:obj.id||("GPS-"+Date.now()+"-"+Math.random().toString(36).slice(2,7)),
-  name:String(obj.name||"GPS point"),
-  category:String(obj.category||"Other"),
-  longitude:lon,latitude:lat,
-  accuracy:numberValue(obj.accuracy),
-  timestamp:String(obj.timestamp||new Date().toISOString()),
-  source:String(obj.source||"Imported GPS"),
-  ea_code:ea?ea.code:null,ea_name:ea?ea.ea:null,
-  lga:ea?ea.lga:null,district:ea?ea.district:null,ward:ea?ea.ward:null
- };
+ return {id:o.id||("GPS-"+Date.now()+"-"+Math.random().toString(36).slice(2,7)),name:String(o.name||"GPS point"),
+ category:String(o.category||"Other"),longitude:lon,latitude:lat,accuracy:numberValue(o.accuracy),
+ timestamp:String(o.timestamp||new Date().toISOString()),source:String(o.source||"Imported GPS"),
+ ea_code:ea?ea.code:null,ea_name:ea?ea.ea:null,lga:ea?ea.lga:null,district:ea?ea.district:null,ward:ea?ea.ward:null};
 }
 function requestGPS(){
- if(!navigator.geolocation){
-  $("gpsCaptureStatus").className="status error";
-  $("gpsCaptureStatus").textContent="Geolocation is not supported by this browser.";return;
- }
- $("gpsLiveStatus").textContent="Requesting device location…";
- $("gpsCaptureStatus").className="status warn";
- $("gpsCaptureStatus").textContent="Waiting for GPS response. Please allow location access.";
- $("captureGPS").disabled=true;
- navigator.geolocation.getCurrentPosition(position=>{
-  $("captureGPS").disabled=false;
-  const c=position.coords;
-  pendingGPS={longitude:c.longitude,latitude:c.latitude,accuracy:c.accuracy,timestamp:new Date(position.timestamp||Date.now()).toISOString()};
-  lastGPS=pendingGPS;
+ if(!navigator.geolocation){$("gpsCaptureStatus").className="status error";$("gpsCaptureStatus").textContent="Geolocation is not supported by this browser.";return}
+ $("gpsLiveStatus").textContent="Requesting device location…";$("gpsCaptureStatus").className="status warn";
+ $("gpsCaptureStatus").textContent="Waiting for GPS response. Allow location access if prompted.";$("captureGPS").disabled=true;
+ navigator.geolocation.getCurrentPosition(pos=>{
+  $("captureGPS").disabled=false;const c=pos.coords;
+  pendingGPS={longitude:c.longitude,latitude:c.latitude,accuracy:c.accuracy,timestamp:new Date(pos.timestamp||Date.now()).toISOString()};lastGPS=pendingGPS;
   $("gpsLiveStatus").innerHTML=`<b>Latitude:</b> ${formatNumber(c.latitude,6)}<br><b>Longitude:</b> ${formatNumber(c.longitude,6)}<br><b>Accuracy:</b> ${formatNumber(c.accuracy,1)} m<br><b>Captured:</b> ${escapeHTML(pendingGPS.timestamp)}`;
-  $("gpsCaptureStatus").className="status good";
-  $("gpsCaptureStatus").textContent="GPS location acquired. Add a description and save the point.";
-  $("saveGPS").disabled=false;
-  if(map){map.easeTo({center:[c.longitude,c.latitude],zoom:15,duration:700})}
- },error=>{
-  $("captureGPS").disabled=false;
-  let message="Unable to retrieve GPS location.";
-  if(error.code===1)message="Location permission denied. Enable location permission in your browser.";
-  if(error.code===2)message="Device location is unavailable. Check GPS/location services.";
-  if(error.code===3)message="GPS request timed out. Try again in an open area.";
-  $("gpsCaptureStatus").className="status error";$("gpsCaptureStatus").textContent=message;
-  $("gpsLiveStatus").textContent=message;
+  $("gpsCaptureStatus").className="status good";$("gpsCaptureStatus").textContent="GPS location acquired. Add a description and save the point.";
+  $("saveGPS").disabled=false;if(map)map.easeTo({center:[c.longitude,c.latitude],zoom:15,duration:700});
+ },err=>{
+  $("captureGPS").disabled=false;let msg="Unable to retrieve GPS location.";
+  if(err.code===1)msg="Location permission denied. Enable location permission in your browser.";
+  if(err.code===2)msg="Device location is unavailable. Check GPS/location services.";
+  if(err.code===3)msg="GPS request timed out. Try again in an open area.";
+  $("gpsCaptureStatus").className="status error";$("gpsCaptureStatus").textContent=msg;$("gpsLiveStatus").textContent=msg;
  },{enableHighAccuracy:true,timeout:25000,maximumAge:0});
 }
 function savePendingGPS(){
  if(!pendingGPS)return;
  try{
-  const record=makeGPSRecord({
-   ...pendingGPS,
-   name:$("gpsLabel").value.trim()||("GPS point "+(gpsRecords.length+1)),
-   category:$("gpsCategory").value,
-   source:"Device GPS capture"
-  });
-  gpsRecords.push(record);pendingGPS=null;$("saveGPS").disabled=true;
-  $("gpsLabel").value="";
-  $("gpsCaptureStatus").className="status good";
-  $("gpsCaptureStatus").textContent="GPS point saved to the current browser session.";
+  gpsRecords.push(makeGPSRecord({...pendingGPS,name:$("gpsLabel").value.trim()||("GPS point "+(gpsRecords.length+1)),category:$("gpsCategory").value,source:"Device GPS capture"}));
+  pendingGPS=null;$("saveGPS").disabled=true;$("gpsLabel").value="";
+  $("gpsCaptureStatus").className="status good";$("gpsCaptureStatus").textContent="GPS point saved to the current browser session.";
   updateGPSInterface();
  }catch(e){$("gpsCaptureStatus").className="status error";$("gpsCaptureStatus").textContent=e.message}
 }
-function updateGPSInterface(){
- updateGPSMap();renderGPSList();updateGPSAnalytics();
-}
+function updateGPSInterface(){updateGPSMap();renderGPSList();updateGPSAnalytics()}
 function renderGPSList(){
  if(!gpsRecords.length){$("gpsRecordsList").innerHTML='<div class="help">No GPS records have been saved.</div>';return}
- $("gpsRecordsList").innerHTML=gpsRecords.slice().reverse().map(r=>`
- <div class="gps-record">
-  <button class="btn btn-red btn-small" data-delete-gps="${escapeHTML(r.id)}">Delete</button>
-  <strong>${escapeHTML(r.name)}</strong><br>
-  <span class="badge">${escapeHTML(r.category)}</span>
-  <span class="badge ${r.ea_code?"good":""}">${r.ea_code?"EA "+escapeHTML(r.ea_code):"Outside / unassigned"}</span><br>
-  Lat ${formatNumber(r.latitude,6)} | Lon ${formatNumber(r.longitude,6)}<br>
-  Accuracy: ${r.accuracy===null?"Not supplied":formatNumber(r.accuracy,1)+" m"}<br>
-  District: ${escapeHTML(r.district||"Not assigned")}
- </div>`).join("");
- document.querySelectorAll("[data-delete-gps]").forEach(btn=>btn.addEventListener("click",()=>{
-  gpsRecords=gpsRecords.filter(r=>r.id!==btn.getAttribute("data-delete-gps"));updateGPSInterface();
- }));
+ $("gpsRecordsList").innerHTML=gpsRecords.slice().reverse().map(r=>`<div class="gps-record">
+ <button class="btn btn-red btn-small" data-delete-gps="${escapeHTML(r.id)}">Delete</button><strong>${escapeHTML(r.name)}</strong><br>
+ <span class="badge">${escapeHTML(r.category)}</span> <span class="badge ${r.ea_code?"good":""}">${r.ea_code?"EA "+escapeHTML(r.ea_code):"Outside / unassigned"}</span><br>
+ Lat ${formatNumber(r.latitude,6)} | Lon ${formatNumber(r.longitude,6)}<br>
+ Accuracy: ${r.accuracy===null?"Not supplied":formatNumber(r.accuracy,1)+" m"}<br>District: ${escapeHTML(r.district||"Not assigned")}</div>`).join("");
+ document.querySelectorAll("[data-delete-gps]").forEach(b=>b.addEventListener("click",()=>{gpsRecords=gpsRecords.filter(r=>r.id!==b.dataset.deleteGps);updateGPSInterface()}));
 }
 function updateGPSAnalytics(){
- const n=gpsRecords.length;
- const assigned=gpsRecords.filter(r=>r.ea_code).length;
- const outside=n-assigned;
- const acc=gpsRecords.map(r=>r.accuracy).filter(v=>v!==null&&Number.isFinite(v));
+ const n=gpsRecords.length,assigned=gpsRecords.filter(r=>r.ea_code).length,acc=gpsRecords.map(r=>r.accuracy).filter(v=>v!==null&&Number.isFinite(v));
  const avg=acc.length?acc.reduce((a,b)=>a+b,0)/acc.length:null;
- setKpi("kpiGPS",n);setKpi("kpiGPSAssigned",assigned);setKpi("kpiGPSOutside",outside);
- setKpi("kpiGPSAccuracy",avg,1);
-
- $("gpsSummaryTable").innerHTML=`
- <tr><td>Total GPS records</td><td>${formatNumber(n)}</td></tr>
- <tr><td>Points assigned to an EA</td><td>${formatNumber(assigned)}</td></tr>
- <tr><td>Points outside EA polygons</td><td>${formatNumber(outside)}</td></tr>
- <tr><td>Average reported accuracy</td><td>${avg===null?"N/A":formatNumber(avg,2)+" m"}</td></tr>
- <tr><td>Best reported accuracy</td><td>${acc.length?formatNumber(Math.min(...acc),2)+" m":"N/A"}</td></tr>
- <tr><td>GPS records with accuracy value</td><td>${formatNumber(acc.length)}</td></tr>`;
-
+ setKpi("kpiGPS",n);setKpi("kpiGPSAssigned",assigned);setKpi("kpiGPSOutside",n-assigned);setKpi("kpiGPSAccuracy",avg,1);
+ $("gpsSummaryTable").innerHTML=`<tr><td>Total GPS records</td><td>${formatNumber(n)}</td></tr><tr><td>Points assigned to an EA</td><td>${formatNumber(assigned)}</td></tr>
+ <tr><td>Points outside EA polygons</td><td>${formatNumber(n-assigned)}</td></tr><tr><td>Average reported accuracy</td><td>${avg===null?"N/A":formatNumber(avg,2)+" m"}</td></tr>
+ <tr><td>Best reported accuracy</td><td>${acc.length?formatNumber(Math.min(...acc),2)+" m":"N/A"}</td></tr><tr><td>Records with accuracy value</td><td>${formatNumber(acc.length)}</td></tr>`;
  if(typeof Chart==="undefined")return;
- const districtGroups={};
- gpsRecords.forEach(r=>{const d=r.district||"Unassigned";districtGroups[d]=(districtGroups[d]||0)+1});
- const top=Object.entries(districtGroups).sort((a,b)=>b[1]-a[1]).slice(0,10);
- makeChart("gpsDistrictChart","bar",{labels:top.map(x=>x[0]),datasets:[{data:top.map(x=>x[1]),backgroundColor:"#299b73",borderRadius:3}]},{
-  indexAxis:"y",responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
-  scales:{x:{beginAtZero:true,ticks:{font:{size:8}}},y:{ticks:{font:{size:9}},grid:{display:false}}}
- });
+ const groups={};gpsRecords.forEach(r=>{const d=r.district||"Unassigned";groups[d]=(groups[d]||0)+1});
+ const top=Object.entries(groups).sort((a,b)=>b[1]-a[1]).slice(0,10);
+ makeChart("gpsDistrictChart","bar",{labels:top.map(x=>x[0]),datasets:[{data:top.map(x=>x[1]),backgroundColor:"#299b73",borderRadius:3}]},
+ {indexAxis:"y",plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,ticks:{font:{size:8}}},y:{ticks:{font:{size:9}},grid:{display:false}}}});
  const bins=[{label:"0–5 m",min:0,max:5,count:0},{label:"5–10 m",min:5,max:10,count:0},{label:"10–20 m",min:10,max:20,count:0},{label:"20–50 m",min:20,max:50,count:0},{label:">50 m",min:50,max:Infinity,count:0}];
  acc.forEach(v=>{const b=bins.find(x=>v>=x.min&&v<x.max);if(b)b.count++});
- makeChart("gpsAccuracyChart","bar",{labels:bins.map(b=>b.label),datasets:[{label:"GPS records",data:bins.map(b=>b.count),backgroundColor:"#e99a32",borderRadius:3}]},{
-  plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:9}},grid:{display:false}},y:{beginAtZero:true,ticks:{font:{size:9},precision:0}}}
- });
+ makeChart("gpsAccuracyChart","bar",{labels:bins.map(b=>b.label),datasets:[{data:bins.map(b=>b.count),backgroundColor:"#e99a32",borderRadius:3}]},
+ {plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:9}},grid:{display:false}},y:{beginAtZero:true,ticks:{font:{size:9},precision:0}}}});
 }
 
-/* GPS file import: GeoJSON Point features or CSV. */
+/* GPS CSV and GeoJSON import */
 function parseCSV(text){
  const lines=text.replace(/^\uFEFF/,"").split(/\r?\n/).filter(x=>x.trim());
  if(lines.length<2)throw new Error("CSV must contain a header and at least one data row.");
- function parseLine(line){
-  const out=[];let value="",quoted=false;
-  for(let i=0;i<line.length;i++){
-   const ch=line[i];
-   if(ch==='"'&&line[i+1]==='"'&&quoted){value+='"';i++}
-   else if(ch==='"')quoted=!quoted;
-   else if(ch===","&&!quoted){out.push(value);value=""}
-   else value+=ch;
-  }
-  out.push(value);return out;
- }
- const headers=parseLine(lines[0]).map(h=>normalizeKey(h));
+ function lineParse(line){const out=[];let v="",q=false;for(let i=0;i<line.length;i++){const c=line[i];if(c==='"'&&line[i+1]==='"'&&q){v+='"';i++}else if(c==='"')q=!q;else if(c===","&&!q){out.push(v);v=""}else v+=c}out.push(v);return out}
+ const headers=lineParse(lines[0]).map(normalizeKey);
  return lines.slice(1).map(line=>{
-  const vals=parseLine(line),o={};
-  headers.forEach((h,i)=>o[h]=vals[i]??"");
-  const lon=o.longitude??o.lon??o.long??o.x;
-  const lat=o.latitude??o.lat??o.y;
-  return {longitude:lon,latitude:lat,name:o.name??o.label??o.description??"Imported GPS point",category:o.category??o.type??"Imported GPS",accuracy:o.accuracy??o.accuracym??null,timestamp:o.timestamp??o.datetime??o.date??null};
+  const vals=lineParse(line),o={};headers.forEach((h,i)=>o[h]=vals[i]??"");
+  return {longitude:o.longitude??o.lon??o.lng??o.long??o.x,latitude:o.latitude??o.lat??o.y,
+   name:o.name??o.label??o.description??o.pointname??"Imported GPS point",
+   category:o.category??o.type??"Imported GPS",accuracy:o.accuracy??o.accuracym??o.gpsaccuracy??null,
+   timestamp:o.timestamp??o.datetime??o.date??o.time??null};
  });
 }
 async function importGPSFile(file){
  if(!file)return;
  try{
   const text=await file.text();let records=[];
-  if(file.name.toLowerCase().endsWith(".csv")){
-   records=parseCSV(text);
-  }else{
-   const json=JSON.parse(text);
-   const features=json.type==="FeatureCollection"?json.features:(json.type==="Feature"?[json]:[]);
-   records=features.filter(f=>f.geometry&&f.geometry.type==="Point").map(f=>{
+  if(file.name.toLowerCase().endsWith(".csv"))records=parseCSV(text);
+  else{
+   const json=JSON.parse(text),fs=json.type==="FeatureCollection"?json.features:(json.type==="Feature"?[json]:[]);
+   records=fs.filter(f=>f.geometry&&f.geometry.type==="Point").map(f=>{
     const p=f.properties||{},c=f.geometry.coordinates||[];
-    return {longitude:c[0],latitude:c[1],name:p.name||p.label||p.description||"Imported GPS point",category:p.category||p.type||"Imported GPS",accuracy:p.accuracy??p.accuracy_m??null,timestamp:p.timestamp||p.datetime||p.date||null};
+    return {longitude:c[0],latitude:c[1],name:p.name||p.label||p.description||"Imported GPS point",
+     category:p.category||p.type||"Imported GPS",accuracy:p.accuracy??p.accuracy_m??null,timestamp:p.timestamp||p.datetime||p.date||null};
    });
   }
-  if(!records.length)throw new Error("No usable GPS records found. Check the point geometry or CSV coordinate columns.");
+  if(!records.length)throw new Error("No usable GPS records found.");
   let added=0,skipped=0;
-  records.forEach(r=>{
-   try{gpsRecords.push(makeGPSRecord({...r,source:"Imported file"}));added++}
-   catch(e){skipped++}
-  });
-  updateGPSInterface();
-  $("gpsImportStatus").className=added?"status good":"status warn";
+  records.forEach(r=>{try{gpsRecords.push(makeGPSRecord({...r,source:"Imported file"}));added++}catch(e){skipped++}});
+  updateGPSInterface();$("gpsImportStatus").className=added?"status good":"status warn";
   $("gpsImportStatus").textContent=`Imported ${added} GPS records. Skipped ${skipped} invalid records.`;
- }catch(e){
-  $("gpsImportStatus").className="status error";$("gpsImportStatus").textContent="GPS import failed: "+e.message;
- }
+ }catch(e){$("gpsImportStatus").className="status error";$("gpsImportStatus").textContent="GPS import failed: "+e.message}
 }
-
-/* Reassign GPS records after EA data has been loaded or replaced. */
 function reassignAllGPS(){
- gpsRecords=gpsRecords.map(r=>{
-  const ea=assignEA(r.longitude,r.latitude);
-  return {...r,ea_code:ea?ea.code:null,ea_name:ea?ea.ea:null,lga:ea?ea.lga:null,district:ea?ea.district:null,ward:ea?ea.ward:null};
- });
+ gpsRecords=gpsRecords.map(r=>{const ea=assignEA(r.longitude,r.latitude);return {...r,ea_code:ea?ea.code:null,ea_name:ea?ea.ea:null,lga:ea?ea.lga:null,district:ea?ea.district:null,ward:ea?ea.ward:null}});
  updateGPSInterface();
 }
 
-/* Load EA GeoJSON */
+/* Load EA data */
 async function loadFromURL(){
- setStatus("Connecting to GitHub GeoJSON source…");setConnection("LOADING DATA");
- $("mapLoading").style.display="flex";
- if(sourceLoadController)sourceLoadController.abort();
- sourceLoadController=new AbortController();
- const timeout=setTimeout(()=>sourceLoadController.abort(),25000);
+ setStatus("Connecting to GitHub GeoJSON source…");setConnection("LOADING DATA");$("mapLoading").style.display="flex";
+ if(sourceLoadController)sourceLoadController.abort();sourceLoadController=new AbortController();
+ const controller=sourceLoadController,timeout=setTimeout(()=>controller.abort(),25000);
  try{
-  const response=await fetch(DATA_URL,{method:"GET",mode:"cors",cache:"no-store",signal:sourceLoadController.signal});
-  clearTimeout(timeout);
-  if(!response.ok)throw new Error("GitHub returned HTTP "+response.status);
-  const json=await response.json();loadGeoJSON(json,"GitHub repository");
- }catch(e){
-  clearTimeout(timeout);console.error("EA source error:",e);
-  $("mapLoading").style.display="none";setConnection("GITHUB SOURCE UNAVAILABLE");
-  setStatus("Could not load GitHub GeoJSON. Check your connection or upload Census_EAs_Geo.json using the file input.","warn");
- }
+  const res=await fetch(DATA_URL,{mode:"cors",cache:"no-store",signal:controller.signal});clearTimeout(timeout);
+  if(!res.ok)throw new Error("GitHub returned HTTP "+res.status);
+  loadGeoJSON(await res.json(),"GitHub repository");
+ }catch(e){clearTimeout(timeout);console.error(e);$("mapLoading").style.display="none";setConnection("GITHUB SOURCE UNAVAILABLE");
+  setStatus("Could not load GitHub GeoJSON. Check your connection or upload Census_EAs_Geo.json.","warn")}
 }
 function loadGeoJSON(input,sourceName){
  try{
-  const normalized=normalizeGeoJSON(input);
-  geojsonData=normalized;allFeatures=normalized.features;displayedFeatures=allFeatures.slice();
+  const normalized=normalizeGeoJSON(input);geojsonData=normalized;allFeatures=normalized.features;displayedFeatures=allFeatures.slice();
   populateLGA();$("lgaSelect").value="";populateDistrict();$("districtSelect").value="";populateWard();$("wardSelect").value="";
   detectFields();applySelection(false);reassignAllGPS();
-  const missing={
-   population:allFeatures.filter(f=>f.properties._pop===null).length,
-   households:allFeatures.filter(f=>f.properties._hhs===null).length,
-   buildings:allFeatures.filter(f=>f.properties._buildings===null).length,
-   compounds:allFeatures.filter(f=>f.properties._compounds===null).length
-  };
+  const missing={population:allFeatures.filter(f=>f.properties._pop===null).length,households:allFeatures.filter(f=>f.properties._hhs===null).length,
+   buildings:allFeatures.filter(f=>f.properties._buildings===null).length,compounds:allFeatures.filter(f=>f.properties._compounds===null).length};
   setStatus(`${sourceName}: ${allFeatures.length.toLocaleString()} EA polygons loaded. Missing values — population: ${missing.population}, households: ${missing.households}, buildings: ${missing.buildings}, compounds: ${missing.compounds}.`,"good");
   setConnection("EA DATA LOADED");$("mapLoading").style.display="none";
   if(mapReady){updateMapData();zoomToFeatures(allFeatures)}
-  $("mapTitle").textContent="The Gambia | National EA Coverage";
-  $("mapSubtitle").textContent=`${allFeatures.length.toLocaleString()} EAs loaded from ${sourceName}`;
- }catch(e){
-  console.error(e);setStatus("Data processing error: "+e.message,"error");setConnection("DATA ERROR");$("mapLoading").style.display="none";
- }
+  $("mapTitle").textContent="The Gambia | National EA Coverage";$("mapSubtitle").textContent=`${allFeatures.length.toLocaleString()} EAs loaded from ${sourceName}`;
+ }catch(e){console.error(e);setStatus("Data processing error: "+e.message,"error");setConnection("DATA ERROR");$("mapLoading").style.display="none"}
 }
 function uploadGeoJSON(file){
  if(!file)return;const reader=new FileReader();
  reader.onload=e=>{try{loadGeoJSON(JSON.parse(e.target.result),"Uploaded file: "+file.name)}catch(err){setStatus("Could not read GeoJSON: "+err.message,"error")}};
- reader.onerror=()=>setStatus("Selected file could not be read.","error");
- reader.readAsText(file);
+ reader.onerror=()=>setStatus("Selected file could not be read.","error");reader.readAsText(file);
 }
 
-/* Export helpers */
+/* Export */
 function downloadBlob(content,mime,filename){
- const blob=new Blob([content],{type:mime});const url=URL.createObjectURL(blob);
- const a=document.createElement("a");a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();
- setTimeout(()=>URL.revokeObjectURL(url),1000);
+ const blob=new Blob([content],{type:mime}),url=URL.createObjectURL(blob),a=document.createElement("a");
+ a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 function csvEscape(v){return '"'+String(v??"").replace(/"/g,'""')+'"'}
 function exportCSV(){
  if(!displayedFeatures.length){setStatus("No displayed EA records to export.","warn");return}
- const headers=["LGA","District","Ward","EA_Name","EA_Code","Population_Enumerated","Households_Enumerated","Buildings_Listed","Compounds_Listed","Area_sqkm","Population_Density_people_per_sqkm"];
+ const h=["LGA","District","Ward","EA_Name","EA_Code","Population_Enumerated","Households_Enumerated","Buildings_Listed","Compounds_Listed","Area_sqkm","Population_Density_people_per_sqkm"];
  const rows=displayedFeatures.map(f=>{const p=f.properties;return[p._lga,p._district,p._ward,p._ea,p._code,p._pop,p._hhs,p._buildings,p._compounds,p._area,p._density]});
- downloadBlob([headers,...rows].map(r=>r.map(csvEscape).join(",")).join("\r\n"),"text/csv;charset=utf-8","GBoS_Gambia_EA_Statistics.csv");
+ downloadBlob([h,...rows].map(r=>r.map(csvEscape).join(",")).join("\r\n"),"text/csv;charset=utf-8","GBoS_Gambia_EA_Statistics.csv");
 }
 function exportGeoJSON(){
  if(!displayedFeatures.length){setStatus("No displayed EA features to export.","warn");return}
@@ -1068,17 +699,14 @@ function exportGeoJSON(){
 }
 function exportGPSCSV(){
  if(!gpsRecords.length){$("gpsImportStatus").className="status warn";$("gpsImportStatus").textContent="There are no GPS records to export.";return}
- const headers=["ID","Name","Category","Longitude","Latitude","Accuracy_m","Timestamp","Source","EA_Code","EA_Name","LGA","District","Ward"];
+ const h=["ID","Name","Category","Longitude","Latitude","Accuracy_m","Timestamp","Source","EA_Code","EA_Name","LGA","District","Ward"];
  const rows=gpsRecords.map(r=>[r.id,r.name,r.category,r.longitude,r.latitude,r.accuracy,r.timestamp,r.source,r.ea_code,r.ea_name,r.lga,r.district,r.ward]);
- downloadBlob([headers,...rows].map(r=>r.map(csvEscape).join(",")).join("\r\n"),"text/csv;charset=utf-8","GBoS_Gambia_GPS_Field_Records.csv");
+ downloadBlob([h,...rows].map(r=>r.map(csvEscape).join(",")).join("\r\n"),"text/csv;charset=utf-8","GBoS_Gambia_GPS_Field_Records.csv");
 }
 function exportGPSGeoJSON(){
  if(!gpsRecords.length){$("gpsImportStatus").className="status warn";$("gpsImportStatus").textContent="There are no GPS records to export.";return}
- const features=gpsRecords.map(r=>({
-  type:"Feature",geometry:{type:"Point",coordinates:[r.longitude,r.latitude]},
-  properties:{id:r.id,name:r.name,category:r.category,accuracy:r.accuracy,timestamp:r.timestamp,source:r.source,ea_code:r.ea_code,ea_name:r.ea_name,lga:r.lga,district:r.district,ward:r.ward}
- }));
- downloadBlob(JSON.stringify({type:"FeatureCollection",name:"GBoS_Gambia_GPS_Records",features},null,2),"application/geo+json","GBoS_Gambia_GPS_Records.geojson");
+ const fs=gpsRecords.map(r=>({type:"Feature",geometry:{type:"Point",coordinates:[r.longitude,r.latitude]},properties:{...r}}));
+ downloadBlob(JSON.stringify({type:"FeatureCollection",name:"GBoS_Gambia_GPS_Records",features:fs},null,2),"application/geo+json","GBoS_Gambia_GPS_Records.geojson");
 }
 
 /* Event handlers */
@@ -1094,32 +722,44 @@ $("metricSelect").addEventListener("change",()=>{currentMetric=$("metricSelect")
 $("heightScale").addEventListener("change",updateMapData);
 ["showLabels","showExtrusion","showBoundaries"].forEach(id=>$(id).addEventListener("change",applyLayerVisibility));
 $("showGPS").addEventListener("change",updateGPSMap);
+
+/*
+ * FIXED BASEMAP SWITCH:
+ * Do not try to add EA/GPS layers in a one-off callback here.
+ * setStyle() removes custom layers. The persistent map.on("style.load")
+ * handler above restores them after every style reload.
+ * Data arrays remain untouched while the base style changes.
+ */
 $("baseSelect").addEventListener("change",()=>{
  if(!map)return;
  const center=map.getCenter(),zoom=map.getZoom(),pitch=map.getPitch(),bearing=map.getBearing();
- map.setStyle(rasterStyle($("baseSelect").value));
- map.once("style.load",()=>{
-  mapReady=true;mapLayersAdded=false;addEALayers();addGPSLayers();
-  map.jumpTo({center,zoom,pitch,bearing});
-  if(geojsonData)updateMapData();updateGPSMap();
- });
+ const token=++styleChangeToken;
+ $("mapSubtitle").textContent="Changing basemap and restoring EA/GPS layers…";
+ try{
+  map.setStyle(rasterStyle($("baseSelect").value));
+  map.once("style.load",()=>{
+   if(token!==styleChangeToken)return;
+   map.jumpTo({center,zoom,pitch,bearing});
+   if(geojsonData)updateMapData();
+   updateGPSMap();
+   applyLayerVisibility();
+   $("mapSubtitle").textContent=`${displayedFeatures.length.toLocaleString()} of ${allFeatures.length.toLocaleString()} EAs displayed`;
+  });
+ }catch(e){console.error("Basemap switch failed:",e);setStatus("Basemap switch failed: "+e.message,"error")}
 });
+
 $("mapView").addEventListener("change",()=>{
  if(map){const is3d=$("mapView").value==="3d";map.easeTo({pitch:is3d?48:0,bearing:is3d?-12:0,duration:700})}
 });
 $("zoomGambia").addEventListener("click",()=>{if(map)map.fitBounds(GAMBIA_BOUNDS,{padding:45,duration:800})});
-$("mapReset").addEventListener("click",()=>{if(map)map.easeTo({bearing:0,pitch:48,duration:600})});
+$("mapReset").addEventListener("click",()=>{if(map)map.easeTo({bearing:0,pitch:$("mapView").value==="3d"?48:0,duration:600})});
 $("captureGPS").addEventListener("click",requestGPS);
 $("saveGPS").addEventListener("click",savePendingGPS);
-$("clearPendingGPS").addEventListener("click",()=>{
- pendingGPS=null;$("saveGPS").disabled=true;
- $("gpsLiveStatus").textContent="Pending GPS location cleared.";
- $("gpsCaptureStatus").className="status";$("gpsCaptureStatus").textContent="No pending GPS location.";
-});
+$("clearPendingGPS").addEventListener("click",()=>{pendingGPS=null;$("saveGPS").disabled=true;$("gpsLiveStatus").textContent="Pending GPS location cleared.";$("gpsCaptureStatus").className="status";$("gpsCaptureStatus").textContent="No pending GPS location."});
 $("locateGPS").addEventListener("click",()=>{
  if(lastGPS&&map)map.easeTo({center:[lastGPS.longitude,lastGPS.latitude],zoom:15,duration:700});
  else if(gpsRecords.length&&map){const r=gpsRecords[gpsRecords.length-1];map.easeTo({center:[r.longitude,r.latitude],zoom:15,duration:700})}
- else{$("gpsCaptureStatus").textContent="Capture or import a GPS point first."}
+ else $("gpsCaptureStatus").textContent="Capture or import a GPS point first.";
 });
 $("exportGPS").addEventListener("click",exportGPSCSV);
 $("exportGPSGeo").addEventListener("click",exportGPSGeoJSON);
@@ -1130,21 +770,15 @@ $("clearAllGPS").addEventListener("click",()=>{
  }
 });
 $("zoomGPS").addEventListener("click",zoomToGPS);
-$("exportCsv").addEventListener("click",exportCSV);
-$("downloadCsvTop").addEventListener("click",exportCSV);
-$("exportGeo").addEventListener("click",exportGeoJSON);
-$("downloadGeoTop").addEventListener("click",exportGeoJSON);
-window.addEventListener("resize",()=>{
- if(map)map.resize();
- Object.values(charts).forEach(c=>{if(c)c.resize()});
-});
+$("exportCsv").addEventListener("click",exportCSV);$("downloadCsvTop").addEventListener("click",exportCSV);
+$("exportGeo").addEventListener("click",exportGeoJSON);$("downloadGeoTop").addEventListener("click",exportGeoJSON);
+window.addEventListener("resize",()=>{if(map)map.resize();Object.values(charts).forEach(c=>{if(c)c.resize()})});
 
-/* Start dashboard */
+/* Start */
 createMap();
 window.setTimeout(loadFromURL,500);
 </script>
 </body>
 </html>
-
 
 
