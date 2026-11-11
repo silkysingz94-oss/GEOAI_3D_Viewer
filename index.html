@@ -3,115 +3,128 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>GBoS GEOAI | Gambia 3D GIS Intelligence</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GBoS GEOAI | Gambia 3D Spatial Intelligence</title>
 
-<link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
 <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@turf/turf@7.2.0/turf.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 
 <style>
-:root {
- --navy:#071a33;--navy2:#102b4e;--blue:#1677d2;
- --cyan:#18b7c9;--gold:#f2b544;--bg:#edf2f7;
- --line:#dce4ed;--text:#172b43;--muted:#68788c;
+:root{
+ --navy:#071a33;--navy2:#12365d;--blue:#1677d2;
+ --cyan:#00b9c7;--gold:#f0b33e;--bg:#edf2f7;
+ --border:#dce4ed;--text:#1b2e44;--muted:#718096;
 }
 *{box-sizing:border-box}
-html,body{margin:0;width:100%;height:100%;font-family:Arial,sans-serif;color:var(--text);background:var(--bg)}
-body{overflow:hidden}
+html,body{height:100%;width:100%;margin:0;font-family:Arial,sans-serif;color:var(--text)}
+body{overflow:hidden;background:var(--bg)}
 header{
- height:64px;background:linear-gradient(100deg,var(--navy),var(--navy2));
+ height:62px;background:linear-gradient(100deg,var(--navy),var(--navy2));
  color:white;display:flex;align-items:center;justify-content:space-between;
- padding:0 18px;border-bottom:3px solid var(--cyan);gap:12px
+ padding:0 17px;border-bottom:3px solid var(--cyan)
 }
-.brand{display:flex;align-items:center;gap:12px}
-.brand-mark{
- width:38px;height:38px;border-radius:9px;background:linear-gradient(135deg,var(--cyan),var(--blue));
- display:grid;place-items:center;font-weight:900;font-size:18px
+.brand{display:flex;align-items:center;gap:11px}
+.logo{
+ width:38px;height:38px;border-radius:8px;
+ background:linear-gradient(135deg,#00b9c7,#1677d2);
+ display:grid;place-items:center;font-weight:900;font-size:19px
 }
-.brand h1{font-size:15px;margin:0}
-.brand small{display:block;font-size:10px;color:#c8d8e8;margin-top:4px}
-.header-right{text-align:right;font-size:10px;color:#d6e5f3}
+.brand h1{font-size:14px;margin:0}
+.brand small{display:block;color:#c4d8e9;font-size:10px;margin-top:4px}
+.header-info{text-align:right;font-size:10px;color:#dce9f4;line-height:1.5}
 .app{
- height:calc(100vh - 64px);display:grid;
- grid-template-columns:minmax(255px,300px) minmax(350px,1fr) minmax(260px,310px);
- gap:9px;padding:9px;min-height:0
+ height:calc(100vh - 62px);padding:8px;gap:8px;
+ display:grid;grid-template-columns:285px minmax(350px,1fr) 295px;
+ min-height:0
 }
 .panel{
- background:white;border:1px solid var(--line);border-radius:9px;
- min-height:0;overflow:hidden;display:flex;flex-direction:column;
- box-shadow:0 2px 8px #0c25400b
+ min-height:0;min-width:0;background:white;border:1px solid var(--border);
+ border-radius:8px;overflow:hidden;display:flex;flex-direction:column
 }
-.panel-head{
- background:#f7f9fc;border-bottom:1px solid var(--line);
- padding:12px;font-weight:800;font-size:11px;color:var(--navy);
+.panel-title{
+ padding:12px;background:#f7f9fc;border-bottom:1px solid var(--border);
+ font-size:11px;font-weight:800;color:var(--navy);
  display:flex;justify-content:space-between
 }
 .panel-body{padding:12px;overflow-y:auto;min-height:0;flex:1}
-.section{margin-bottom:15px}
+.section{margin-bottom:16px}
 .section-title{
  font-size:10px;text-transform:uppercase;letter-spacing:1px;
- font-weight:800;color:#58718c;margin:0 0 9px
+ font-weight:800;color:#5b7188;margin:0 0 9px
 }
-label{display:block;font-size:11px;font-weight:700;margin:8px 0 5px;color:#344b64}
-select,input[type=file],button{
- width:100%;border:1px solid #ccd7e3;border-radius:6px;
- padding:9px;font-size:11px;background:white;color:var(--text)
+label{display:block;font-size:11px;font-weight:700;margin:8px 0 5px}
+select,input[type=file]{
+ width:100%;padding:9px;border:1px solid #cbd7e3;
+ border-radius:5px;background:white;font-size:11px;color:var(--text)
 }
-button{cursor:pointer;font-weight:800;background:#f6f9fc}
-button:hover{filter:brightness(.97)}
-button:disabled{opacity:.55;cursor:wait}
-.btn-primary{background:var(--blue);color:white;border-color:var(--blue)}
-.btn-dark{background:var(--navy2);color:white;border-color:var(--navy2)}
-.btn-reset{background:#fff4e8;color:#965500;border-color:#f0d1a5}
-.btn-row{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:9px}
-.help{font-size:10px;line-height:1.5;color:var(--muted);margin-top:6px}
-.status{padding:8px;border-radius:6px;background:#edf6ff;color:#1c5b8b;font-size:10px;line-height:1.5;margin-top:8px;overflow-wrap:anywhere}
+button{
+ border:1px solid #cbd7e3;background:#f6f9fc;border-radius:5px;
+ padding:9px 8px;font-size:10px;font-weight:800;cursor:pointer;color:var(--text)
+}
+button:hover{filter:brightness(.96)}
+button:disabled{opacity:.5;cursor:wait}
+.primary{background:var(--blue);border-color:var(--blue);color:white}
+.dark{background:var(--navy2);border-color:var(--navy2);color:white}
+.reset{background:#fff4e7;border-color:#efd1a5;color:#8c5100}
+.btnrow{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:9px}
+.help{font-size:10px;color:var(--muted);line-height:1.5;margin-top:6px}
+.status{
+ font-size:10px;padding:9px;border-radius:5px;background:#edf6ff;
+ color:#1d5b8b;line-height:1.5;overflow-wrap:anywhere
+}
 .status.error{background:#fff0f0;color:#a52c36}
-.status.ok{background:#eaf8f1;color:#16744e}
-.checkline{display:flex;align-items:center;gap:8px;font-size:11px;margin:8px 0}
-.checkline input{accent-color:var(--blue)}
-.metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.metric{border:1px solid var(--line);border-radius:8px;padding:10px;background:#f9fbfe}
-.metric span{font-size:9px;color:var(--muted);display:block;margin-bottom:6px}
-.metric strong{font-size:17px;color:var(--navy);overflow-wrap:anywhere}
-.metric small{display:block;font-size:9px;color:var(--muted);margin-top:4px}
+.status.ok{background:#e9f8ef;color:#176d49}
+.check{
+ display:flex;align-items:center;gap:7px;font-size:11px;
+ margin:8px 0;font-weight:normal
+}
+.check input{accent-color:var(--blue)}
 .map-panel{position:relative;min-width:0;min-height:0}
-#map{position:absolute;inset:0;background:#dbe7ef}
-.map-toolbar{
+#map{position:absolute;inset:0;background:#dbe8ef}
+.map-top{
  position:absolute;z-index:5;top:10px;left:10px;right:10px;
- display:flex;justify-content:space-between;gap:8px;pointer-events:none
+ display:flex;justify-content:space-between;gap:7px;pointer-events:none
 }
-.map-pill{
- pointer-events:auto;background:white;border:1px solid #d6e0eb;
- border-radius:7px;padding:7px 9px;box-shadow:0 2px 8px #071a3320;
- font-size:10px;font-weight:800
+.map-control{
+ pointer-events:auto;background:#fff;border:1px solid #d9e2eb;
+ border-radius:6px;padding:7px 9px;font-size:10px;
+ box-shadow:0 2px 7px #071a3322;font-weight:800
 }
-.map-pill select{width:auto;padding:5px;border:0;font-weight:700}
+.map-control select{width:auto;border:0;padding:2px;font-weight:bold}
 .map-bottom{
  position:absolute;z-index:5;bottom:10px;left:10px;
- background:#fffffff0;border:1px solid var(--line);border-radius:7px;
- padding:7px 10px;font-size:9px;color:#455b73;max-width:78%
+ background:#ffffffed;border:1px solid var(--border);
+ border-radius:6px;padding:7px 10px;font-size:9px;
+ max-width:80%;color:#405872
 }
-.map-error{
- position:absolute;z-index:4;top:55px;left:10px;max-width:310px;
- background:#fff4e8;color:#875000;border:1px solid #f0d1a5;
- padding:8px 10px;border-radius:6px;font-size:10px;display:none
+.map-alert{
+ display:none;position:absolute;z-index:6;top:52px;left:10px;
+ background:#fff3e5;border:1px solid #efcc9b;border-radius:6px;
+ padding:8px;font-size:10px;color:#8b5000;max-width:300px
 }
-.chart-wrap{height:180px;position:relative;margin:8px 0 14px}
-.legend-item{display:flex;align-items:center;gap:8px;font-size:10px;margin:7px 0}
-.swatch{width:13px;height:13px;border-radius:3px;display:inline-block}
-.table-mini{width:100%;border-collapse:collapse;font-size:10px}
-.table-mini td{padding:6px 4px;border-bottom:1px solid #edf1f5}
-.table-mini td:last-child{text-align:right;font-weight:800}
-footer{font-size:9px;color:#738397;line-height:1.5;margin-top:12px;border-top:1px solid var(--line);padding-top:9px}
-.popup-table{border-collapse:collapse;font-size:11px;max-width:300px}
-.popup-table td{padding:4px 6px;border-bottom:1px solid #eee;vertical-align:top;overflow-wrap:anywhere}
-.popup-table td:first-child{font-weight:700;color:#425b75}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.kpi{padding:10px;border:1px solid var(--border);border-radius:7px;background:#f9fbfd;min-width:0}
+.kpi span{display:block;color:var(--muted);font-size:9px;margin-bottom:6px}
+.kpi strong{display:block;color:var(--navy);font-size:17px;overflow-wrap:anywhere}
+.kpi small{font-size:9px;color:var(--muted);display:block;margin-top:4px}
+.chart{
+ border:1px solid var(--border);border-radius:7px;padding:8px;
+ min-height:110px;overflow:hidden
+}
+.chart svg{width:100%;height:auto;display:block;overflow:visible}
+.chart-empty{font-size:10px;color:var(--muted);padding:20px 5px;text-align:center}
+.legend-row{display:flex;align-items:center;gap:7px;font-size:10px;margin:7px 0}
+.swatch{width:13px;height:13px;border-radius:3px}
+.detail-table{width:100%;border-collapse:collapse;font-size:10px}
+.detail-table td{padding:7px 4px;border-bottom:1px solid #edf1f5}
+.detail-table td:last-child{text-align:right;font-weight:bold;overflow-wrap:anywhere}
+footer{
+ border-top:1px solid var(--border);padding-top:10px;margin-top:12px;
+ color:#748399;font-size:9px;line-height:1.6
+}
 @media(max-width:950px){
  body{overflow:auto}
- .app{height:auto;min-height:calc(100vh - 64px);grid-template-columns:1fr;grid-template-rows:auto 65vh auto}
+ .app{height:auto;min-height:calc(100vh - 62px);grid-template-columns:1fr;grid-template-rows:auto 65vh auto}
  .panel{min-height:300px}.map-panel{min-height:65vh}
 }
 </style>
@@ -120,79 +133,88 @@ footer{font-size:9px;color:#738397;line-height:1.5;margin-top:12px;border-top:1p
 <body>
 <header>
  <div class="brand">
-  <div class="brand-mark">G</div>
+  <div class="logo">G</div>
   <div>
-   <h1>GBoS GEOAI | GAMBIA 3D GIS INTELLIGENCE</h1>
-   <small>GIS / Cartography Unit • Spatial Data • Census • Infrastructure</small>
+   <h1>GBoS GEOAI | GAMBIA 3D SPATIAL INTELLIGENCE</h1>
+   <small>GIS / Cartography Unit • Census • Population • Infrastructure • Spatial Analytics</small>
   </div>
  </div>
- <div class="header-right">THE GAMBIA<br>3D GEOSPATIAL VIEWER</div>
+ <div class="header-info">THE GAMBIA<br>INTERACTIVE 3D GIS</div>
 </header>
 
 <main class="app">
 
-<!-- LEFT CONTROL PANEL -->
+<!-- LEFT: CONTROLS -->
 <section class="panel">
- <div class="panel-head"><span>CONTROLS & DATA</span><span>01</span></div>
+ <div class="panel-title"><span>CONTROLS & DATA</span><span>01</span></div>
  <div class="panel-body">
 
   <div class="section">
    <p class="section-title">Administrative selection</p>
-   <label for="lgaSelect">Local Government Area</label>
-   <select id="lgaSelect"><option value="">All LGAs</option></select>
+   <label>Local Government Area</label>
+   <select id="lga"><option value="">All LGAs</option></select>
 
-   <label for="districtSelect">District</label>
-   <select id="districtSelect"><option value="">All districts</option></select>
+   <label>District</label>
+   <select id="district"><option value="">All districts</option></select>
 
-   <label for="wardSelect">Ward</label>
-   <select id="wardSelect"><option value="">All wards</option></select>
+   <label>Ward</label>
+   <select id="ward"><option value="">All wards</option></select>
 
-   <div class="btn-row">
-    <button class="btn-primary" id="applyBtn">APPLY & ZOOM</button>
-    <button class="btn-reset" id="resetBtn">RESET NATIONAL</button>
+   <div class="btnrow">
+    <button class="primary" id="apply">APPLY & ZOOM</button>
+    <button class="reset" id="reset">RESET NATIONAL</button>
    </div>
-   <div class="help">The selected LGA, district or ward and its corresponding EAs are displayed. Reset restores the national EA view.</div>
+   <div class="help">Selection filters the EA polygons using their own administrative attributes.</div>
   </div>
 
   <div class="section">
-   <p class="section-title">3D thematic visualisation</p>
-   <label for="metricSelect">EA extrusion variable</label>
-   <select id="metricSelect">
-    <option value="sum_pop">Population</option>
-    <option value="sum_hhs">Households</option>
-    <option value="density_pop">Population density / km²</option>
-    <option value="density_hhs">Household density / km²</option>
-    <option value="buildings">Building count (if available)</option>
-    <option value="compounds">Compound count (if available)</option>
-    <option value="none">Flat EA polygons</option>
+   <p class="section-title">3D extrusion</p>
+   <label>Visualisation variable</label>
+   <select id="metric">
+    <option value="pop">Population</option>
+    <option value="hh">Households</option>
+    <option value="popDensity">Population density</option>
+    <option value="hhDensity">Household density</option>
+    <option value="buildings">Building count (EA attribute)</option>
+    <option value="compounds">Compound count (EA attribute)</option>
+    <option value="flat">Flat EA polygons</option>
    </select>
-   <label for="heightScale">3D height exaggeration</label>
-   <select id="heightScale">
+
+   <label>Vertical exaggeration</label>
+   <select id="exaggeration">
     <option value="1">1×</option>
     <option value="2" selected>2×</option>
     <option value="4">4×</option>
-    <option value="8">8×</option>
+    <option value="6">6×</option>
    </select>
-   <div class="help">EA extrusion represents relative attribute values, not actual building heights.</div>
+
+   <label>3D display height</label>
+   <select id="heightMode">
+    <option value="strong">Strong extrusion</option>
+    <option value="medium">Medium extrusion</option>
+    <option value="subtle">Subtle extrusion</option>
+   </select>
+   <div class="btnrow">
+    <button class="primary" id="enable3d">ENABLE 3D</button>
+    <button id="enable2d">2D VIEW</button>
+   </div>
+   <div class="help">Extrusion is a visual representation of EA-level values, not actual building height or measured terrain elevation.</div>
   </div>
 
   <div class="section">
    <p class="section-title">Map layers</p>
-   <label class="checkline"><input type="checkbox" id="showEA" checked> Enumeration Areas</label>
-   <label class="checkline"><input type="checkbox" id="showLGA" checked> LGA boundaries</label>
-   <label class="checkline"><input type="checkbox" id="showDistrict" checked> District boundaries</label>
-   <label class="checkline"><input type="checkbox" id="showBuildings" checked> 3D OSM buildings</label>
-   <label class="checkline"><input type="checkbox" id="showRoads"> OSM roads</label>
-   <label class="checkline"><input type="checkbox" id="showWater"> OSM water features</label>
-   <label class="checkline"><input type="checkbox" id="showLanduse"> OSM land use / green areas</label>
-   <label class="checkline"><input type="checkbox" id="showPOI"> OSM facilities / POIs</label>
-   <button class="btn-dark" id="loadOSMBtn">LOAD SELECTED OSM THEMES</button>
-   <div class="help">OSM is community-contributed reference data, not an official GBoS dataset. OSM queries are restricted to the selected EA extent.</div>
+   <label class="check"><input type="checkbox" id="eaVisible" checked> EA polygons</label>
+   <label class="check"><input type="checkbox" id="lgaVisible" checked> LGA boundaries</label>
+   <label class="check"><input type="checkbox" id="districtVisible" checked> District boundaries</label>
+   <label class="check"><input type="checkbox" id="buildingVisible"> OSM buildings</label>
+   <label class="check"><input type="checkbox" id="roadVisible"> OSM roads</label>
+   <button class="dark" id="loadOSM">LOAD OSM BUILDINGS & ROADS</button>
+   <div class="help">OSM features are optional community-contributed reference data. They are not official GBoS building or road records.</div>
   </div>
 
   <div class="section">
    <p class="section-title">Basemap</p>
-   <select id="basemapSelect">
+   <select id="basemap">
     <option value="voyager">CARTO Voyager</option>
     <option value="positron">CARTO Positron</option>
     <option value="dark">CARTO Dark Matter</option>
@@ -200,107 +222,104 @@ footer{font-size:9px;color:#738397;line-height:1.5;margin-top:12px;border-top:1p
     <option value="hybrid">Satellite + labels</option>
     <option value="osm">OpenStreetMap</option>
    </select>
-   <label class="checkline"><input type="checkbox" id="terrainToggle"> Enable 3D terrain (where available)</label>
-   <div class="help">Basemaps require an active internet connection and access to the tile provider.</div>
   </div>
 
   <div class="section">
-   <p class="section-title">Upload EA data</p>
-   <label for="eaFile">GeoJSON / JSON file</label>
-   <input type="file" id="eaFile" accept=".geojson,.json,application/geo+json,application/json">
-   <div class="help">Polygon or MultiPolygon GeoJSON. The uploaded file replaces the current EA dataset in this session.</div>
+   <p class="section-title">Upload EA GeoJSON</p>
+   <input type="file" id="upload" accept=".geojson,.json,application/json">
+   <div class="help">Upload a polygon GeoJSON containing EA boundaries and attributes. This replaces the online EA dataset for the current session.</div>
   </div>
 
   <div class="section">
-   <p class="section-title">Data status</p>
-   <div id="status" class="status">Initialising map…</div>
+   <p class="section-title">System status</p>
+   <div id="status" class="status">Initialising…</div>
   </div>
  </div>
 </section>
 
-<!-- MAP -->
+<!-- CENTRE: MAP -->
 <section class="panel map-panel">
  <div id="map"></div>
- <div class="map-toolbar">
-  <div class="map-pill">GAMBIA • 3D EA VIEW</div>
-  <div class="map-pill">
-   <label for="mapMetric" style="display:inline;margin:0">View:</label>
+ <div class="map-top">
+  <div class="map-control">GAMBIA • 3D EA INTELLIGENCE</div>
+  <div class="map-control">
    <select id="mapMetric">
-    <option value="sum_pop">Population</option>
-    <option value="sum_hhs">Households</option>
-    <option value="density_pop">Population density</option>
-    <option value="density_hhs">Household density</option>
-    <option value="buildings">Buildings</option>
-    <option value="compounds">Compounds</option>
+    <option value="pop">Population</option>
+    <option value="hh">Households</option>
+    <option value="popDensity">Population density</option>
+    <option value="hhDensity">Household density</option>
+    <option value="buildings">Building count</option>
+    <option value="compounds">Compound count</option>
    </select>
   </div>
  </div>
- <div id="mapError" class="map-error"></div>
- <div class="map-bottom" id="mapInfo">Connecting to map services…</div>
+ <div class="map-alert" id="mapAlert"></div>
+ <div class="map-bottom" id="mapInfo">Loading map…</div>
 </section>
 
-<!-- RIGHT ANALYTICS -->
+<!-- RIGHT: ANALYTICS -->
 <section class="panel">
- <div class="panel-head"><span>SPATIAL ANALYTICS</span><span>02</span></div>
+ <div class="panel-title"><span>ANALYTICS & INDICATORS</span><span>02</span></div>
  <div class="panel-body">
 
   <div class="section">
    <p class="section-title">Selected area indicators</p>
-   <div class="metric-grid">
-    <div class="metric"><span>ENUMERATION AREAS</span><strong id="kpiEA">—</strong><small>Displayed EA features</small></div>
-    <div class="metric"><span>POPULATION</span><strong id="kpiPop">—</strong><small>Sum of available EA values</small></div>
-    <div class="metric"><span>HOUSEHOLDS</span><strong id="kpiHH">—</strong><small>Sum of available EA values</small></div>
-    <div class="metric"><span>MEAN POP. DENSITY</span><strong id="kpiDensity">—</strong><small>People per km²</small></div>
-    <div class="metric"><span>BUILDINGS</span><strong id="kpiBuildings">—</strong><small>Only if EA attribute exists</small></div>
-    <div class="metric"><span>COMPOUNDS</span><strong id="kpiCompounds">—</strong><small>Only if EA attribute exists</small></div>
+   <div class="kpis">
+    <div class="kpi"><span>ENUMERATION AREAS</span><strong id="nEA">—</strong><small>EA polygons</small></div>
+    <div class="kpi"><span>POPULATION</span><strong id="nPop">—</strong><small>Available EA values</small></div>
+    <div class="kpi"><span>HOUSEHOLDS</span><strong id="nHH">—</strong><small>Available EA values</small></div>
+    <div class="kpi"><span>POPULATION DENSITY</span><strong id="nDensity">—</strong><small>People / km²</small></div>
+    <div class="kpi"><span>BUILDINGS</span><strong id="nBuildings">—</strong><small>EA attribute if available</small></div>
+    <div class="kpi"><span>COMPOUNDS</span><strong id="nCompounds">—</strong><small>EA attribute if available</small></div>
    </div>
   </div>
 
   <div class="section">
-   <p class="section-title">Population distribution by LGA</p>
-   <div class="chart-wrap"><canvas id="popChart"></canvas></div>
+   <p class="section-title">Population by LGA</p>
+   <div class="chart" id="populationChart"><div class="chart-empty">Waiting for EA data…</div></div>
   </div>
 
   <div class="section">
-   <p class="section-title">Household distribution by LGA</p>
-   <div class="chart-wrap"><canvas id="hhChart"></canvas></div>
+   <p class="section-title">Households by LGA</p>
+   <div class="chart" id="householdChart"><div class="chart-empty">Waiting for EA data…</div></div>
   </div>
 
   <div class="section">
-   <p class="section-title">Selected area details</p>
-   <table class="table-mini">
-    <tr><td>Selected LGA</td><td id="detailLGA">All LGAs</td></tr>
-    <tr><td>Selected district</td><td id="detailDistrict">All districts</td></tr>
-    <tr><td>Selected ward</td><td id="detailWard">All wards</td></tr>
-    <tr><td>EA data source</td><td id="detailSource">GitHub</td></tr>
+   <p class="section-title">Selected administrative area</p>
+   <table class="detail-table">
+    <tr><td>LGA</td><td id="dLGA">All LGAs</td></tr>
+    <tr><td>District</td><td id="dDistrict">All districts</td></tr>
+    <tr><td>Ward</td><td id="dWard">All wards</td></tr>
+    <tr><td>Data source</td><td id="dSource">GitHub</td></tr>
    </table>
   </div>
 
   <div class="section">
-   <p class="section-title">EA thematic legend</p>
-   <div class="legend-item"><i class="swatch" style="background:#fff1a8;border:1px solid #c49d36"></i> Low relative value</div>
-   <div class="legend-item"><i class="swatch" style="background:#f8a34c"></i> Moderate relative value</div>
-   <div class="legend-item"><i class="swatch" style="background:#e65c48"></i> High relative value</div>
-   <div class="legend-item"><i class="swatch" style="background:#64133e"></i> Very high relative value</div>
-   <div class="help">Classes are relative to the currently displayed EA features.</div>
+   <p class="section-title">3D thematic legend</p>
+   <div class="legend-row"><span class="swatch" style="background:#fff0a6"></span>Low relative value</div>
+   <div class="legend-row"><span class="swatch" style="background:#f6a34b"></span>Moderate value</div>
+   <div class="legend-row"><span class="swatch" style="background:#e45b48"></span>High value</div>
+   <div class="legend-row"><span class="swatch" style="background:#9d244d"></span>Very high value</div>
+   <div class="help">The colour and extrusion scale are recalculated for the currently selected EA features.</div>
   </div>
 
   <div class="section">
-   <p class="section-title">Data exports</p>
-   <div class="btn-row">
-    <button id="exportCSV">EXPORT EA CSV</button>
-    <button id="exportGeoJSON">EXPORT EA GEOJSON</button>
+   <p class="section-title">Export data</p>
+   <div class="btnrow">
+    <button id="csv">EXPORT CSV</button>
+    <button id="geojson">EXPORT EA GEOJSON</button>
    </div>
-   <div class="btn-row">
-    <button id="exportOSM">EXPORT LOADED OSM</button>
-    <button id="exportAll">EXPORT VIEW DATA</button>
+   <div class="btnrow">
+    <button id="osmExport">EXPORT OSM</button>
+    <button id="viewExport">EXPORT VIEW</button>
    </div>
   </div>
 
   <footer>
    GBoS GEOAI • Research and educational use<br>
-   Produced by Ansu Singhateh | GIS Analyst | GIS / Cartography Unit | Gambia Bureau of Statistics<br>
-   EA source: Urban-Planning-Intelligence repository. Basemap and OSM attribution displayed on map.
+   Produced by Ansu Singhateh<br>
+   GIS Analyst | GIS / Cartography Unit | Gambia Bureau of Statistics<br>
+   EA data: Urban-Planning-Intelligence repository. Basemap attribution is provided on the map.
   </footer>
  </div>
 </section>
@@ -309,24 +328,24 @@ footer{font-size:9px;color:#738397;line-height:1.5;margin-top:12px;border-top:1p
 <script>
 "use strict";
 
-/* ==========================================================
-   CONFIGURATION
-   ========================================================== */
+/* =========================================================
+   DATA SOURCES AND SETTINGS
+   ========================================================= */
 
 const EA_URL =
- "https://raw.githubusercontent.com/silkysingz94-oss/Urban-Planning-Intelligence/main/Census_EAs_Geo.json";
+"https://raw.githubusercontent.com/silkysingz94-oss/Urban-Planning-Intelligence/main/Census_EAs_Geo.json";
 
-const ARCGIS_BASE =
- "https://services1.arcgis.com/YmCK8KfESHdxUQgm/ArcGIS/rest/services/Gambia_Boundaries/FeatureServer";
+const ARCGIS =
+"https://services1.arcgis.com/YmCK8KfESHdxUQgm/ArcGIS/rest/services/Gambia_Boundaries/FeatureServer";
 
-const OVERPASS_ENDPOINTS = [
- "https://overpass-api.de/api/interpreter",
- "https://overpass.kumi.systems/api/interpreter"
+const OVERPASS=[
+"https://overpass-api.de/api/interpreter",
+"https://overpass.kumi.systems/api/interpreter"
 ];
 
-const GAMBIA_BOUNDS = [[-16.95,13.00],[-13.75,13.90]];
+const NATIONAL_BOUNDS=[[-16.95,13.00],[-13.75,13.90]];
 
-const FIELDS = {
+const FIELD={
  lga:["lganame","lga_name","lga","local_gov","local_government_area","region"],
  district:["distname","district","district_name","dist_name"],
  ward:["wardname","ward","ward_name"],
@@ -337,1073 +356,861 @@ const FIELDS = {
  compounds:["compounds","compound_count","comp_count","no_compounds","compound"]
 };
 
-let map;
-let mapReady=false;
-let allEA=null;
-let displayedEA=null;
-let adminLGA=null;
-let adminDistrict=null;
-let currentAOI=null;
-let dataSourceName="GitHub";
-let popChart=null;
-let hhChart=null;
-let terrainEnabled=false;
-let osmBusy=false;
-
-const loadedOSM={
- roads:null,buildings:null,water:null,landuse:null,poi:null
-};
-
 const $=id=>document.getElementById(id);
 
-function status(message,type="") {
- const el=$("status");
- el.textContent=message;
- el.className="status"+(type?" "+type:"");
+let map;
+let mapReady=false;
+let fullEA=null;
+let viewEA=null;
+let lgaBoundaries=null;
+let districtBoundaries=null;
+let osmBuildings={type:"FeatureCollection",features:[]};
+let osmRoads={type:"FeatureCollection",features:[]};
+let sourceLabel="GitHub";
+let is3D=true;
+let osmLoading=false;
+
+const nf=new Intl.NumberFormat("en-US",{maximumFractionDigits:1});
+
+function fmt(v,d=0){
+ if(v===null||v===undefined||!Number.isFinite(Number(v)))return "—";
+ return Number(v).toLocaleString("en-US",{maximumFractionDigits:d});
 }
-function fmt(value,digits=0) {
- if(value===null||value===undefined||!Number.isFinite(Number(value))) return "—";
- return Number(value).toLocaleString(undefined,{maximumFractionDigits:digits});
-}
-function number(value) {
- if(value===null||value===undefined||value==="") return null;
- const n=Number(String(value).replace(/,/g,""));
+function num(v){
+ if(v===null||v===undefined||v==="")return null;
+ const n=Number(String(v).replace(/,/g,""));
  return Number.isFinite(n)?n:null;
 }
-function norm(value) {
- return String(value??"").trim().toLowerCase().replace(/[\s_-]+/g,"");
+function normal(v){
+ return String(v??"").trim().toLowerCase().replace(/[\s_-]+/g,"");
 }
-function getProp(properties,candidates) {
+function same(a,b){return normal(a)===normal(b)}
+function getField(properties,names){
  const keys=Object.keys(properties||{});
- for(const candidate of candidates) {
-  const key=keys.find(k=>norm(k)===norm(candidate));
-  if(key!==undefined&&properties[key]!==null&&properties[key]!=="") return properties[key];
+ for(const name of names){
+  const actual=keys.find(k=>normal(k)===normal(name));
+  if(actual!==undefined&&properties[actual]!==null&&properties[actual]!==""){
+   return properties[actual];
+  }
  }
  return null;
 }
-function prop(feature,key) {
- return getProp(feature.properties||{},FIELDS[key]||[key]);
+function value(feature,key){
+ return getField(feature.properties||{},FIELD[key]||[key]);
 }
-function same(a,b) {return norm(a)===norm(b);}
-function cleanFC(data) {
- if(data?.type==="FeatureCollection"&&Array.isArray(data.features)) return data;
- if(data?.type==="Feature") return {type:"FeatureCollection",features:[data]};
- if(Array.isArray(data)) return {type:"FeatureCollection",features:data};
- throw new Error("Invalid GeoJSON FeatureCollection.");
+function status(message,type=""){
+ $("status").textContent=message;
+ $("status").className="status"+(type?" "+type:"");
 }
-function polygonFC(data) {
- const fc=cleanFC(data);
+function emptyFC(){return {type:"FeatureCollection",features:[]};}
+
+function asFC(data){
+ if(data?.type==="FeatureCollection"&&Array.isArray(data.features))return data;
+ if(data?.type==="Feature")return {type:"FeatureCollection",features:[data]};
+ if(Array.isArray(data))return {type:"FeatureCollection",features:data};
+ throw new Error("The file is not a valid GeoJSON FeatureCollection.");
+}
+function polygonFC(data){
+ const fc=asFC(data);
  return {
   type:"FeatureCollection",
   features:fc.features.filter(f=>f.geometry&&
-   ["Polygon","MultiPolygon"].includes(f.geometry.type))
+   (f.geometry.type==="Polygon"||f.geometry.type==="MultiPolygon"))
  };
 }
-function emptyFC() {return {type:"FeatureCollection",features:[]};}
-function uniqueSorted(values) {
+function unique(values){
  return [...new Set(values.filter(v=>v!==null&&v!==undefined&&String(v).trim()!=="")
   .map(v=>String(v).trim()))]
   .sort((a,b)=>a.localeCompare(b,undefined,{numeric:true,sensitivity:"base"}));
 }
-function getSelection() {
+function areaKm2(feature){
+ const geom=feature.geometry;
+ if(!geom)return null;
+ try{
+  const R=6371008.8;
+  let total=0;
+  function ringArea(ring){
+   let area=0;
+   for(let i=0;i<ring.length-1;i++){
+    const p1=ring[i],p2=ring[i+1];
+    area+=(p2[0]-p1[0])*Math.PI/180*
+     (2+Math.sin(p1[1]*Math.PI/180)+Math.sin(p2[1]*Math.PI/180));
+   }
+   return Math.abs(area*R*R/2);
+  }
+  if(geom.type==="Polygon"){
+   total=ringArea(geom.coordinates[0]);
+   for(let i=1;i<geom.coordinates.length;i++)total-=ringArea(geom.coordinates[i]);
+  }else if(geom.type==="MultiPolygon"){
+   geom.coordinates.forEach(poly=>{
+    let a=ringArea(poly[0]);
+    for(let i=1;i<poly.length;i++)a-=ringArea(poly[i]);
+    total+=a;
+   });
+  }
+  return Math.max(0,total/1000000);
+ }catch(e){return null;}
+}
+function prepareData(fc){
  return {
-  lga:$("lgaSelect").value,
-  district:$("districtSelect").value,
-  ward:$("wardSelect").value
+  type:"FeatureCollection",
+  features:fc.features.map(f=>{
+   const p={...(f.properties||{})};
+   const pop=num(getField(p,FIELD.pop));
+   const hh=num(getField(p,FIELD.hh));
+   const area=areaKm2(f);
+   p._area_km2=area;
+   p._pop_density=area>0&&pop!==null?pop/area:null;
+   p._hh_density=area>0&&hh!==null?hh/area:null;
+   p._value=0;
+   p._height=0;
+   p._height_base=0;
+   return {...f,properties:p};
+  })
  };
 }
-function matchesSelection(feature,s) {
- if(s.lga&&!same(prop(feature,"lga"),s.lga)) return false;
- if(s.district&&!same(prop(feature,"district"),s.district)) return false;
- if(s.ward&&!same(prop(feature,"ward"),s.ward)) return false;
+
+/* =========================================================
+   MAP STYLES
+   ========================================================= */
+
+function rasterStyle(url,attribution){
+ return {
+  version:8,
+  sources:{
+   base:{type:"raster",tiles:[url],tileSize:256,attribution}
+  },
+  layers:[{id:"base-raster",type:"raster",source:"base",
+   paint:{"raster-opacity":1}}]
+ };
+}
+function makeStyle(name){
+ const carto="© OpenStreetMap contributors © CARTO";
+ if(name==="positron")return rasterStyle(
+  "https://basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png",carto);
+ if(name==="dark")return rasterStyle(
+  "https://basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}.png",carto);
+ if(name==="osm")return rasterStyle(
+  "https://tile.openstreetmap.org/{z}/{x}/{y}.png","© OpenStreetMap contributors");
+ if(name==="satellite"||name==="hybrid"){
+  const style=rasterStyle(
+   "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+   "Tiles © Esri");
+  if(name==="hybrid"){
+   style.sources.labels={
+    type:"raster",
+    tiles:["https://basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}.png"],
+    tileSize:256,attribution:"© CARTO"
+   };
+   style.layers.push({id:"base-labels",type:"raster",source:"labels"});
+  }
+  return style;
+ }
+ return rasterStyle(
+  "https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png",carto);
+}
+
+map=new maplibregl.Map({
+ container:"map",
+ style:makeStyle("voyager"),
+ center:[-15.45,13.45],
+ zoom:7.1,
+ pitch:60,
+ bearing:-10,
+ maxPitch:75,
+ attributionControl:true,
+ fadeDuration:0,
+ antialias:true
+});
+
+map.addControl(new maplibregl.NavigationControl({visualizePitch:true}),"top-right");
+map.addControl(new maplibregl.ScaleControl({unit:"metric"}),"bottom-right");
+
+map.on("load",()=>{
+ mapReady=true;
+ createLayers();
+ map.fitBounds(NATIONAL_BOUNDS,{padding:35,duration:0});
+ loadEA();
+});
+
+map.on("error",e=>{
+ if(e.error)console.warn("Map resource error:",e.error.message);
+});
+
+function showAlert(text){
+ $("mapAlert").textContent=text;
+ $("mapAlert").style.display="block";
+}
+function clearAlert(){$("mapAlert").style.display="none";}
+
+$("basemap").addEventListener("change",e=>{
+ const c=map.getCenter(),z=map.getZoom(),p=map.getPitch(),b=map.getBearing();
+ clearAlert();
+ map.setStyle(makeStyle(e.target.value));
+ map.once("style.load",()=>{
+  createLayers();
+  map.jumpTo({center:c,zoom:z,pitch:p,bearing:b});
+  updateVisibility();
+ });
+});
+
+/* =========================================================
+   MAP SOURCES AND LAYERS
+   ========================================================= */
+
+function addSource(id,data){
+ if(map.getSource(id))map.getSource(id).setData(data||emptyFC());
+ else map.addSource(id,{type:"geojson",data:data||emptyFC()});
+}
+function createLayers(){
+ if(!mapReady)return;
+
+ addSource("ea",viewEA||emptyFC());
+ addSource("lga",lgaBoundaries||emptyFC());
+ addSource("district",districtBoundaries||emptyFC());
+ addSource("buildings",osmBuildings);
+ addSource("roads",osmRoads);
+
+ if(!map.getLayer("ea-extrusion")){
+  map.addLayer({
+   id:"ea-extrusion",
+   type:"fill-extrusion",
+   source:"ea",
+   paint:{
+    "fill-extrusion-color":colorExpression(),
+    "fill-extrusion-height":["coalesce",["to-number",["get","_height"]],0],
+    "fill-extrusion-base":["coalesce",["to-number",["get","_height_base"]],0],
+    "fill-extrusion-opacity":0.91,
+    "fill-extrusion-vertical-gradient":true
+   }
+  });
+ }
+ if(!map.getLayer("ea-fill")){
+  map.addLayer({
+   id:"ea-fill",type:"fill",source:"ea",
+   paint:{
+    "fill-color":colorExpression(),
+    "fill-opacity":0.68,
+    "fill-outline-color":"#ffffff"
+   }
+  });
+ }
+ if(!map.getLayer("ea-line")){
+  map.addLayer({
+   id:"ea-line",type:"line",source:"ea",
+   paint:{"line-color":"#ffffff","line-width":0.45,"line-opacity":0.8}
+  });
+ }
+ if(!map.getLayer("lga-line")){
+  map.addLayer({
+   id:"lga-line",type:"line",source:"lga",
+   paint:{"line-color":"#0754a0","line-width":2.3}
+  });
+ }
+ if(!map.getLayer("district-line")){
+  map.addLayer({
+   id:"district-line",type:"line",source:"district",
+   paint:{"line-color":"#e6a333","line-width":1.2,"line-dasharray":[2,1]}
+  });
+ }
+ if(!map.getLayer("osm-buildings")){
+  map.addLayer({
+   id:"osm-buildings",type:"fill-extrusion",source:"buildings",
+   paint:{
+    "fill-extrusion-color":"#8e9aa8",
+    "fill-extrusion-height":[
+     "coalesce",["to-number",["get","height"]],
+     ["*",["to-number",["get","building:levels"]],3],8
+    ],
+    "fill-extrusion-base":0,
+    "fill-extrusion-opacity":0.85
+   }
+  });
+ }
+ if(!map.getLayer("osm-roads")){
+  map.addLayer({
+   id:"osm-roads",type:"line",source:"roads",
+   paint:{"line-color":"#ed673e","line-width":1.6}
+  });
+ }
+ updateVisibility();
+ updateThematicStyle();
+}
+
+function getMetric(){
+ const metric=$("metric").value;
+ return metric;
+}
+function featureMetric(f,key){
+ const p=f.properties||{};
+ if(key==="pop")return num(getField(p,FIELD.pop));
+ if(key==="hh")return num(getField(p,FIELD.hh));
+ if(key==="popDensity")return num(p._pop_density);
+ if(key==="hhDensity")return num(p._hh_density);
+ if(key==="buildings")return num(getField(p,FIELD.buildings));
+ if(key==="compounds")return num(getField(p,FIELD.compounds));
+ return null;
+}
+function percentile(values,q){
+ if(!values.length)return 0;
+ const a=[...values].sort((x,y)=>x-y);
+ const pos=(a.length-1)*q;
+ const low=Math.floor(pos),high=Math.ceil(pos);
+ if(low===high)return a[low];
+ return a[low]+(a[high]-a[low])*(pos-low);
+}
+function colourFor(v,breaks){
+ if(v<=breaks[0])return "#fff0a6";
+ if(v<=breaks[1])return "#f6a34b";
+ if(v<=breaks[2])return "#e45b48";
+ return "#9d244d";
+}
+function colorExpression(){
+ const key=getMetric();
+ const vals=(viewEA?.features||[]).map(f=>featureMetric(f,key))
+  .filter(v=>v!==null&&v>=0);
+ if(!vals.length)return "#d5b56b";
+ const b1=percentile(vals,.25),b2=percentile(vals,.5),b3=percentile(vals,.8);
+ return [
+  "step",["coalesce",["to-number",["get","_value"]],0],
+  "#fff0a6",b1,"#f6a34b",b2,"#e45b48",b3,"#9d244d"
+ ];
+}
+function updateThematicStyle(){
+ if(!mapReady||!viewEA)return;
+ const key=getMetric();
+ const vals=viewEA.features.map(f=>featureMetric(f,key))
+  .filter(v=>v!==null&&v>=0);
+ const p95=percentile(vals,.95);
+ const mode=$("heightMode").value;
+ const baseHeight=mode==="strong"?700:mode==="medium"?400:180;
+ const exaggeration=Number($("exaggeration").value)||2;
+ const cap=baseHeight*exaggeration;
+
+ viewEA.features.forEach(f=>{
+  const v=featureMetric(f,key);
+  let ratio=0;
+  if(v!==null&&p95>0)ratio=Math.max(0,Math.min(1,v/p95));
+  f.properties._value=v??0;
+  f.properties._height=key==="flat"?0:Math.max(0,ratio*cap);
+  f.properties._height_base=0;
+ });
+
+ map.getSource("ea")?.setData(viewEA);
+ if(map.getLayer("ea-extrusion")){
+  map.setPaintProperty("ea-extrusion","fill-extrusion-color",colorExpression());
+  map.setPaintProperty("ea-fill","fill-color",colorExpression());
+ }
+ updateVisibility();
+}
+function updateVisibility(){
+ if(!mapReady)return;
+ const set=(id,visible)=>{
+  if(map.getLayer(id))map.setLayoutProperty(id,"visibility",visible?"visible":"none");
+ };
+ const showEA=$("eaVisible").checked;
+ set("ea-extrusion",showEA&&getMetric()!=="flat"&&is3D);
+ set("ea-fill",showEA&&(!is3D||getMetric()==="flat"));
+ set("ea-line",showEA);
+ set("lga-line",$("lgaVisible").checked);
+ set("district-line",$("districtVisible").checked);
+ set("osm-buildings",$("buildingVisible").checked);
+ set("osm-roads",$("roadVisible").checked);
+}
+
+/* =========================================================
+   FAST EA DATA LOADING
+   ========================================================= */
+
+async function loadEA(){
+ try{
+  status("Loading EA GeoJSON…");
+  $("mapInfo").textContent="Loading Enumeration Areas…";
+
+  const response=await fetch(EA_URL,{cache:"force-cache"});
+  if(!response.ok)throw new Error("GitHub returned HTTP "+response.status);
+
+  const data=await response.json();
+  const fc=polygonFC(data);
+  if(!fc.features.length)throw new Error("No EA polygon features were found.");
+
+  fullEA=prepareData(fc);
+  sourceLabel="GitHub repository";
+
+  populateSelectors();
+  resetNational();
+
+  $("dSource").textContent=sourceLabel;
+  status("Loaded "+fmt(fullEA.features.length)+" EA polygons successfully.","ok");
+  $("mapInfo").textContent="National view • "+fmt(fullEA.features.length)+" EAs";
+
+  // Admin boundaries load in the background, never block the EA map.
+  loadAdminBoundaries();
+ }catch(error){
+  console.error(error);
+  status("EA loading failed: "+error.message+". Upload your local EA GeoJSON file.","error");
+  $("mapInfo").textContent="EA data unavailable";
+ }
+}
+
+async function loadAdminBoundaries(){
+ try{
+  const getLayer=async layer=>{
+   const url=ARCGIS+"/"+layer+
+    "/query?where=1%3D1&outFields=*&returnGeometry=true&outSR=4326&f=geojson";
+   const r=await fetch(url);
+   if(!r.ok)throw new Error("Boundary HTTP "+r.status);
+   return asFC(await r.json());
+  };
+  const results=await Promise.all([getLayer(0),getLayer(1)]);
+  lgaBoundaries=results[0];
+  districtBoundaries=results[1];
+  if(mapReady){
+   map.getSource("lga")?.setData(lgaBoundaries);
+   map.getSource("district")?.setData(districtBoundaries);
+   applySelection(false);
+  }
+ }catch(error){
+  console.warn("Admin boundaries unavailable:",error);
+ }
+}
+
+/* =========================================================
+   ADMINISTRATIVE FILTERING
+   ========================================================= */
+
+function selected(){
+ return {lga:$("lga").value,district:$("district").value,ward:$("ward").value};
+}
+function matches(f,s){
+ if(s.lga&&!same(value(f,"lga"),s.lga))return false;
+ if(s.district&&!same(value(f,"district"),s.district))return false;
+ if(s.ward&&!same(value(f,"ward"),s.ward))return false;
  return true;
 }
-function selectionName(s) {
- return s.ward||s.district||s.lga||"The Gambia";
-}
-function setSelect(id,values,placeholder,selected="") {
+function setOptions(id,values,placeholder,keep=""){
  const el=$(id);
  el.innerHTML="";
  const first=document.createElement("option");
  first.value="";first.textContent=placeholder;el.appendChild(first);
- values.forEach(value=>{
-  const option=document.createElement("option");
-  option.value=value;option.textContent=value;el.appendChild(option);
+ values.forEach(v=>{
+  const op=document.createElement("option");
+  op.value=v;op.textContent=v;el.appendChild(op);
  });
- if(selected) {
-  const match=values.find(v=>same(v,selected));
-  if(match) el.value=match;
+ if(keep){
+  const match=values.find(v=>same(v,keep));
+  if(match)el.value=match;
  }
 }
-function updateSelectors(preserve=true) {
- if(!allEA) return;
- const old=getSelection();
- const lgas=uniqueSorted(allEA.features.map(f=>prop(f,"lga")));
- setSelect("lgaSelect",lgas,"All LGAs",preserve?old.lga:"");
+function populateSelectors(){
+ if(!fullEA)return;
+ const old=selected();
+ const lgas=unique(fullEA.features.map(f=>value(f,"lga")));
+ setOptions("lga",lgas,"All LGAs",old.lga);
 
- const lga=$("lgaSelect").value;
- const districts=uniqueSorted(allEA.features
-  .filter(f=>!lga||same(prop(f,"lga"),lga))
-  .map(f=>prop(f,"district")));
- setSelect("districtSelect",districts,"All districts",preserve?old.district:"");
+ const lga=$("lga").value;
+ const districts=unique(fullEA.features
+  .filter(f=>!lga||same(value(f,"lga"),lga))
+  .map(f=>value(f,"district")));
+ setOptions("district",districts,"All districts",old.district);
 
- const district=$("districtSelect").value;
- const wards=uniqueSorted(allEA.features.filter(f=>
-  (!lga||same(prop(f,"lga"),lga))&&
-  (!district||same(prop(f,"district"),district))
- ).map(f=>prop(f,"ward")));
- setSelect("wardSelect",wards,"All wards",preserve?old.ward:"");
+ const district=$("district").value;
+ const wards=unique(fullEA.features.filter(f=>
+  (!lga||same(value(f,"lga"),lga))&&
+  (!district||same(value(f,"district"),district))
+ ).map(f=>value(f,"ward")));
+ setOptions("ward",wards,"All wards",old.ward);
 }
-
-/* ==========================================================
-   BASEMAPS — DIRECT RASTER TILE SOURCES
-   ========================================================== */
-
-function rasterStyle(tileURL,attribution) {
- return {
-  version:8,
-  sources:{
-   basemap:{
-    type:"raster",
-    tiles:[tileURL],
-    tileSize:256,
-    attribution:attribution
-   }
-  },
-  layers:[
-   {id:"basemap-raster",type:"raster",source:"basemap",
-    paint:{"raster-opacity":1}}
-  ]
- };
-}
-
-function createBasemap(name) {
- const osmAttribution='© OpenStreetMap contributors';
- const cartoAttribution='© OpenStreetMap contributors © CARTO';
-
- if(name==="voyager") {
-  return rasterStyle(
-   "https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png",
-   cartoAttribution
-  );
+function filterAdmin(fc,kind,s){
+ if(!fc)return emptyFC();
+ if(kind==="lga"&&s.lga){
+  return {type:"FeatureCollection",features:fc.features.filter(f=>
+   same(getField(f.properties,["lganame","lga_name","lga","name"]),s.lga))};
  }
- if(name==="positron") {
-  return rasterStyle(
-   "https://basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png",
-   cartoAttribution
-  );
+ if(kind==="district"&&s.district){
+  return {type:"FeatureCollection",features:fc.features.filter(f=>
+   same(getField(f.properties,["distname","district","district_name","name"]),s.district))};
  }
- if(name==="dark") {
-  return rasterStyle(
-   "https://basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}.png",
-   cartoAttribution
-  );
- }
- if(name==="satellite"||name==="hybrid") {
-  const style=rasterStyle(
-   "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-   "Tiles © Esri"
-  );
-  if(name==="hybrid") {
-   style.sources.labels={
-    type:"raster",
-    tiles:["https://basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}.png"],
-    tileSize:256,
-    attribution:"© CARTO"
-   };
-   style.layers.push({
-    id:"basemap-labels",type:"raster",source:"labels",
-    paint:{"raster-opacity":1}
-   });
-  }
-  return style;
- }
- if(name==="osm") {
-  return rasterStyle(
-   "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-   osmAttribution
-  );
- }
- return rasterStyle(
-  "https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png",
-  cartoAttribution
- );
-}
-
-function showMapError(message) {
- const el=$("mapError");
- el.textContent=message;
- el.style.display="block";
-}
-function hideMapError() {
- $("mapError").style.display="none";
-}
-
-function switchBasemap(name) {
- if(!map) return;
- const center=map.getCenter();
- const zoom=map.getZoom();
- const pitch=map.getPitch();
- const bearing=map.getBearing();
-
- hideMapError();
- map.setStyle(createBasemap(name));
-
- map.once("style.load",()=>{
-  addAllLayers();
-  if(terrainEnabled) enableTerrain();
-  map.jumpTo({center,zoom,pitch,bearing});
-  hideMapError();
- });
-}
-
-function enableTerrain() {
- if(!map.getSource("dem-source")) {
-  map.addSource("dem-source",{
-   type:"raster-dem",
-   tiles:["https://demotiles.maplibre.org/terrain-tiles/{z}/{x}/{y}.png"],
-   tileSize:256,
-   encoding:"terrarium"
-  });
- }
- map.setTerrain({source:"dem-source",exaggeration:1.3});
-}
-function disableTerrain() {
- if(map.getTerrain()) map.setTerrain(null);
-}
-
-/* ==========================================================
-   MAP INITIALISATION
-   ========================================================== */
-
-map=new maplibregl.Map({
- container:"map",
- style:createBasemap("voyager"),
- center:[-15.45,13.45],
- zoom:7.1,
- pitch:45,
- bearing:-8,
- maxPitch:75,
- attributionControl:true,
- fadeDuration:0
-});
-
-map.addControl(new maplibregl.NavigationControl({visualizePitch:true}),"top-right");
-map.addControl(new maplibregl.ScaleControl({maxWidth:120,unit:"metric"}),"bottom-right");
-
-map.on("load",()=>{
- mapReady=true;
- addAllLayers();
- map.fitBounds(GAMBIA_BOUNDS,{padding:40,duration:0});
- loadEAData();
-});
-
-map.on("error",event=>{
- const error=event?.error;
- if(error) {
-  console.warn("Map resource error:",error.message||error);
-  const message=String(error.message||"");
-  if(message.includes("Failed to fetch")||message.includes("403")||
-     message.includes("404")||message.includes("ERR_")) {
-   showMapError("A map tile could not be loaded. Check your internet connection or choose another basemap.");
-  }
- }
-});
-
-/* ==========================================================
-   EA AND ADMINISTRATIVE MAP LAYERS
-   ========================================================== */
-
-function ensureSource(id,data) {
- if(map.getSource(id)) map.getSource(id).setData(data||emptyFC());
- else map.addSource(id,{type:"geojson",data:data||emptyFC()});
-}
-
-function addAllLayers() {
- if(!mapReady) return;
-
- ensureSource("ea-source",displayedEA||emptyFC());
- ensureSource("selection-source",currentAOI||emptyFC());
- ensureSource("lga-source",adminLGA||emptyFC());
- ensureSource("district-source",adminDistrict||emptyFC());
-
- if(!map.getLayer("ea-fill")) {
-  map.addLayer({
-   id:"ea-fill",type:"fill",source:"ea-source",
-   paint:{
-    "fill-color":colorExpression(),
-    "fill-opacity":0.63,
-    "fill-outline-color":"#f8fbff"
-   }
-  });
-
-  map.addLayer({
-   id:"ea-extrusion",type:"fill-extrusion",source:"ea-source",
-   paint:{
-    "fill-extrusion-color":colorExpression(),
-    "fill-extrusion-height":heightExpression(),
-    "fill-extrusion-base":0,
-    "fill-extrusion-opacity":0.82,
-    "fill-extrusion-vertical-gradient":true
-   }
-  });
-
-  map.addLayer({
-   id:"ea-outline",type:"line",source:"ea-source",
-   paint:{"line-color":"#ffffff","line-width":0.55,"line-opacity":0.8}
-  });
- }
-
- if(!map.getLayer("selection-outline")) {
-  map.addLayer({
-   id:"selection-outline",type:"line",source:"selection-source",
-   paint:{"line-color":"#00e5ff","line-width":3.5,"line-dasharray":[2,1]}
-  });
- }
-
- if(!map.getLayer("lga-outline")) {
-  map.addLayer({
-   id:"lga-outline",type:"line",source:"lga-source",
-   paint:{"line-color":"#0754a0","line-width":2.2}
-  });
- }
-
- if(!map.getLayer("district-outline")) {
-  map.addLayer({
-   id:"district-outline",type:"line",source:"district-source",
-   paint:{"line-color":"#e7a52e","line-width":1.2,"line-dasharray":[2,1]}
-  });
- }
-
- addOSMLayers();
- applyVisibility();
-}
-
-function currentMetric() {
- return $("metricSelect").value;
-}
-function metricValue(feature,key) {
- if(key==="density_pop") return number(feature.properties?._density_pop);
- if(key==="density_hhs") return number(feature.properties?._density_hhs);
- return number(prop(feature,key));
-}
-function colorExpression() {
- const key=currentMetric();
- if(key==="none") return "#e8b64b";
-
- const values=(displayedEA?.features||[])
-  .map(f=>metricValue(f,key)).filter(v=>v!==null&&v>=0);
- if(!values.length) return "#e8b64b";
-
- const max=Math.max(...values);
- const a=Math.max(max*.2,0.000001);
- const b=Math.max(max*.45,a+0.000001);
- const c=Math.max(max*.7,b+0.000001);
- const d=Math.max(max,c+0.000001);
-
- return [
-  "interpolate",["linear"],
-  ["coalesce",["to-number",["get","_metric_value"]],0],
-  0,"#fff1a8",
-  a,"#f8a34c",
-  b,"#e65c48",
-  c,"#b52c4d",
-  d,"#64133e"
- ];
-}
-function heightExpression() {
- const scale=Number($("heightScale").value)||2;
- if(currentMetric()==="none") return 0;
- return ["*",["coalesce",["to-number",["get","_height_value"]],0],scale];
-}
-function prepareEA(fc) {
- const features=fc.features.map(feature=>{
-  const properties={...(feature.properties||{})};
-  const pop=number(prop(feature,"pop"));
-  const hh=number(prop(feature,"hh"));
-  let area=null;
-  try {area=turf.area(feature)/1000000;} catch(e) {}
-  properties._area_km2=area;
-  properties._density_pop=area>0&&pop!==null?pop/area:null;
-  properties._density_hhs=area>0&&hh!==null?hh/area:null;
-  properties._metric_value=0;
-  properties._height_value=0;
-  return {...feature,properties};
- });
- return {type:"FeatureCollection",features};
-}
-function refreshEAStyle() {
- if(!mapReady) return;
-
- const key=currentMetric();
- const values=(displayedEA?.features||[])
-  .map(f=>metricValue(f,key)).filter(v=>v!==null&&v>=0);
- const max=values.length?Math.max(...values):0;
-
- if(displayedEA) {
-  displayedEA.features.forEach(feature=>{
-   const v=metricValue(feature,key);
-   feature.properties._metric_value=v??0;
-   feature.properties._height_value=max>0?(v??0)/max*850:0;
-  });
- }
-
- map.getSource("ea-source")?.setData(displayedEA||emptyFC());
-
- if(map.getLayer("ea-fill")) {
-  map.setPaintProperty("ea-fill","fill-color",colorExpression());
-  map.setPaintProperty("ea-extrusion","fill-extrusion-color",colorExpression());
-  map.setPaintProperty("ea-extrusion","fill-extrusion-height",heightExpression());
- }
-}
-
-/* ==========================================================
-   OSM MAP LAYERS
-   ========================================================== */
-
-function addOSMLayers() {
- const definitions=[
-  ["roads","osm-roads","line","#e85b35"],
-  ["water","osm-water","fill","#39a9e8"],
-  ["landuse","osm-landuse","fill","#58a875"],
-  ["buildings","osm-buildings","fill-extrusion","#a9aeb8"],
-  ["poi","osm-poi","circle","#8d43b8"]
- ];
-
- definitions.forEach(([key,id,type,color])=>{
-  const sourceId="osm-"+key+"-source";
-  ensureSource(sourceId,loadedOSM[key]||emptyFC());
-
-  if(!map.getLayer(id)) {
-   const layer={id,type,source:sourceId};
-
-   if(type==="line") layer.paint={
-    "line-color":color,"line-width":2
-   };
-   if(type==="fill") layer.paint={
-    "fill-color":color,"fill-opacity":0.58,"fill-outline-color":"#ffffff"
-   };
-   if(type==="fill-extrusion") layer.paint={
-    "fill-extrusion-color":color,
-    "fill-extrusion-height":[
-     "coalesce",
-     ["to-number",["get","height"]],
-     ["*",["to-number",["get","building:levels"]],3],
-     8
-    ],
-    "fill-extrusion-base":0,
-    "fill-extrusion-opacity":0.82
-   };
-   if(type==="circle") layer.paint={
-    "circle-color":color,"circle-radius":5,
-    "circle-stroke-color":"#ffffff","circle-stroke-width":1
-   };
-   map.addLayer(layer);
-  }
- });
-}
-
-function applyVisibility() {
- if(!mapReady) return;
- const set=(id,visible)=>{
-  if(map.getLayer(id)) map.setLayoutProperty(id,"visibility",visible?"visible":"none");
- };
-
- set("ea-fill",$("showEA").checked);
- set("ea-extrusion",$("showEA").checked&&currentMetric()!=="none");
- set("ea-outline",$("showEA").checked);
- set("lga-outline",$("showLGA").checked);
- set("district-outline",$("showDistrict").checked);
- set("osm-buildings",$("showBuildings").checked);
- set("osm-roads",$("showRoads").checked);
- set("osm-water",$("showWater").checked);
- set("osm-landuse",$("showLanduse").checked);
- set("osm-poi",$("showPOI").checked);
-}
-
-/* ==========================================================
-   LOAD CENSUS EA GEOJSON AND ARCGIS ADMIN BOUNDARIES
-   ========================================================== */
-
-async function fetchJSON(url) {
- const response=await fetch(url,{cache:"no-store"});
- if(!response.ok) throw new Error("HTTP "+response.status);
- return response.json();
-}
-
-async function loadEAData() {
- try {
-  status("Loading Gambia EA GeoJSON from GitHub…");
-  const data=await fetchJSON(EA_URL);
-  allEA=prepareEA(polygonFC(data));
-
-  if(!allEA.features.length) throw new Error("No polygon EA features found.");
-
-  dataSourceName="GitHub";
-  updateSelectors(false);
-  resetNational();
-  $("detailSource").textContent="GitHub";
-  status("Successfully loaded "+fmt(allEA.features.length)+" EA polygons.","ok");
- } catch(error) {
-  console.error(error);
-  status("EA GeoJSON could not be loaded. Upload a local GeoJSON file. "+error.message,"error");
-  $("mapInfo").textContent="EA data unavailable — upload GeoJSON.";
- }
-
- loadAdminBoundaries();
-}
-
-async function queryArcGIS(layer) {
- const url=ARCGIS_BASE+"/"+layer+
-  "/query?where=1%3D1&outFields=*&returnGeometry=true&outSR=4326&f=geojson";
- return cleanFC(await fetchJSON(url));
-}
-
-async function loadAdminBoundaries() {
- try {
-  const results=await Promise.all([queryArcGIS(0),queryArcGIS(1)]);
-  adminLGA=results[0];
-  adminDistrict=results[1];
-
-  if(mapReady) {
-   map.getSource("lga-source")?.setData(adminLGA);
-   map.getSource("district-source")?.setData(adminDistrict);
-   applySelection(false);
-  }
- } catch(error) {
-  console.warn("Administrative boundary service unavailable:",error);
- }
-}
-
-/* ==========================================================
-   FILTERING AND ZOOMING
-   ========================================================== */
-
-function fitToFeatures(features) {
- if(!features?.length) return;
- try {
-  const bounds=turf.bbox(turf.featureCollection(features));
-  if(bounds.every(Number.isFinite)) {
-   map.fitBounds(
-    [[bounds[0],bounds[1]],[bounds[2],bounds[3]]],
-    {padding:{top:85,bottom:65,left:55,right:55},duration:900,maxZoom:14.5}
-   );
-  }
- } catch(error) {
-  console.warn("Selection bounds error:",error);
- }
-}
-
-function filterBoundary(fc,selection,type) {
- if(!fc?.features) return emptyFC();
-
- if(type==="lga"&&selection.lga) {
-  return {
-   type:"FeatureCollection",
-   features:fc.features.filter(f=>same(
-    getProp(f.properties,["lganame","lga_name","lga","name"]),selection.lga
-   ))
-  };
- }
-
- if(type==="district"&&selection.district) {
-  return {
-   type:"FeatureCollection",
-   features:fc.features.filter(f=>same(
-    getProp(f.properties,["distname","district","district_name","name"]),selection.district
-   ))
-  };
- }
-
  return fc;
 }
-
-function applySelection(zoom=true) {
- if(!allEA) return;
-
- const selection=getSelection();
- const matching=allEA.features.filter(f=>matchesSelection(f,selection));
-
- if(!matching.length) {
-  displayedEA=emptyFC();
-  currentAOI=null;
-  map.getSource("ea-source")?.setData(emptyFC());
-  map.getSource("selection-source")?.setData(emptyFC());
-  updateAnalytics([],selection);
-  status("No EA features match this selection. Check the administrative field names.","error");
-  $("mapInfo").textContent="No matching EA features";
-  return;
+function zoomFeatures(features){
+ if(!features?.length)return;
+ let minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
+ function walk(coords){
+  if(typeof coords[0]==="number"){
+   minX=Math.min(minX,coords[0]);maxX=Math.max(maxX,coords[0]);
+   minY=Math.min(minY,coords[1]);maxY=Math.max(maxY,coords[1]);
+  }else coords.forEach(walk);
  }
-
- displayedEA=prepareEA({type:"FeatureCollection",features:matching});
- currentAOI=turf.featureCollection(displayedEA.features);
-
- map.getSource("ea-source")?.setData(displayedEA);
- map.getSource("selection-source")?.setData(currentAOI);
-
- if(selection.lga&&adminLGA) {
-  map.getSource("lga-source")?.setData(filterBoundary(adminLGA,selection,"lga"));
- } else {
-  map.getSource("lga-source")?.setData(adminLGA||emptyFC());
+ features.forEach(f=>{if(f.geometry)walk(f.geometry.coordinates)});
+ if([minX,minY,maxX,maxY].every(Number.isFinite)){
+  map.fitBounds([[minX,minY],[maxX,maxY]],{
+   padding:{top:90,bottom:65,left:55,right:55},
+   duration:850,maxZoom:15
+  });
  }
-
- if(selection.district&&adminDistrict) {
-  map.getSource("district-source")?.setData(filterBoundary(adminDistrict,selection,"district"));
- } else {
-  map.getSource("district-source")?.setData(adminDistrict||emptyFC());
- }
-
- refreshEAStyle();
- applyVisibility();
-
- if(zoom) fitToFeatures(displayedEA.features);
-
- const label=selectionName(selection);
- $("mapInfo").textContent=label+" • "+fmt(matching.length)+" EA polygons displayed";
- updateAnalytics(displayedEA.features,selection);
- $("detailSource").textContent=dataSourceName;
-
- status("Showing only "+fmt(matching.length)+" EA features for "+label+".","ok");
 }
+function applySelection(zoom=true){
+ if(!fullEA)return;
+ const s=selected();
+ const features=fullEA.features.filter(f=>matches(f,s));
 
-function resetNational() {
- if(!allEA) return;
+ viewEA=prepareData({type:"FeatureCollection",features});
 
- $("lgaSelect").value="";
- updateSelectors(false);
- $("districtSelect").value="";
- $("wardSelect").value="";
+ map.getSource("ea")?.setData(viewEA);
+ map.getSource("lga")?.setData(filterAdmin(lgaBoundaries,"lga",s));
+ map.getSource("district")?.setData(filterAdmin(districtBoundaries,"district",s));
 
- displayedEA=prepareEA(allEA);
- currentAOI=null;
+ updateThematicStyle();
+ updateAnalytics();
 
- if(mapReady) {
-  map.getSource("ea-source")?.setData(displayedEA);
-  map.getSource("selection-source")?.setData(emptyFC());
-  map.getSource("lga-source")?.setData(adminLGA||emptyFC());
-  map.getSource("district-source")?.setData(adminDistrict||emptyFC());
-  refreshEAStyle();
-  applyVisibility();
-  map.fitBounds(GAMBIA_BOUNDS,{padding:45,duration:900});
+ if(zoom&&features.length)zoomFeatures(features);
+
+ const label=s.ward||s.district||s.lga||"The Gambia";
+ $("mapInfo").textContent=label+" • "+fmt(features.length)+" EAs displayed";
+
+ if(features.length){
+  status("Displaying "+fmt(features.length)+" EA polygons for "+label+".","ok");
+ }else{
+  status("No EAs match this selection. Check the administrative field values in the GeoJSON.","error");
  }
+}
+function resetNational(){
+ if(!fullEA)return;
+ $("lga").value="";
+ populateSelectors();
+ $("district").value="";
+ $("ward").value="";
 
- const selection={lga:"",district:"",ward:""};
- updateAnalytics(displayedEA.features,selection);
- $("mapInfo").textContent="National view • "+fmt(displayedEA.features.length)+" EA polygons";
- $("detailSource").textContent=dataSourceName;
+ viewEA=prepareData(fullEA);
+ if(mapReady){
+  map.getSource("ea")?.setData(viewEA);
+  map.getSource("lga")?.setData(lgaBoundaries||emptyFC());
+  map.getSource("district")?.setData(districtBoundaries||emptyFC());
+  updateThematicStyle();
+  map.fitBounds(NATIONAL_BOUNDS,{padding:40,duration:850});
+ }
+ updateAnalytics();
+ $("mapInfo").textContent="National view • "+fmt(viewEA.features.length)+" EAs";
  status("National EA view restored.","ok");
 }
 
-/* ==========================================================
-   ANALYTICS
-   ========================================================== */
+/* =========================================================
+   SVG CHARTS — NO CHART.JS REQUIRED
+   ========================================================= */
 
-function updateAnalytics(features,selection) {
- const sum=key=>features.reduce((total,f)=>total+(number(prop(f,key))||0),0);
- const pop=sum("pop");
- const hh=sum("hh");
- const area=features.reduce((total,f)=>total+(number(f.properties?._area_km2)||0),0);
- const density=area>0?pop/area:null;
+function svgBarChart(containerId,labels,values,colour,unit){
+ const container=$(containerId);
+ const valid=values.map(v=>Number(v)||0);
+ if(!labels.length||!valid.some(v=>v>0)){
+  container.innerHTML='<div class="chart-empty">No usable '+unit+' values found in the EA attributes.</div>';
+  return;
+ }
 
- const hasBuildings=features.some(f=>number(prop(f,"buildings"))!==null);
- const hasCompounds=features.some(f=>number(prop(f,"compounds"))!==null);
+ const width=470;
+ const left=145;
+ const right=58;
+ const barWidth=width-left-right;
+ const row=30;
+ const top=8;
+ const height=top+labels.length*row+8;
+ const max=Math.max(...valid,1);
 
- $("kpiEA").textContent=fmt(features.length);
- $("kpiPop").textContent=features.some(f=>number(prop(f,"pop"))!==null)?fmt(pop):"N/A";
- $("kpiHH").textContent=features.some(f=>number(prop(f,"hh"))!==null)?fmt(hh):"N/A";
- $("kpiDensity").textContent=density===null?"N/A":fmt(density,1);
- $("kpiBuildings").textContent=hasBuildings?fmt(sum("buildings")):"N/A";
- $("kpiCompounds").textContent=hasCompounds?fmt(sum("compounds")):"N/A";
+ let html='<svg viewBox="0 0 '+width+' '+height+'" role="img" aria-label="'+unit+' by LGA">';
+ labels.forEach((label,i)=>{
+  const y=top+i*row;
+  const w=Math.max(0,valid[i]/max*barWidth);
+  const short=String(label).length>21?String(label).slice(0,19)+"…":label;
+  html+='<text x="'+(left-8)+'" y="'+(y+15)+'" text-anchor="end" font-size="10" fill="#43576d">'+
+   escapeHTML(short)+'</text>';
+  html+='<rect x="'+left+'" y="'+(y+3)+'" width="'+barWidth+'" height="15" rx="3" fill="#edf1f5"/>';
+  html+='<rect x="'+left+'" y="'+(y+3)+'" width="'+w+'" height="15" rx="3" fill="'+colour+'"/>';
+  html+='<text x="'+(left+barWidth+5)+'" y="'+(y+15)+'" font-size="9" fill="#43576d">'+
+   escapeHTML(fmt(valid[i]))+'</text>';
+ });
+ html+='</svg>';
+ container.innerHTML=html;
+}
+function escapeHTML(v){
+ return String(v).replace(/[&<>"']/g,c=>({
+  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+ }[c]));
+}
 
- $("detailLGA").textContent=selection.lga||"All LGAs";
- $("detailDistrict").textContent=selection.district||"All districts";
- $("detailWard").textContent=selection.ward||"All wards";
+function updateAnalytics(){
+ if(!viewEA)return;
+ const features=viewEA.features;
+ const sum=key=>features.reduce((a,f)=>a+(num(value(f,key))||0),0);
+ const has=key=>features.some(f=>num(value(f,key))!==null);
+
+ const pop=sum("pop"),hh=sum("hh");
+ const area=features.reduce((a,f)=>a+(num(f.properties._area_km2)||0),0);
+ const density=area>0&&has("pop")?pop/area:null;
+
+ $("nEA").textContent=fmt(features.length);
+ $("nPop").textContent=has("pop")?fmt(pop):"N/A";
+ $("nHH").textContent=has("hh")?fmt(hh):"N/A";
+ $("nDensity").textContent=density===null?"N/A":fmt(density,1);
+ $("nBuildings").textContent=has("buildings")?fmt(sum("buildings")):"N/A";
+ $("nCompounds").textContent=has("compounds")?fmt(sum("compounds")):"N/A";
 
  const groups={};
  features.forEach(f=>{
-  const name=prop(f,"lga")||"Unspecified";
-  if(!groups[name]) groups[name]={pop:0,hh:0};
-  groups[name].pop+=number(prop(f,"pop"))||0;
-  groups[name].hh+=number(prop(f,"hh"))||0;
+  const name=value(f,"lga")||"Unspecified";
+  if(!groups[name])groups[name]={pop:0,hh:0,hasPop:false,hasHH:false};
+  const p=num(value(f,"pop")),h=num(value(f,"hh"));
+  if(p!==null){groups[name].pop+=p;groups[name].hasPop=true;}
+  if(h!==null){groups[name].hh+=h;groups[name].hasHH=true;}
  });
+
  const labels=Object.keys(groups).sort((a,b)=>a.localeCompare(b));
- popChart=drawChart("popChart",popChart,labels,labels.map(k=>groups[k].pop),"Population","#1677d2");
- hhChart=drawChart("hhChart",hhChart,labels,labels.map(k=>groups[k].hh),"Households","#18a78a");
+ svgBarChart("populationChart",labels,
+  labels.map(k=>groups[k].hasPop?groups[k].pop:0),"#1677d2","population");
+ svgBarChart("householdChart",labels,
+  labels.map(k=>groups[k].hasHH?groups[k].hh:0),"#159a83","household");
+
+ const s=selected();
+ $("dLGA").textContent=s.lga||"All LGAs";
+ $("dDistrict").textContent=s.district||"All districts";
+ $("dWard").textContent=s.ward||"All wards";
+ $("dSource").textContent=sourceLabel;
 }
 
-function drawChart(id,old,labels,data,label,color) {
- if(old) old.destroy();
- return new Chart($(id).getContext("2d"),{
-  type:"bar",
-  data:{
-   labels,
-   datasets:[{label,data,backgroundColor:color,borderRadius:4,maxBarThickness:25}]
-  },
-  options:{
-   responsive:true,maintainAspectRatio:false,
-   plugins:{
-    legend:{display:false},
-    tooltip:{callbacks:{label:c=>label+": "+fmt(c.raw)}}
-   },
-   scales:{
-    x:{ticks:{font:{size:9},maxRotation:45},grid:{display:false}},
-    y:{beginAtZero:true,ticks:{font:{size:9},callback:v=>fmt(v)},grid:{color:"#edf1f5"}}
-   }
-  }
- });
+/* =========================================================
+   OPTIONAL OSM BUILDINGS AND ROADS
+   ========================================================= */
+
+function boundsOfView(){
+ if(!viewEA?.features?.length)return null;
+ let minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
+ function walk(c){
+  if(typeof c[0]==="number"){
+   minX=Math.min(minX,c[0]);maxX=Math.max(maxX,c[0]);
+   minY=Math.min(minY,c[1]);maxY=Math.max(maxY,c[1]);
+  }else c.forEach(walk);
+ }
+ viewEA.features.forEach(f=>walk(f.geometry.coordinates));
+ return [minX,minY,maxX,maxY];
 }
-
-/* ==========================================================
-   OPENSTREETMAP / OVERPASS
-   ========================================================== */
-
-function selectedBounds() {
- if(!displayedEA?.features?.length) return null;
- try {return turf.bbox(turf.featureCollection(displayedEA.features));}
- catch(error) {return null;}
-}
-
-function overpassQuery(bbox,types) {
- const b=bbox[1]+","+bbox[0]+","+bbox[3]+","+bbox[2];
- const clauses=[];
-
- if(types.includes("roads")) clauses.push(`way["highway"](${b});`);
- if(types.includes("buildings")) clauses.push(
-  `way["building"](${b});relation["building"](${b});`
- );
- if(types.includes("water")) clauses.push(
-  `way["natural"="water"](${b});way["waterway"](${b});relation["natural"="water"](${b});`
- );
- if(types.includes("landuse")) clauses.push(
-  `way["landuse"](${b});way["natural"="wood"](${b});way["leisure"="park"](${b});`
- );
- if(types.includes("poi")) clauses.push(
-  `node["amenity"](${b});node["shop"](${b});node["tourism"](${b});node["healthcare"](${b});`
- );
-
- return "[out:json][timeout:45];("+clauses.join("")+");out center geom;";
-}
-
-async function fetchOverpass(query) {
- let lastError=null;
-
- for(const endpoint of OVERPASS_ENDPOINTS) {
-  const controller=new AbortController();
-  const timer=setTimeout(()=>controller.abort(),55000);
-
-  try {
+async function getOverpass(query){
+ let lastError;
+ for(const endpoint of OVERPASS){
+  try{
+   const controller=new AbortController();
+   const timeout=setTimeout(()=>controller.abort(),45000);
    const response=await fetch(endpoint,{
     method:"POST",
-    headers:{"Content-Type":"application/x-www-form-urlencoded;charset=UTF-8"},
+    headers:{"Content-Type":"application/x-www-form-urlencoded"},
     body:"data="+encodeURIComponent(query),
     signal:controller.signal
    });
-   if(!response.ok) throw new Error("Overpass HTTP "+response.status);
-   const data=await response.json();
-   clearTimeout(timer);
-   return data;
-  } catch(error) {
-   clearTimeout(timer);
-   lastError=error;
-   console.warn("Overpass endpoint failed:",endpoint,error);
-  }
+   clearTimeout(timeout);
+   if(!response.ok)throw new Error("Overpass HTTP "+response.status);
+   return await response.json();
+  }catch(e){lastError=e;console.warn(e);}
  }
- throw lastError||new Error("All Overpass endpoints failed.");
+ throw lastError||new Error("No Overpass endpoint responded.");
 }
-
-function osmToGeoJSON(data,types) {
- const features=[];
-
- for(const element of data.elements||[]) {
-  const tags=element.tags||{};
-  let category=null;
-
-  if(types.includes("roads")&&tags.highway) category="roads";
-  else if(types.includes("buildings")&&tags.building) category="buildings";
-  else if(types.includes("water")&&(tags.natural==="water"||tags.waterway)) category="water";
-  else if(types.includes("landuse")&&(tags.landuse||tags.natural==="wood"||tags.leisure==="park")) category="landuse";
-  else if(types.includes("poi")&&(tags.amenity||tags.shop||tags.tourism||tags.healthcare)) category="poi";
-
-  if(!category) continue;
-
-  let geometry=null;
-
-  if(element.type==="node"&&Number.isFinite(element.lon)&&Number.isFinite(element.lat)) {
-   geometry={type:"Point",coordinates:[element.lon,element.lat]};
-  } else if(Array.isArray(element.geometry)&&element.geometry.length>=2) {
-   const coords=element.geometry.map(p=>[p.lon,p.lat]).filter(p=>p.every(Number.isFinite));
-   if(coords.length>=2) {
-    const closed=coords.length>=4&&
-     coords[0][0]===coords[coords.length-1][0]&&
-     coords[0][1]===coords[coords.length-1][1];
-
-    const shouldPolygon=["buildings","water","landuse"].includes(category);
-    if(shouldPolygon&&closed) geometry={type:"Polygon",coordinates:[coords]};
-    else geometry={type:"LineString",coordinates:coords};
+function convertOSM(data){
+ const buildings=[],roads=[];
+ (data.elements||[]).forEach(el=>{
+  const tags=el.tags||{};
+  if(el.type==="way"&&Array.isArray(el.geometry)){
+   const coords=el.geometry.map(p=>[p.lon,p.lat]);
+   if(tags.building&&coords.length>=4){
+    const first=coords[0],last=coords[coords.length-1];
+    if(first[0]===last[0]&&first[1]===last[1]){
+     buildings.push({
+      type:"Feature",id:"building-"+el.id,
+      properties:{...tags,osm_id:el.id},
+      geometry:{type:"Polygon",coordinates:[coords]}
+     });
+    }
    }
-  } else if(element.center) {
-   geometry={type:"Point",coordinates:[element.center.lon,element.center.lat]};
+   if(tags.highway&&coords.length>=2){
+    roads.push({
+     type:"Feature",id:"road-"+el.id,
+     properties:{...tags,osm_id:el.id},
+     geometry:{type:"LineString",coordinates:coords}
+    });
+   }
   }
-
-  if(!geometry) continue;
-
-  features.push({
-   type:"Feature",
-   id:element.type+"/"+element.id,
-   geometry,
-   properties:{...tags,osm_id:element.id,osm_type:element.type,_category:category}
-  });
- }
-
- return {type:"FeatureCollection",features};
-}
-
-function clipToAOI(fc) {
- if(!currentAOI) return fc;
- const result=[];
-
- fc.features.forEach(feature=>{
-  try {
-   if(turf.booleanIntersects(feature,currentAOI)) result.push(feature);
-  } catch(error) {}
  });
-
- return {type:"FeatureCollection",features:result};
+ return {
+  buildings:{type:"FeatureCollection",features:buildings},
+  roads:{type:"FeatureCollection",features:roads}
+ };
 }
-
-async function loadOSM() {
- if(osmBusy) return;
-
- if(!displayedEA?.features?.length) {
-  status("Load EA data and select an area before requesting OSM layers.","error");
+async function loadOSM(){
+ if(osmLoading)return;
+ const b=boundsOfView();
+ if(!b)return;
+ if(b[2]-b[0]>2.5||b[3]-b[1]>1.5){
+  status("Please select a district or ward before loading OSM data. This keeps the request small.","error");
   return;
  }
-
- const types=[];
- if($("showRoads").checked) types.push("roads");
- if($("showBuildings").checked) types.push("buildings");
- if($("showWater").checked) types.push("water");
- if($("showLanduse").checked) types.push("landuse");
- if($("showPOI").checked) types.push("poi");
-
- if(!types.length) {
-  status("Select at least one OSM theme.","error");
-  return;
- }
-
- const bbox=selectedBounds();
- if(!bbox) return;
-
- if((bbox[2]-bbox[0])>2.5||(bbox[3]-bbox[1])>1.5) {
-  status("Select a smaller area, such as a district or ward, before loading OSM themes.","error");
-  return;
- }
-
- osmBusy=true;
- $("loadOSMBtn").disabled=true;
- $("loadOSMBtn").textContent="LOADING OSM…";
-
- try {
-  status("Requesting OSM features for the selected area…");
-  const result=await fetchOverpass(overpassQuery(bbox,types));
-  const geojson=clipToAOI(osmToGeoJSON(result,types));
-
-  types.forEach(type=>{
-   loadedOSM[type]={
-    type:"FeatureCollection",
-    features:geojson.features.filter(f=>f.properties._category===type)
-   };
-   map.getSource("osm-"+type+"-source")?.setData(loadedOSM[type]);
-  });
-
-  addOSMLayers();
-  applyVisibility();
-
-  const count=types.reduce((total,type)=>total+(loadedOSM[type]?.features.length||0),0);
-  status("Loaded "+fmt(count)+" OSM features in the selected area. OSM is reference data, not an official GBoS dataset.","ok");
- } catch(error) {
-  console.error(error);
-  status("OSM service unavailable: "+error.message+". Try again later. A server-side proxy may be required if browser CORS restrictions block the service.","error");
- } finally {
-  osmBusy=false;
-  $("loadOSMBtn").disabled=false;
-  $("loadOSMBtn").textContent="LOAD SELECTED OSM THEMES";
+ osmLoading=true;
+ $("loadOSM").disabled=true;
+ $("loadOSM").textContent="LOADING OSM…";
+ try{
+  status("Requesting optional OSM buildings and roads for the selected area…");
+  const bbox=b[1]+","+b[0]+","+b[3]+","+b[2];
+  const query='[out:json][timeout:40];(way["building"]('+bbox+');way["highway"]('+bbox+'););out geom;';
+  const data=await getOverpass(query);
+  const converted=convertOSM(data);
+  osmBuildings=converted.buildings;
+  osmRoads=converted.roads;
+  map.getSource("buildings")?.setData(osmBuildings);
+  map.getSource("roads")?.setData(osmRoads);
+  $("buildingVisible").checked=true;
+  $("roadVisible").checked=true;
+  updateVisibility();
+  status("Loaded "+fmt(osmBuildings.features.length)+" building footprints and "+
+   fmt(osmRoads.features.length)+" road features from OSM.","ok");
+ }catch(e){
+  console.error(e);
+  status("OSM request failed: "+e.message+". OSM is optional; the EA map and analytics remain available.","error");
+ }finally{
+  osmLoading=false;
+  $("loadOSM").disabled=false;
+  $("loadOSM").textContent="LOAD OSM BUILDINGS & ROADS";
  }
 }
 
-/* ==========================================================
-   POPUPS — DISPLAY AVAILABLE EA ATTRIBUTES
-   ========================================================== */
+/* =========================================================
+   POPUPS
+   ========================================================= */
 
-function escapeHTML(value) {
- return String(value).replace(/[&<>"']/g,char=>({
-  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
- }[char]));
-}
-
-function popupContent(feature) {
- const rows=Object.entries(feature.properties||{})
-  .filter(([key,value])=>!key.startsWith("_")&&value!==null&&
-   value!==undefined&&typeof value!=="object")
-  .map(([key,value])=>"<tr><td>"+escapeHTML(key)+"</td><td>"+
-   escapeHTML(value)+"</td></tr>").join("");
-
- return "<div style='font-family:Arial;min-width:190px'>"+
-  "<b style='color:#102b4e'>Enumeration Area attributes</b>"+
-  "<table class='popup-table'>"+rows+"</table></div>";
-}
-
-map.on("click","ea-fill",event=>{
- const feature=event.features?.[0];
- if(!feature) return;
-
+map.on("click","ea-fill",e=>{
+ const f=e.features?.[0];
+ if(!f)return;
+ const rows=Object.entries(f.properties||{})
+  .filter(([k,v])=>!k.startsWith("_")&&v!==null&&
+   v!==undefined&&typeof v!=="object")
+  .slice(0,35)
+  .map(([k,v])=>"<tr><td><b>"+escapeHTML(k)+"</b></td><td>"+escapeHTML(v)+"</td></tr>")
+  .join("");
  new maplibregl.Popup({maxWidth:"340px"})
-  .setLngLat(event.lngLat)
-  .setHTML(popupContent(feature))
+  .setLngLat(e.lngLat)
+  .setHTML("<div style='font:11px Arial'><b>EA attributes</b><table>"+rows+"</table></div>")
   .addTo(map);
 });
 map.on("mouseenter","ea-fill",()=>map.getCanvas().style.cursor="pointer");
 map.on("mouseleave","ea-fill",()=>map.getCanvas().style.cursor="");
 
-/* ==========================================================
+/* =========================================================
    EXPORTS
-   ========================================================== */
+   ========================================================= */
 
-function downloadFile(content,filename,mime) {
- const blob=new Blob([content],{type:mime});
+function download(content,name,type){
+ const blob=new Blob([content],{type});
  const url=URL.createObjectURL(blob);
- const link=document.createElement("a");
- link.href=url;
- link.download=filename;
- document.body.appendChild(link);
- link.click();
- link.remove();
- setTimeout(()=>URL.revokeObjectURL(url),1000);
+ const a=document.createElement("a");
+ a.href=url;a.download=name;
+ document.body.appendChild(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1200);
 }
-
-function csvCell(value) {
- if(value===null||value===undefined) return '""';
- return '"'+String(value).replace(/"/g,'""')+'"';
-}
-
-function exportCSV() {
- if(!displayedEA) return;
- const features=displayedEA.features;
- const keys=[...new Set(features.flatMap(f=>
-  Object.keys(f.properties||{}).filter(k=>!k.startsWith("_"))
- ))];
- const rows=[keys.map(csvCell).join(",")];
-
- features.forEach(feature=>{
-  rows.push(keys.map(k=>csvCell(feature.properties?.[k])).join(","));
+function csvExport(){
+ if(!viewEA)return;
+ const keys=[...new Set(viewEA.features.flatMap(f=>
+  Object.keys(f.properties||{}).filter(k=>!k.startsWith("_"))))];
+ const rows=[keys.map(csvQuote).join(",")];
+ viewEA.features.forEach(f=>{
+  rows.push(keys.map(k=>csvQuote(f.properties?.[k])).join(","));
  });
-
- downloadFile(rows.join("\r\n"),"GBoS_Gambia_Selected_EAs.csv","text/csv;charset=utf-8");
+ download(rows.join("\r\n"),"GBoS_Gambia_Selected_EAs.csv","text/csv;charset=utf-8");
 }
-
-function exportEA() {
- if(!displayedEA) return;
- downloadFile(JSON.stringify(displayedEA,null,2),
+function csvQuote(v){
+ if(v===null||v===undefined)return '""';
+ return '"'+String(v).replace(/"/g,'""')+'"';
+}
+function geoExport(){
+ if(viewEA)download(JSON.stringify(viewEA,null,2),
   "GBoS_Gambia_Selected_EAs.geojson","application/geo+json");
 }
-
-function exportOSM() {
- const features=Object.values(loadedOSM).filter(Boolean)
-  .flatMap(fc=>fc.features||[]);
- downloadFile(JSON.stringify({type:"FeatureCollection",features},null,2),
-  "GBoS_Gambia_Selected_OSM.geojson","application/geo+json");
+function osmExport(){
+ const features=[...osmBuildings.features,...osmRoads.features];
+ download(JSON.stringify({type:"FeatureCollection",features},null,2),
+  "GBoS_Gambia_OSM_Reference.geojson","application/geo+json");
 }
-
-function exportAll() {
- const features=[
-  ...(displayedEA?.features||[]),
-  ...Object.values(loadedOSM).filter(Boolean).flatMap(fc=>fc.features||[])
- ];
- downloadFile(JSON.stringify({type:"FeatureCollection",features},null,2),
+function viewExport(){
+ const features=[...(viewEA?.features||[]),...osmBuildings.features,...osmRoads.features];
+ download(JSON.stringify({type:"FeatureCollection",features},null,2),
   "GBoS_Gambia_Selected_View.geojson","application/geo+json");
 }
 
-/* ==========================================================
-   USER INTERFACE EVENTS
-   ========================================================== */
+/* =========================================================
+   USER INTERACTIONS
+   ========================================================= */
 
-$("lgaSelect").addEventListener("change",()=>{
- const lga=$("lgaSelect").value;
- const districts=uniqueSorted(allEA.features
-  .filter(f=>!lga||same(prop(f,"lga"),lga))
-  .map(f=>prop(f,"district")));
- setSelect("districtSelect",districts,"All districts");
- setSelect("wardSelect",[],"All wards");
+$("lga").addEventListener("change",()=>{
+ const lga=$("lga").value;
+ const districts=unique(fullEA.features.filter(f=>
+  !lga||same(value(f,"lga"),lga)).map(f=>value(f,"district")));
+ setOptions("district",districts,"All districts");
+ setOptions("ward",[],"All wards");
 });
-
-$("districtSelect").addEventListener("change",()=>{
- const s=getSelection();
- const wards=uniqueSorted(allEA.features.filter(f=>
-  (!s.lga||same(prop(f,"lga"),s.lga))&&
-  (!s.district||same(prop(f,"district"),s.district))
- ).map(f=>prop(f,"ward")));
- setSelect("wardSelect",wards,"All wards");
+$("district").addEventListener("change",()=>{
+ const s=selected();
+ const wards=unique(fullEA.features.filter(f=>
+  (!s.lga||same(value(f,"lga"),s.lga))&&
+  (!s.district||same(value(f,"district"),s.district))
+ ).map(f=>value(f,"ward")));
+ setOptions("ward",wards,"All wards");
 });
+$("apply").addEventListener("click",()=>applySelection(true));
+$("reset").addEventListener("click",resetNational);
 
-$("applyBtn").addEventListener("click",()=>applySelection(true));
-$("resetBtn").addEventListener("click",resetNational);
-
-[
- "showEA","showLGA","showDistrict","showBuildings",
- "showRoads","showWater","showLanduse","showPOI"
-].forEach(id=>$(id).addEventListener("change",applyVisibility));
-
-$("metricSelect").addEventListener("change",()=>{
- $("mapMetric").value=$("metricSelect").value;
- refreshEAStyle();
- applyVisibility();
+$("metric").addEventListener("change",()=>{
+ $("mapMetric").value=$("metric").value;
+ updateThematicStyle();
 });
-
 $("mapMetric").addEventListener("change",()=>{
- $("metricSelect").value=$("mapMetric").value;
- refreshEAStyle();
- applyVisibility();
+ $("metric").value=$("mapMetric").value;
+ updateThematicStyle();
+});
+$("exaggeration").addEventListener("change",updateThematicStyle);
+$("heightMode").addEventListener("change",updateThematicStyle);
+
+$("enable3d").addEventListener("click",()=>{
+ is3D=true;
+ map.easeTo({pitch:65,zoom:Math.max(map.getZoom(),7.5),duration:800});
+ updateVisibility();
+});
+$("enable2d").addEventListener("click",()=>{
+ is3D=false;
+ map.easeTo({pitch:0,bearing:0,duration:800});
+ updateVisibility();
 });
 
-$("heightScale").addEventListener("change",refreshEAStyle);
+["eaVisible","lgaVisible","districtVisible","buildingVisible","roadVisible"]
+.forEach(id=>$(id).addEventListener("change",updateVisibility));
 
-$("basemapSelect").addEventListener("change",event=>{
- switchBasemap(event.target.value);
-});
+$("loadOSM").addEventListener("click",loadOSM);
+$("csv").addEventListener("click",csvExport);
+$("geojson").addEventListener("click",geoExport);
+$("osmExport").addEventListener("click",osmExport);
+$("viewExport").addEventListener("click",viewExport);
 
-$("terrainToggle").addEventListener("change",event=>{
- terrainEnabled=event.target.checked;
- if(terrainEnabled) enableTerrain();
- else disableTerrain();
-});
-
-$("loadOSMBtn").addEventListener("click",loadOSM);
-$("exportCSV").addEventListener("click",exportCSV);
-$("exportGeoJSON").addEventListener("click",exportEA);
-$("exportOSM").addEventListener("click",exportOSM);
-$("exportAll").addEventListener("click",exportAll);
-
-$("eaFile").addEventListener("change",async event=>{
- const file=event.target.files?.[0];
- if(!file) return;
-
- try {
-  const parsed=JSON.parse(await file.text());
-  allEA=prepareEA(polygonFC(parsed));
-
-  if(!allEA.features.length) throw new Error("No polygon features found.");
-
-  dataSourceName=file.name;
-  updateSelectors(false);
+$("upload").addEventListener("change",async e=>{
+ const file=e.target.files?.[0];
+ if(!file)return;
+ try{
+  status("Reading uploaded EA GeoJSON…");
+  const data=JSON.parse(await file.text());
+  const fc=polygonFC(data);
+  if(!fc.features.length)throw new Error("No polygon features in the uploaded file.");
+  fullEA=prepareData(fc);
+  sourceLabel=file.name;
+  populateSelectors();
   resetNational();
-  $("detailSource").textContent=file.name;
-  status("Loaded "+fmt(allEA.features.length)+" EA polygons from "+file.name+".","ok");
- } catch(error) {
-  status("Upload failed: "+error.message,"error");
+  $("dSource").textContent=sourceLabel;
+  status("Successfully loaded "+fmt(fullEA.features.length)+" EA features from "+file.name+".","ok");
+ }catch(error){
+  status("Upload error: "+error.message,"error");
  }
 });
 
-$("mapInfo").textContent="Connecting to basemap tiles…";
 </script>
 </body>
 </html>
